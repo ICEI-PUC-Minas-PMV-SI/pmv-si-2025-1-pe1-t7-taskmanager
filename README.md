@@ -17,7 +17,7 @@ Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo de
 * Kamila Julia do Espirito Santo
 * Mariana Faria Silva Ferreira
 * Thiago Cardoso
-
+* Moabita Sarom Peixoto Gomes 
 
 
 ## Orientador
