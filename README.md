@@ -4,9 +4,9 @@
 
 `DISCIPLINA: Projeto - Aplicações Web`
 
-`SEMESTRE: 1º`
+SEMESTRE: 1º`
 
-Descrever resumidamente, em um ou dois parágrafos, o projeto que está sendo desenvolvido.
+A proposta deste projeto é a criação de um organizador de tarefas prático e acessível, desenvolvido para otimizar em um único canal a gestão de compromissos e atividades. Com funcionalidades como filtragem por categorias e emissão de notificações para alertas de compromissos, a plataforma atenderá usuários com diferentes níveis de familiaridade com tecnologias, promovendo uma rotina mais organizada e produtiva, tanto no âmbito pessoal quanto profissional.
 
 ## Integrantes
 
