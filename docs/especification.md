@@ -8,19 +8,12 @@ Caso deseje atribuir uma imagem a sua persona, utilize o site https://thisperson
 
 ## Personas
 
-Pedro Paulo tem 26 anos, é arquiteto recém-formado e autônomo. Pensa em se desenvolver profissionalmente através de um mestrado fora do país, pois adora viajar, é solteiro e sempre quis fazer um intercâmbio. Está buscando uma agência que o ajude a encontrar universidades na Europa que aceitem alunos estrangeiros.
+Persona 1: O Profissional Corporativo
+Ricardo Almeida, de 35 anos, é gerente de projetos em uma empresa de tecnologia e enfrenta desafios que incluem dificuldade em priorizar tarefas, excesso de reuniões e falta de tempo para planejamento. Ele busca aumentar sua produtividade, cumprindo prazos frequentemente apertados e alcançar um equilíbrio saudável entre vida pessoal e profissional. 
 
-Enumere e detalhe as personas da sua solução. Para tanto, baseie-se tanto nos documentos disponibilizados na disciplina e/ou nos seguintes links:
+Persona 2: A Estudante Universitária
+Juliana Costa, uma estudante de Engenharia de 22 anos, busca equilibrar estudos, estágio e vida social sem se sentir sobrecarregada. No entanto, ela enfrenta desafios significativos, como a dificuldade em organizar suas tarefas acadêmicas, cumprir os prazos de entrega e gerenciar as atividades extracurriculares. Sua rotina exige planejamento cuidadoso para alcançar seus objetivos e manter o bem-estar enquanto navega pelas demandas da vida universitária. 
 
-> **Links Úteis**:
-> - [Rock Content](https://rockcontent.com/blog/personas/)
-> - [Hotmart](https://blog.hotmart.com/pt-br/como-criar-persona-negocio/)
-> - [O que é persona?](https://resultadosdigitais.com.br/blog/persona-o-que-e/)
-> - [Persona x Público-alvo](https://flammo.com.br/blog/persona-e-publico-alvo-qual-a-diferenca/)
-> - [Mapa de Empatia](https://resultadosdigitais.com.br/blog/mapa-da-empatia/)
-> - [Mapa de Stalkeholders](https://www.racecomunicacao.com.br/blog/como-fazer-o-mapeamento-de-stakeholders/)
->
-Lembre-se que você deve ser enumerar e descrever precisamente e personalizada todos os clientes ideais que sua solução almeja.
 
 ## Histórias de Usuários
 
