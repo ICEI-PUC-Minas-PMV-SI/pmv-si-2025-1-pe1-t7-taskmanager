@@ -18,9 +18,9 @@ Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thin
 
 ## Objetivos
 
-Aqui você deve descrever os objetivos do trabalho indicando que o objetivo geral é desenvolver um software para solucionar o problema apresentado acima. 
+Objetivo Geral:
+Desenvolver uma ferramenta tecnológica prática e acessível que auxilie os usuários a manterem uma rotina mais organizada, integrando em um único canal a gestão de compromissos e tarefas para otimizar o tempo e melhorar a produtividade.
 
-Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
  
   **Objetivos Específicos**:
  - Criar uma plataforma intuitiva e simplificada que facilite a organização de atividades diárias, adequada às necessidades de usuários com diferentes níveis de familiaridade com tecnologias.
