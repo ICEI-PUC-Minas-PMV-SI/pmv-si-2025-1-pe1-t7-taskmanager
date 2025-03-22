@@ -5,11 +5,7 @@ Nosso objetivo com este projeto é oferecer uma solução prática e acessível 
 
 ## Problema
 
-Nesse momento você deve apresentar o problema que a sua aplicação deve resolver. No entanto, **não** é a hora de comentar sobre a solução/aplicação.
-
-Descreva também o contexto em que essa aplicação será usada, se  houver: empresa, tecnologias, etc. Novamente, descreva apenas o que de fato existir, pois ainda não é a hora de apresentar requisitos detalhados ou projetos.
-
-Nesse momento, o grupo pode optar por fazer uso  de ferramentas como Design Thinking, que permite um olhar de ponta a ponta para o problema.
+O ritmo acelerado das pessoas em sua vida pessoal e profissional gera grandes desafios no gerenciamento do tempo, uma vez que muitos usuários têm pouca familiaridade com ferramentas de organização, o que os leva a dispersar informações em diferentes plataformas, como agendas físicas, aplicativos variados e agendas digitais dos celulares. Essa fragmentação não apenas dificulta a acessibilidade e o uso eficiente das informações, mas também contribui para aumentar a sensação de desordem e sobrecarga.
 
 > **Links Úteis**:
 > - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
