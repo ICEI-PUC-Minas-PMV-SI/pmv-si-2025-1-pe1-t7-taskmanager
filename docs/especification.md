@@ -25,8 +25,26 @@ Com base na análise das personas forma identificadas as seguintes histórias de
 
 |EU COMO... `PERSONA`| QUERO/PRECISO ... `FUNCIONALIDADE` |PARA ... `MOTIVO/VALOR`                 |
 |--------------------|------------------------------------|----------------------------------------|
-|Usuário do sistema  | Registrar minhas tarefas           | Não esquecer de fazê-las               |
-|Administrador       | Alterar permissões                 | Permitir que possam administrar contas |
+|Ricardo Almeida - O | Bloquear horários focados,         | Aumentar a produtividade,cumprir       |
+|Profissional        | definir prioridades diárias e      | prazos e equilibrar vida pessoal e     |
+|Corporativo         | lembretes inteligentes             | profissional.                          |
+---------------------|------------------------------------|----------------------------------------|
+|Juliana Costa - A   | Criar listas de tarefas, definir   |  Melhor organização dos estudos,       |
+|Estudante           | metas de estudo, integrar          |  cumprimento de prazos e equilíbrio    |
+|Universitária       |calendários acadêmicos              |  entre vida acadêmica e social.        |
+|--------------------|------------------------------------|----------------------------------------|
+|Carlos Mendes - O   | Planejar reuniões,compartilhar     | Melhorar a gestão do tempo, organizar  |
+|Empreendedor        | tarefas com a equipe,acompanhar    | responsabilidades e facilitar a        |
+|                    | progresso.                         | delegação de tarefas.                  |
+|--------------------|------------------------------------|----------------------------------------|
+|Ana Paula Rocha - A | Criar blocos de tempo, organizar   | Equilibrar trabalho e vida pessoal,    |
+|Mãe que Trabalha    | compromissos familiares,           | evitar distrações e garantir momentos  |
+|em casa             | categorizar tarefas                | de autocuidado.                        |
+|--------------------|------------------------------------|----------------------------------------|
+|João Silva - O      | Planejar atividades diárias,       | Facilitar a organização dos            |
+|Aposentado Ativo    | interface simples, lembretes       | compromissos e manter uma rotina       |
+|                    | sonoros.                           | ativa e equilibrada.                   |
+|--------------------|------------------------------------|----------------------------------------|
 
 Apresente aqui as histórias de usuário que são relevantes para o projeto de sua solução. As Histórias de Usuário consistem em uma ferramenta poderosa para a compreensão e elicitação dos requisitos funcionais e não funcionais da sua aplicação. Se possível, agrupe as histórias de usuário por contexto, para facilitar consultas recorrentes à essa parte do documento.
 
