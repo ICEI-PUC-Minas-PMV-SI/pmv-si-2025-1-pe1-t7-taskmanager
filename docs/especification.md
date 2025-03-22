@@ -14,6 +14,10 @@ Ricardo Almeida, de 35 anos, é gerente de projetos em uma empresa de tecnologia
 Persona 2: A Estudante Universitária
 Juliana Costa, uma estudante de Engenharia de 22 anos, busca equilibrar estudos, estágio e vida social sem se sentir sobrecarregada. No entanto, ela enfrenta desafios significativos, como a dificuldade em organizar suas tarefas acadêmicas, cumprir os prazos de entrega e gerenciar as atividades extracurriculares. Sua rotina exige planejamento cuidadoso para alcançar seus objetivos e manter o bem-estar enquanto navega pelas demandas da vida universitária. 
 
+Persona 3: O Empreendedor
+Carlos Mendes, um empreendedor de 40 anos e dono de uma startup de delivery, enfrenta o desafio de lidar com múltiplas responsabilidades em sua rotina. Ele busca organizar melhor suas tarefas diárias, mas encontra dificuldades devido à falta de organização pessoal que compromete a delegação de funções para outras pessoas. Como líder da empresa, Carlos precisa encontrar formas eficientes de gerir seu tempo e equilibrar suas demandas para alcançar seus objetivos com mais facilidade.
+
+
 
 ## Histórias de Usuários
 
