@@ -22,9 +22,9 @@ Aqui você deve descrever os objetivos do trabalho indicando que o objetivo gera
 
 Apresente também alguns (pelo menos 2) objetivos específicos dependendo de onde você vai querer concentrar a sua prática investigativa, ou como você vai aprofundar no seu trabalho.
  
- > **Objetivos Específicos**:
-> - Criar uma plataforma intuitiva e simplificada que facilite a organização de atividades diárias, adequada às necessidades de usuários com diferentes níveis de familiaridade com tecnologias.
-> - Oferecer recursos centralizados para consolidar informações dispersas em múltiplos canais, proporcionando maior clareza, acessibilidade e eficiência no planejamento de rotinas pessoais e profissionais.
+  **Objetivos Específicos**:
+ - Criar uma plataforma intuitiva e simplificada que facilite a organização de atividades diárias, adequada às necessidades de usuários com diferentes níveis de familiaridade com tecnologias.
+ - Oferecer recursos centralizados para consolidar informações dispersas em múltiplos canais, proporcionando maior clareza, acessibilidade e eficiência no planejamento de rotinas pessoais e profissionais.
 
 ## Justificativa
 
