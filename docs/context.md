@@ -7,10 +7,6 @@ Nosso objetivo com este projeto é oferecer uma solução prática e acessível 
 
 O ritmo acelerado das pessoas em sua vida pessoal e profissional gera grandes desafios no gerenciamento do tempo, uma vez que muitos usuários têm pouca familiaridade com ferramentas de organização, o que os leva a dispersar informações em diferentes plataformas, como agendas físicas, aplicativos variados e agendas digitais dos celulares. Essa fragmentação não apenas dificulta a acessibilidade e o uso eficiente das informações, mas também contribui para aumentar a sensação de desordem e sobrecarga.
 
-> **Links Úteis**:
-> - [Objetivos, Problema de pesquisa e Justificativa](https://medium.com/@versioparole/objetivos-problema-de-pesquisa-e-justificativa-c98c8233b9c3)
-> - [Matriz Certezas, Suposições e Dúvidas](https://medium.com/educa%C3%A7%C3%A3o-fora-da-caixa/matriz-certezas-suposi%C3%A7%C3%B5es-e-d%C3%BAvidas-fa2263633655)
-> - [Brainstorming](https://www.euax.com.br/2018/09/brainstorming/)
 
 ## Objetivos
 
