@@ -1,10 +1,8 @@
 # Especificações do Projeto
 
-Definição do problema e ideia de solução a partir da perspectiva do usuário. É composta pela definição do  diagrama de personas, histórias de usuários, requisitos funcionais e não funcionais além das restrições do projeto.
+Buscando oferecer um produto voltado à gestão e organização do tempo e de tarefas, descreveremos a seguir os perfis do público-alvo e os requisitos e restrições do projeto. 
+Para isso, tomando como referência o guia do projeto e o conteúdo dos microfundamentos, a construção das personas abaixo foi inspirada nos perfis pessoais dos integrantes do grupo e das pessoas que compõem seu círculo social e que utilizam ferramentas para organização do cotidiano, suas dores e comentários pessoais. Para definição dos requisitos e restrições, projetos em CSS, JavaScritpt e HTML foram consultados como inspiração técnica, além de considerar a experiência profissional de alguns membros do grupo em desenvolvimento de software.
 
-Apresente uma visão geral do que será abordado nesta parte do documento, enumerando as técnicas e/ou ferramentas utilizadas para realizar a especificações do projeto.
-
-Caso deseje atribuir uma imagem a sua persona, utilize o site https://thispersondoesnotexist.com/
 
 ## Personas
 
