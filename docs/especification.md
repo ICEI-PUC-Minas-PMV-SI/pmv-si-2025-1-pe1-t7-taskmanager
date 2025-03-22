@@ -43,11 +43,12 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 ### Requisitos Funcionais
 
-ID	Descrição do Requisito	Prioridade
-|RF-001|	O usuário deve poder inserir, editar e excluir tarefas existentes	|ALTA|
-|RF-002|	Exportar as informações para download	|BAIXA|
-|RF-003|	O usuário deve poder filtrar tarefas por categorias	|MÉDIA|
-|RF-004|	Emitir notificações com o alerta de compromissos	|BAIXA|
+|ID     | Descrição do Requisito  |Prioridade |
+|-------|-------------------------|----|
+|RNF-001| O usuário deve poder inserir, editar e excluir tarefas existentes | ALTA | 
+|RNF-002| Exportar as informações para download |  BAIXA | 
+|RNF-003|	O usuário deve poder filtrar tarefas por categorias.	| MÉDIA |
+|RNF-004|	Emitir notificações com o alerta de compromissos.	| BAIXA |
 
 
 ### Requisitos não Funcionais
