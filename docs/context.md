@@ -20,14 +20,7 @@ Desenvolver uma ferramenta tecnológica prática e acessível que auxilie os usu
 
 ## Justificativa
 
-Descreva a importância ou a motivação para trabalhar com esta aplicação que você escolheu. Indique as razões pelas quais você escolheu seus objetivos específicos ou as razões para aprofundar em certos aspectos do software.
-
-Lembre-se de pesquisar e utilizar números que justifiquem por que é importante que tal problema seja resolvido ou que mostrem o impacto do problema na vida das pessoas.
-
-O grupo de trabalho pode fazer uso de questionários, entrevistas e dados estatísticos, que podem ser apresentados, com o objetivo de esclarecer detalhes do problema que será abordado pelo grupo.
-
-> **Links Úteis**:
-> - [Como montar a justificativa](https://guiadamonografia.com.br/como-montar-justificativa-do-tcc/)
+Com esse panorama, nosso projeto visa criar uma aplicação tecnológica prática e intuitiva que centralize e simplifique a organização das tarefas cotidianas. Ao oferecer uma solução adequada a diferentes perfis de usuários, buscamos não apenas otimizar o uso do tempo, mas também reduzir o estresse e promover equilíbrio no dia-a-dia.
 
 ## Público-Alvo
 
