@@ -17,6 +17,8 @@ Juliana Costa, uma estudante de Engenharia de 22 anos, busca equilibrar estudos,
 Persona 3: O Empreendedor
 Carlos Mendes, um empreendedor de 40 anos e dono de uma startup de delivery, enfrenta o desafio de lidar com múltiplas responsabilidades em sua rotina. Ele busca organizar melhor suas tarefas diárias, mas encontra dificuldades devido à falta de organização pessoal que compromete a delegação de funções para outras pessoas. Como líder da empresa, Carlos precisa encontrar formas eficientes de gerir seu tempo e equilibrar suas demandas para alcançar seus objetivos com mais facilidade.
 
+Persona 4: A Mãe que Trabalha em Casa 
+Ana Paula Rocha, uma designer freelancer de 30 anos, enfrenta o desafio de equilibrar sua rotina entre trabalho, cuidados com os filhos e momentos dedicados a si mesma. A ausência de uma rotina bem definida torna ainda mais difícil separar as demandas da vida pessoal e profissional. Apesar dessas dificuldades, Ana Paula busca maneiras de organizar melhor seu tempo e alcançar um equilíbrio saudável em sua vida.
 
 
 ## Histórias de Usuários
