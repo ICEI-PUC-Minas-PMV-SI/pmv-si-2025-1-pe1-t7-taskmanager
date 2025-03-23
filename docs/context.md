@@ -24,5 +24,4 @@ A gestão eficiente do tempo é um elemento crucial na busca por qualidade de vi
 Com esse panorama, nosso projeto visa criar uma aplicação tecnológica prática e intuitiva que centralize e simplifique a organização das tarefas cotidianas. Ao oferecer uma solução adequada a diferentes perfis de usuários, buscamos não apenas otimizar o uso do tempo, mas também reduzir o estresse e promover equilíbrio no dia-a-dia.
 
 ## Público-Alvo
-
-Descreva quem serão as pessoas que usarão a sua aplicação indicando os diferentes perfis. 
+O público-alvo deste projeto de desenvolvimento de software é composto por indivíduos e profissionais que enfrentam dificuldades na gestão de tempo e organização pessoal devido à sobrecarga de tarefas e à fragmentação de informações. Isso inclui pessoas com rotinas agitadas, que buscam uma solução prática para centralizar suas atividades diárias, bem como usuários com baixa familiaridade com ferramentas tecnológicas, mas que necessitam de uma aplicação intuitiva e acessível.
