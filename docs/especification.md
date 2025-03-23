@@ -77,9 +77,9 @@ As tabelas que se seguem apresentam os requisitos funcionais e não funcionais q
 
 O projeto está restrito pelos itens apresentados na tabela a seguir.
 
-|ID     | Descrição do Requisito  |
+|ID     | Restrição  |
 |-------|-------------------------|
-01	O projeto não conta com base de dados de armazenamento em servidor externo
-02	Não pode ser desenvolvido um módulo de backend
-03	Disponível apenas para acesso em navegador
+|01 	  | O projeto não conta com base de dados de armazenamento em servidor externo |
+|02	    | Não pode ser desenvolvido um módulo de backend |  
+|03	    | Disponível apenas para acesso em navegador |
 
