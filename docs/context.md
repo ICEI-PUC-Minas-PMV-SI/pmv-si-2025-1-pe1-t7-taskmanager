@@ -1,6 +1,7 @@
 # Introdução
 
 Vivemos em uma sociedade dinâmica e acelerada, onde inúmeras tarefas e responsabilidades disputam nossa atenção diariamente. Nesse contexto, a capacidade de organizar e planejar de forma eficiente se tornou essencial para lidar com a complexidade da vida moderna. Reconhecendo essa necessidade crescente, apresentamos uma ferramenta de organização desenvolvida para simplificar a gestão de compromissos, sejam eles pessoais ou profissionais, permitindo que os usuários mantenham o foco e otimizem seu tempo com eficácia.
+
 Nosso objetivo com este projeto é oferecer uma solução prática e acessível para o gerenciamento de tempo de maneira eficiente. A ferramenta dispõe de funcionalidades intuitivas e objetivas que não apenas auxiliam no planejamento, mas também otimizam a produtividade, incentivando um equilíbrio saudável entre as demandas cotidianas e os momentos de descanso. Combinando tecnologia funcional com uma abordagem simplificada e centrada no usuário, este projeto busca aperfeiçoar, de forma significativa, a maneira como organizamos nossos desafios diários.
 
 ## Problema
