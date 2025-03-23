@@ -22,6 +22,7 @@ Desenvolver uma ferramenta tecnológica prática e acessível que auxilie os usu
 ## Justificativa
 
 A gestão eficiente do tempo é um elemento crucial na busca por qualidade de vida e produtividade, especialmente diante de um cenário onde 62% dos brasileiros, segundo o ISMA-BR (International Stress Management Association – Brasil), enfrentam a falta de tempo devido à sobrecarga de tarefas. A desorganização e a fragmentação de informações em múltiplos canais amplificam o problema, causando atrasos, compromissos perdidos, estresse elevado e uma queda significativa na produtividade, impactando diretamente a rotina e o bem-estar de indivíduos e empresas.
+
 Com esse panorama, nosso projeto visa criar uma aplicação tecnológica prática e intuitiva que centralize e simplifique a organização das tarefas cotidianas. Ao oferecer uma solução adequada a diferentes perfis de usuários, buscamos não apenas otimizar o uso do tempo, mas também reduzir o estresse e promover equilíbrio no dia-a-dia.
 
 ## Público-Alvo
