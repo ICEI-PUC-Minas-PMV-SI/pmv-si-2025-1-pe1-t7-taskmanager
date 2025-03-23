@@ -1,7 +1,8 @@
 # Especificações do Projeto
 
 Buscando oferecer um produto voltado à gestão e organização do tempo e de tarefas, descreveremos a seguir os perfis do público-alvo e os requisitos e restrições do projeto. 
-Para isso, tomando como referência o guia do projeto e o conteúdo dos microfundamentos, a construção das personas abaixo foi inspirada nos perfis pessoais dos integrantes do grupo e das pessoas que compõem seu círculo social e que utilizam ferramentas para organização do cotidiano, suas dores e comentários pessoais. Para definição dos requisitos e restrições, projetos em CSS, JavaScritpt e HTML foram consultados como inspiração técnica, além de considerar a experiência profissional de alguns membros do grupo em desenvolvimento de software.
+Para isso, tomando como referência o guia do projeto e o conteúdo dos microfundamentos, foi realizada uma pesquisa qualitativa usando como método de coleta de dados a entrevista, em que foram abordadas as pessoas do círculo social dos membros do grupo. Elas foram indagadas se utilizam ferramentas para organização do cotidiano, quais são os canais utilizados e quais suas dores e percepções a respeito, sendo que essas informações somadas á análise de seus perfis pessoais, inspiraram a construção dos perfis das personas. 
+Para definição dos requisitos e restrições, projetos em CSS, JavaScritpt e HTML foram consultados como inspiração técnica, além de considerar a experiência profissional de alguns membros do grupo em desenvolvimento de software.
 
 
 ## Personas
