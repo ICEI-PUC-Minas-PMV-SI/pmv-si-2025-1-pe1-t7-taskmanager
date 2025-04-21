@@ -27,7 +27,7 @@ A cor de fundo escolhida é um branco (HEX #FFFFFF).
 
 A paleta foi cuidadosamente pensada para garantir bom contraste e legibilidade, tornando o site acessível a um público mais amplo. A harmonia entre os tons de azul e cinza contribui para uma estética limpa, atual e agradável, sem excessos visuais.
 
-![aaaa](https://github.com/user-attachments/assets/4e06998d-2e0e-4510-bfea-7feed5feb460)
+<img src="img/aaaa.png" alt="Texto Alternativo" width="1500" /> 
 
 
 ## Tipografia
