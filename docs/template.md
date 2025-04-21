@@ -6,8 +6,9 @@ Explique as guias de estilo utilizadas no seu projeto.
 
 ## Design
 
-Detalhe os layouts que serão utilizados. Apresente onde será colocado o logo do sistema. Defina os menus padrões, entre outras coisas.
+A identidade visual foi concebida a partir de uma abordagem minimalista e contemporânea, buscando equilibrar a sobriedade institucional com uma estética marcante e memorável. O objetivo é refletir os valores da marca de forma clara, confiável e visualmente atrativa.
 
+![Image](https://github.com/user-attachments/assets/2ce3119f-d28b-4260-8e81-964b70381ade)
 
 ## Cores
 
