@@ -2,6 +2,7 @@
 # Projeto de Interface
 
 ## User Flow
+A criação do User Flow é uma etapa fundamental no processo de desenvolvimento do site, com o objetivo de mapear e entender o caminho percorrido pelo usuário dentro da plataforma. Essa representação visual permite antecipar como as pessoas interagem com o site, desde o primeiro acesso até a realização de uma ação final, como a criação de uma tarefa, obter seu relatório diário ou acessar o seu perfil.
 
 ![](img/userflowfinal.png)
 
