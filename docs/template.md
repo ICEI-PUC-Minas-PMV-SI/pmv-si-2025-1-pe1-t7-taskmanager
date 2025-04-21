@@ -1,8 +1,6 @@
 # Template padrão do site
 
-Layout padrão do site (HTML e CSS) que será utilizado em todas as páginas com a definição de identidade visual, aspectos de responsividade e iconografia.
-
-Explique as guias de estilo utilizadas no seu projeto.
+Este template padrão estabelece a estrutura base do site, garantindo coerência visual, responsividade e usabilidade em todas as páginas. Ele foi desenvolvido em HTML e CSS, com foco na organização dos elementos, adaptação a diferentes dispositivos e reutilização de componentes, facilitando a manutenção e a flexibilidade do projeto.
 
 ## Design
 
