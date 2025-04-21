@@ -5,7 +5,7 @@ Este template padrão estabelece a estrutura base do site, garantindo coerência
 
 ## Design
 
-A identidade visual foi concebida a partir de uma abordagem minimalista e contemporânea, buscando equilibrar a sobriedade institucional com uma estética marcante e memorável. O objetivo é refletir os valores da marca de forma clara, confiável e visualmente atrativa.
+A identidade visual foi concebida a partir de uma abordagem minimalista e contemporânea, buscando equilibrar a sobriedade institucional com uma estética marcante e memorável. O objetivo é refletir os valores do serviço prestado de forma clara, confiável e visualmente atrativa.
 O conceito base para o visual do site foi concebido da seguinte forma:
 
 
