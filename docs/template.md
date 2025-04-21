@@ -31,7 +31,19 @@ A paleta foi cuidadosamente pensada para garantir bom contraste e legibilidade, 
 
 ## Tipografia
 
-Apresente as fontes que serão utilizadas e sua função no site. As principais funções são: Título de página, Título de Seção, Rótulos de componentes e Corpo de Texto.
+A fonte principal utilizada no projeto é a Montserrat, uma tipografia de alta legibilidade. Essa fonte foi escolhida por seu visual limpo e versátil, que se adapta bem a diversos contextos visuais.
+
+As funções da tipografia no site serão distribuídas da seguinte forma:
+
+•	Título de Página:  Montserrat Bold.
+
+•	Título de Seção:    Montserrat SemiBold.
+
+•	Rótulos de Componentes (ex: botões, menus): Montserrat Regular.
+
+•	Corpo de Texto: Montserrat Light.
+
+
 
 
 ## Iconografia
