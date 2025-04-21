@@ -3,7 +3,7 @@
 
 ## User Flow
 
-(img/userflowfinal.png)
+![](img/userflowfinal.png)
 
 ## Wireframes
 
