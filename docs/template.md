@@ -2,11 +2,21 @@
 
 Este template padrão estabelece a estrutura base do site, garantindo coerência visual, responsividade e usabilidade em todas as páginas. Ele foi desenvolvido em HTML e CSS, com foco na organização dos elementos, adaptação a diferentes dispositivos e reutilização de componentes, facilitando a manutenção e a flexibilidade do projeto.
 
+
 ## Design
 
 A identidade visual foi concebida a partir de uma abordagem minimalista e contemporânea, buscando equilibrar a sobriedade institucional com uma estética marcante e memorável. O objetivo é refletir os valores da marca de forma clara, confiável e visualmente atrativa.
 
-![Image](https://github.com/user-attachments/assets/2ce3119f-d28b-4260-8e81-964b70381ade)
+<img src="img/logo.png" alt="Logo" width="500" /> 
+
+O conceito base para o visual do site foi concebido da seguinte forma:
+
+
+Modo Claro
+<img src="img/white.png" alt="Tela Modo Claro" width="1500" /> 
+
+Modo Escuro
+<img src="img/blasck.png" alt="Tela Modo Escuro" width="1500" /> 
 
 ## Cores
 
@@ -25,7 +35,7 @@ A cor de fundo escolhida é um branco (HEX #FFFFFF).
 
 A paleta foi cuidadosamente pensada para garantir bom contraste e legibilidade, tornando o site acessível a um público mais amplo. A harmonia entre os tons de azul e cinza contribui para uma estética limpa, atual e agradável, sem excessos visuais.
 
-<img src="img/aaaa.png" alt="Texto Alternativo" width="1500" /> 
+<img src="img/aaaa.png" alt="Paleta de Cores" width="1500" /> 
 
 
 ## Tipografia
@@ -36,19 +46,19 @@ As funções da tipografia no site serão distribuídas da seguinte forma:
 
 •	Título de Página:  Montserrat Bold.
 
-<img src="img/fontebold.png" alt="Texto Alternativo" width="500" /> 
+<img src="img/fontebold.png" alt="Fonte Bold" width="500" /> 
 
 •	Título de Seção:    Montserrat SemiBold.
 
-<img src="img/fontesemibold.png" alt="Texto Alternativo" width="500" /> 
+<img src="img/fontesemibold.png" alt="Fonte SemiBold" width="500" /> 
 
 •	Rótulos de Componentes (ex: botões, menus): Montserrat Regular.
 
-<img src="img/fonteregular.png" alt="Texto Alternativo" width="500" /> 
+<img src="img/fonteregular.png" alt="Fonte Regular" width="500" /> 
 
 •	Corpo de Texto: Montserrat Light.
 
-<img src="img/fontelight.png" alt="Texto Alternativo" width="500" /> 
+<img src="img/fontelight.png" alt="Fonte Light" width="500" /> 
 
 
 
