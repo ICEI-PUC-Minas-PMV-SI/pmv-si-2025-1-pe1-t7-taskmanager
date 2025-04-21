@@ -74,7 +74,7 @@ As funções da tipografia no site serão distribuídas da seguinte forma:
 
 <img src="img/settings.png" alt="Texto Alternativo" width="80" />   -   Seção de Configurações – Acesso às configurações do usuário.
 
-<img src="img/nightmode.png" alt="Texto Alternativo" width="80" />   -   Modo Noturno – Ativa e Desativa o modo noturno.
+<img src="img/nightmode.png" alt="Texto Alternativo" width="80" />   -   Tema da página - Define o modo de uso conforme a preferência do usuário.
 
 <img src="img/notifications.png" alt="Texto Alternativo" width="80" />   -  Notificações – Ativa e Desativa as notificações.
 
