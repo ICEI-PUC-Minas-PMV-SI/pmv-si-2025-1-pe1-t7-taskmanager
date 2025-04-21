@@ -49,22 +49,20 @@ As funções da tipografia no site serão distribuídas da seguinte forma:
 ## Iconografia
 
 
+<img src="img/perfil.png" alt="Texto Alternativo" width="80" />   -   Seção de Perfil – Representa informações sobre o usuário.
 
-Seção de Perfil – Representa informações sobre o usuário.
-![pontoponto](https://github.com/user-attachments/assets/d84a1c3e-ec7d-4cdf-9f1c-ba1020bc5218)
+<img src="img/settings.png" alt="Texto Alternativo" width="80" />   -   Seção de Configurações – Acesso às configurações do usuário.
 
+<img src="img/nightmode.png" alt="Texto Alternativo" width="80" />   -   Modo Noturno – Ativa e Desativa o modo noturno.
 
+<img src="img/notifications.png" alt="Texto Alternativo" width="80" />   -  Notificações – Ativa e Desativa as notificações.
 
-Defina os ícones que serão utilizados e suas respectivas funções.
+<img src="img/list.png" alt="Texto Alternativo" width="80" />   -   Resumo de tarefas – Visualização simplificada das tarefas planejadas em um quadro organizado.
 
-Apresente os estilos CSS criados para cada um dos elementos apresentados.
-Outras seções podem ser adicionadas neste documento para apresentar padrões de componentes, de menus, etc.
+<img src="img/searchlist.png" alt="Texto Alternativo" width="80" />   -  Ferramenta de busca – Permite buscar tarefas que já foram criadas. 
 
+<img src="img/download.png" alt="Texto Alternativo" width="80" />   -  Download – Baixar agenda em PDF.
 
-> **Links Úteis**:
->
-> -  [Como criar um guia de estilo de design da Web](https://edrodrigues.com.br/blog/como-criar-um-guia-de-estilo-de-design-da-web/#)
-> - [CSS Website Layout (W3Schools)](https://www.w3schools.com/css/css_website_layout.asp)
-> - [Website Page Layouts](http://www.cellbiol.com/bioinformatics_web_development/chapter-3-your-first-web-page-learning-html-and-css/website-page-layouts/)
-> - [Perfect Liquid Layout](https://matthewjamestaylor.com/perfect-liquid-layouts)
-> - [How and Why Icons Improve Your Web Design](https://usabilla.com/blog/how-and-why-icons-improve-you-web-design/)
+<img src="img/add.png" alt="Texto Alternativo" width="80" />   -   Seção de adicionar tarefa – Adicionar/Criar uma tarefa nova.
+
+<img src="img/checkv.png" alt="Texto Alternativo" width="80" />   -   Verificar Categoria – Estado que representa a seleção ou não seleção da categoria.
