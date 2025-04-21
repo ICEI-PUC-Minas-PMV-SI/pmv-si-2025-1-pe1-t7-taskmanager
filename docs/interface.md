@@ -21,6 +21,7 @@ Ao iniciar, o usuário irá se deparar com a tela de login e de registro.
 <img src="img/wireframe1.png" width="800" />
 
 Para se registrar, o usuário deverá preencher informações como Usuário,Email e Senha.
+
 <img src="img/wireframe2.png" width="800" />
 
 <img src="img/wireframe3.png" width="800" />
