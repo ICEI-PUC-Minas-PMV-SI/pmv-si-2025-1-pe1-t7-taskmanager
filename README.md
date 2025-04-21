@@ -15,7 +15,6 @@ A proposta deste projeto é a criação de um organizador de tarefas prático e 
 * Divino Armando Batista Soares
 * Gustavo Nascimento Silva
 * Kamila Julia do Espirito Santo
-* Mariana Faria Silva Ferreira
 * Thiago Cardoso
 * Moabita Sarom Peixoto Gomes 
 
