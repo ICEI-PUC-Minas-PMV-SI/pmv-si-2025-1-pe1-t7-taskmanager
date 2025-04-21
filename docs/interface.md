@@ -4,8 +4,7 @@
 ## User Flow
 A criação do User Flow é uma etapa fundamental no processo de desenvolvimento do site, com o objetivo de mapear e entender o caminho percorrido pelo usuário dentro da plataforma. Essa representação visual permite antecipar como as pessoas interagem com o site, desde o primeiro acesso até a realização de uma ação final, como a criação de uma tarefa, obter seu relatório diário ou acessar o seu perfil.
 
-![](img/userflowfinal.png)
-
+<img src="img/userflowfinal.png" alt="Texto Alternativo" width="1300" />
 ## Wireframes
 
 São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface e é fundamental sempre relacionar cada wireframe com o(s) requisito(s) que ele atende.
