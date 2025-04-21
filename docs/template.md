@@ -38,11 +38,19 @@ As funções da tipografia no site serão distribuídas da seguinte forma:
 
 •	Título de Página:  Montserrat Bold.
 
+<img src="img/fontebold.png" alt="Texto Alternativo" width="500" /> 
+
 •	Título de Seção:    Montserrat SemiBold.
+
+<img src="img/fontesemibold.png" alt="Texto Alternativo" width="500" /> 
 
 •	Rótulos de Componentes (ex: botões, menus): Montserrat Regular.
 
+<img src="img/fonteregular.png" alt="Texto Alternativo" width="500" /> 
+
 •	Corpo de Texto: Montserrat Light.
+
+<img src="img/fontelight.png" alt="Texto Alternativo" width="500" /> 
 
 
 
