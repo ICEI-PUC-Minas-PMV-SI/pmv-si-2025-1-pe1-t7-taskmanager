@@ -10,9 +10,8 @@ A criação do User Flow é uma etapa fundamental no processo de desenvolvimento
 
 ## Wireframes
 
-Apresentamos a seguir o protótipo do sistema 'Task Manager', uma aplicação voltada à gestão de atividades diárias, com o objetivo de otimizar a organização pessoal e aumentar a produtividade do usuário.
+Apresentamos a seguir o protótipo do sistema 'Task Manager', uma aplicação voltada à gestão de atividades diárias, com o objetivo de otimizar a organização pessoal e aumentar a produtividade do usuário:
 
-#### Exemplo
 
 A tela inicial apresenta um menu lateral com as principais seções do portal, enquanto a navigation bar, ao topo, apresenta informações de envio de imagens ou navegação pela galeria de fotos. A área central apresenta a galeria de fotos na forma de uma grade. Nesta tela, são apresentados os seguintes requisitos
 
