@@ -38,7 +38,8 @@ Apresente as fontes que serão utilizadas e sua função no site. As principais 
 
 ![account_circle_150dp_1F1F1F_FILL0_wght150_GRAD0_opsz48](https://github.com/user-attachments/assets/2f87974a-aa2e-4084-87e7-79672bbb5ea7)
 
-Seção de Perfil – Representa informações sobre o usuário 
+Seção de Perfil – Representa ![account_circle_300dp_1F1F1F_FILL0_wght300_GRAD0_opsz48](https://github.com/user-attachments/assets/b31ae8f1-57c4-4713-902d-dd2e9451e53f)
+informações sobre o usuário 
 
 Defina os ícones que serão utilizados e suas respectivas funções.
 
