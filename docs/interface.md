@@ -10,7 +10,7 @@ A criação do User Flow é uma etapa fundamental no processo de desenvolvimento
 
 ## Wireframes
 
-São protótipos usados em design de interface para sugerir a estrutura de um site web e seu relacionamentos entre suas páginas. Um wireframe web é uma ilustração semelhante do layout de elementos fundamentais na interface e é fundamental sempre relacionar cada wireframe com o(s) requisito(s) que ele atende.
+Apresentamos a seguir o protótipo do sistema 'Task Manager', uma aplicação voltada à gestão de atividades diárias, com o objetivo de otimizar a organização pessoal e aumentar a produtividade do usuário.
 
 #### Exemplo
 
