@@ -24,20 +24,71 @@ Para se registrar, o usuário deverá preencher informações como Usuário, Ema
 
 <img src="img/wireframe2.png" width="800" />
 
+Tela de Boas-Vindas / Resumo do Dia
+Após autenticação bem-sucedida, o usuário é redirecionado para a tela de resumo diário. Nesta interface centralizada, são exibidas de forma objetiva as tarefas agendadas para o dia, permitindo uma rápida visualização e compreensão das atividades prioritárias.
+
 <img src="img/wireframe3.png" width="800" />
+
+Visualização Geral da Agenda
+Ao encerrar o resumo diário, o sistema exibe a visualização completa da agenda.
+
+Painel Central: Apresenta as tarefas organizadas por horário, com destaque para aquelas filtradas por categoria ou prioridade.
+
+Barra Lateral Esquerda: Disponibiliza um calendário navegável para seleção rápida de datas, além de uma lista de categorias, permitindo filtrar as tarefas exibidas no painel principal.
+
+Barra Superior:
+
+Lado Esquerdo: Ícones de ações rápidas, como Criar/Editar Tarefa, Exportar Agenda (PDF) e Busca de Tarefas.
+
+Lado Direito: Acessos às funcionalidades de Resumo Diário, Notificações (ativar/desativar), Modo Noturno, Configurações e Perfil do Usuário.
 
 <img src="img/wireframe4.png" width="800" />
 
+Inserção Rápida de Tarefa / Exportação
+O usuário pode adicionar uma nova tarefa de forma intuitiva clicando diretamente em qualquer data ou horário na agenda.
+Além disso, o ícone de download permite exportar a agenda em formato PDF, facilitando o compartilhamento ou arquivamento das informações.
+
 <img src="img/wireframe5.png" width="800" />
 
+Edição e Exclusão de Tarefas
+Ao interagir com uma tarefa já cadastrada, o sistema oferece opções para edição completa das informações ou exclusão definitiva da atividade, mantendo o controle dinâmico sobre a agenda.
+
 <img src="img/wireframe6.png" width="800" />
+
+Menu de Configurações
+No menu de configurações, estão disponíveis funcionalidades para personalização do sistema:
+
+Alteração de senha
+
+Seleção de idioma
+
+Redefinição da agenda
+
+Gerenciamento das preferências de notificação
 
 <img src="img/wireframe7.png" width="800" />
 
 <img src="img/wireframe8.png" width="800" />
 
+Preferências de Notificação
+Na tela de notificações, o usuário pode configurar quais tipos de tarefas deseja ser alertado, com base em categorias e níveis de prioridade. Essa personalização contribui para uma comunicação mais eficiente e direcionada.
+
 <img src="img/wireframe9.png" width="800" />
 
+Perfil do Usuário
+A seção de perfil permite a edição de dados cadastrais e pessoais diretamente na plataforma web. O usuário também pode fazer o upload de uma imagem para personalização do avatar/perfil.
+
 <img src="img/wireframe10.png" width="800" />
+
+Criação e Edição de Tarefas
+A interface de criação/edição de tarefas oferece campos para inserção de informações essenciais como:
+
+Categoria
+
+Prioridade
+
+Descrição detalhada da atividade
+
+Esses atributos contribuem para uma organização mais eficaz e segmentada da rotina.
 
 <img src="img/wireframe11.png" width="800" />
