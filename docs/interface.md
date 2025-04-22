@@ -1,7 +1,7 @@
 
 # Projeto de Interface
 
-Nesta seção apresentaremos as ideias iniciais a respeito do User Flow e dos WireFrames.
+Este projeto de interface foi desenvolvido com foco na experiência do usuário, priorizando a clareza, a navegação intuitiva e a consistência visual. Cada elemento foi pensado para tornar o uso do sistema simples, funcional e agradável, atendendo às necessidades do público-alvo de forma eficiente. Nesta seção serão apresentadas as ideias iniciais a respeito do User Flow e dos WireFrames.
 
 ## User Flow
 A criação do User Flow é uma etapa fundamental no processo de desenvolvimento do site, com o objetivo de mapear e entender o caminho percorrido pelo usuário dentro da plataforma. Essa representação visual permite antecipar como as pessoas interagem com o site, desde o primeiro acesso até a realização de uma ação final, como a criação de uma tarefa, obter seu relatório diário ou acessar o seu perfil.
