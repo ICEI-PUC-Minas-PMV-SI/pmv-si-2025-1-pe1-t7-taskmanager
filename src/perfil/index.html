@@ -24,8 +24,9 @@
           <div class="image-placeholder">
             <span class="material-icons upload-image">image</span>
           </div>
-          <button class="buttons upload-button">Upload Imagem</button>
-        </div>
+          <input type="file" id="fileInput" accept="image/*" style="display: none;">
+          <label for="fileInput" class="upload-button">Enviar Imagem</label>
+        </div>      
         <div class="form">
           <div class="form-row">
             <div class="form-group">
@@ -54,7 +55,7 @@
             </div>
             <div class="form-group">
               <label for="dataNascimento">Data de Nascimento</label>
-              <input type="text" name="dataNascimento" placeholder="Data de Nascimento">
+              <input type="date" name="dataNascimento" placeholder="Data de Nascimento">
             </div>
           </div>
         </div>
