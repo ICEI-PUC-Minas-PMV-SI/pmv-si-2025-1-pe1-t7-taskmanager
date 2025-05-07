@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Perfil</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="icons">
+        <span class="material-icons">notifications</span>
+        <span class="material-icons">settings</span>
+        <span class="material-icons">account_circle</span>
+      </div>
+    </header>
+    <main class="profile-box">
+      <h1>Editar Perfil</h1>
+      <div class="profile-content">
+        <div class="image-upload">
+          <div class="image-placeholder">
+            <span class="material-icons upload-image">image</span>
+          </div>
+          <button class="buttons upload-button">Upload Imagem</button>
+        </div>
+        <div class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="nome">Nome</label>
+              <input type="text" name="nome" placeholder="Nome">
+            </div>
+            <div class="form-group">
+              <label for="sobrenome">Sobrenome</label>
+              <input type="text" name="sobrenome" placeholder="Sobrenome">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" name="email" placeholder="Email">
+            </div>
+            <div class="form-group">
+              <label for="profissao">Profissão</label>
+              <input type="text" name="profissao" placeholder="Profissão">
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="telefone">Telefone</label>
+              <input type="email" name="telefone" placeholder="Telefone">
+            </div>
+            <div class="form-group">
+              <label for="dataNascimento">Data de Nascimento</label>
+              <input type="text" name="dataNascimento" placeholder="Data de Nascimento">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="buttons">
+        <button class="confirm">Confirmar</button>
+        <button class="cancel">Cancelar</button>
+      </div>
+    </main>
+  </div>
+</body>
+</html>
