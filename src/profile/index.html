@@ -7,12 +7,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
+  <script>
+    function toggleTheme() {
+      const root = document.documentElement;
+      const currentTheme = root.getAttribute('data-theme');
+      root.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
+    }
+  </script>
 </head>
 <body>
   <div class="container">
     <header class="header">
       <div class="icons">
         <span class="material-icons">notifications</span>
+        <span class="material-icons" onclick="toggleTheme()">contrast</span>
         <span class="material-icons">settings</span>
         <span class="material-icons">account_circle</span>
       </div>
