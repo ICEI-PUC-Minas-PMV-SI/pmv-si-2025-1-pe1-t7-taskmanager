@@ -1,0 +1,148 @@
+
+
+body{ /*Estilo Fundo*/
+  background-color: #bdc1c4;
+  font-family: 'montserrat'
+}
+.topo{ /*Estilo menu superior*/
+  background-color: #eee;
+  margin: 0 auto;
+  padding: 0;
+  height: 50px;
+  box-shadow: 0 0 5px #bdc1c4;
+  width: 100%;
+  border-radius: 10px;  
+  }
+  
+  .material-icons {
+    color: var(--primary-color);
+    cursor: pointer;
+    font-size: 40px;
+    padding: 5px;
+    margin-top: 5px;
+  }
+
+  .imagem{  /*Ícones*/   
+    margin-top: 3px;
+    width: 40px ; height: 40px;  
+    position: absolute;
+    top: 8px;
+    right:180px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    }         
+    
+  .titulo{/*titulo criar nova tarefa*/
+  text-align: center;
+  color: #7B83EB;
+}
+.caixaprincipal{ /*Estilo Quadro principal */
+  background-color: #eee;
+  box-shadow: 0 0 10px #8a8a8a;
+  display: block;
+  width: 55%;
+  height: 800px;
+  padding: 3px;
+  margin: 20px;
+  justify-self: center;
+  border-radius: 15px;
+}
+.campo{ /*Estilo Campos*/
+  width: 95%;
+  margin-bottom: 15px;
+  margin: 15px 8px 8px;
+  padding: 15px;
+  border: none;
+  box-shadow: 0 0 5px #bdc1c4;
+  border-radius: 10px;
+  background-color: #eee;
+  color: #000000;
+  font-size: 16px;
+  }
+.campodesc{
+  max-width: 95%;
+  height: 30%;
+  margin: 15px 8px 8px;
+  padding: 15px;
+  border: none;
+  box-shadow: 0 0 5px #bdc1c4;
+  border-radius: 10px;
+  background-color: #eee;
+  color: #000000;
+  font-size: 16px;
+    }
+.campo-row {
+  display: flex;
+  gap: 10px;
+  margin: 8px 8px 8px;
+
+}
+.botoes{  /*todos botoes*/
+  display: flex;
+  
+  justify-content: space-between;
+      margin-top: 20px;
+}
+.seqbto{   /*botoes dir*/
+  display: flex;
+}
+.excluir, .btnconf, .btncanc {  /*botoes estilo*/
+  width: auto;
+  margin: 100px 8px 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background-color: #464eb8;
+  color: #fff;
+  font-size: 16px;
+  box-shadow: 0 0 5px #bdc1c4;
+}
+@media screen and (max-width:1300px){  /*trem responsivo*/
+  .caixaprincipal{
+    width: 95%;
+  }
+  .campo-row {
+    max-width: 95%;
+    display: flex;
+    gap: 1px;
+    margin: 10px 1px 8px;
+
+}
+.campo{
+  max-width: 90%;
+  margin-bottom: 10px;
+  margin: 10px 8px 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+.campodesc{
+  max-width: 88%;
+  margin: 8px 8px 8px;
+}
+}
+@media screen and (max-width:600px){  /*trem responsivo*/
+  .caixaprincipal{
+    width: 95%;
+  }
+  .campo-row {
+    max-width: 95%;
+    display: flex;
+    gap: 1px;
+    margin: 8px 8px;
+
+}
+.campo{
+  max-width: 90%;
+  margin-bottom: 10px;
+  margin: 10px 8px 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+.campodesc{
+  max-width: 88%;
+  margin: 8px 8px 8px;
+}
+}
