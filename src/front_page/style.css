@@ -1,0 +1,338 @@
+    body {
+		font-family: 'Montserrat';
+		background-color: #eee;
+		color: #333;
+    }
+
+    .header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 12px 24px;
+		background-color: #eee;
+		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .left-section,
+    .right-section {
+		display: flex;
+		align-items: center;
+		gap: 16px;
+    }
+
+    .left-section button {
+		background: none;
+		border: none;
+		font-size: 14px;
+		color: #333;
+		cursor: pointer;
+		padding: 8px 12px;
+		border-radius: 6px;
+		transition: background-color 0.2s;
+    }
+	
+	.right-section button {
+		background: none;
+		border: none;
+		font-size: 14px;
+		color: #333;
+		cursor: pointer;
+		padding: 8px 12px;
+		border-radius: 6px;
+		transition: background-color 0.2s;
+    }
+
+    .left-section button:hover {
+		background-color: #eaeaea;
+    }
+
+    .icon {
+		width: 24px;
+		height: 24px;
+		cursor: pointer;
+		fill: #333;
+		transition: filter 0.3s;
+    }
+
+    .icon:hover {
+		filter: brightness(0.6);
+    }
+
+    .main-content {
+		display: flex;
+		padding: 24px;
+		gap: 24px;
+    }
+
+    .sidebar {
+		width: 220px;
+		display: flex;
+		flex-direction: column;
+		gap: 16px;
+    }
+
+    .menu-box {
+		background-color: #fff;
+		border-radius: 12px;
+		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+		padding: 16px;
+    }
+
+    .mini-calendar {
+		display: grid;
+		grid-template-columns: repeat(7, 1fr);
+		gap: 4px;
+		font-size: 15px;
+		text-align: center;
+		font-weight: 600;
+    } 
+	.mini-calendar-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 5px;
+		margin-bottom: 5px;
+		grid-column: 1 / -1;
+	}
+	.mini-day-name {
+		text-align: center;
+		font-size: 12px; 
+		padding: 8px 0; 
+	}
+
+	.mini-day {
+		text-align: center;
+		font-size: 12px;
+		padding: 6px 0;
+		font-weight: 100;
+	}
+    .mini-day,.mini-day-name {
+		padding: 6px 0;
+    }
+
+    .mini-day-name {
+		font-weight: bold;
+    }
+
+    .mini-day {
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.2s;
+    }
+
+    .mini-day:hover {
+		background-color: #e0f0ff;
+    }
+
+    .categories h4 {
+		font-size: 14px;
+		margin-bottom: 8px;
+		font-weight: 600;
+		text-align: center;
+    }
+
+    .categories ul {
+		list-style: none;
+		padding-left: 0;
+    }
+
+    .category-item {
+		font-size: 13px;
+		padding: 6px 10px;
+		margin-bottom: 4px;
+		border-radius: 6px;
+		cursor: pointer;
+		transition: background-color 0.2s;
+    }
+
+    .category-item:hover {
+		background-color: #f0f0f0;
+    }
+
+    .calendar-container {
+		flex: 1;
+		background-color: #fff;
+		padding: 16px;
+		border-radius: 12px;
+		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+		overflow-x: auto;
+    }
+
+    .calendar-controls {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 12px;
+    }
+
+    .calendar-grid {
+		display: grid;
+		grid-template-columns: repeat(8, 1fr);
+		border: 1px solid #ddd;
+    }
+
+    .time-slot {
+		background: #f9f9f9;
+		padding: 12px;
+		border-bottom: 1px solid #ddd; 
+		font-size: 15px;
+		text-align: center;
+    }
+
+	.day-header {
+		padding: 8px; 
+		background: #f0f0f0;
+		font-weight: 600;
+		border-bottom: 1px solid #ccc;
+		text-align: center;
+		display: flex; 
+		flex-direction: column; 
+		align-items: center;
+	}
+
+    .cell {
+		height: 60px;
+		border-left: 1px solid #eee;
+		border-bottom: 1px solid #eee; 
+		cursor: pointer;
+		transition: background-color 0.2s;
+		position: relative;	  
+    }
+
+    .cell:hover {
+		background-color: #eaf6ff;
+    }
+
+    .arrow {
+		cursor: pointer;
+		font-size: 20px;
+		padding: 4px 8px;
+		background-color: none;
+		border-radius: 6px;
+		user-select: none;
+    }
+
+    .arrow:hover {
+		background-color: #ddd;
+    }
+
+    .week-range {
+		font-size: 14px;
+    }
+
+    .event-label {
+		font-size: 12px;
+		padding: 4px 6px;
+		border-radius: 4px;
+		color: #fff;
+		background-color: #4CAF50;
+		display: inline-block;
+		margin: 4px;
+		max-width: 100%;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+	
+	.calendar-controls button {
+		background: none;
+		border: none;
+		font-size: 14px;      
+		cursor: pointer;
+		padding: 8px 12px;
+		border-radius: none;
+    }
+	.today {
+		border: 2px solid #505AC9;
+		border-radius: 3px; 
+		padding: 4px; 
+	}
+	.mini-calendar-header button {
+		background: none;
+		border: none; 
+		cursor: pointer;
+		font-size: 14px;
+		padding: 3px 8px;
+	}
+	.today-marker {
+		position: absolute; 
+		top: 2px;          
+		left: 50%;         
+		transform: translateX(-50%); 
+		width: 6px;         
+		height: 6px;        
+		background-color: #505AC9; 
+		border-radius: 50%;     
+	}
+
+	.calendar-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .calendar-table th, .calendar-table td {
+        padding: 8px;
+        text-align: center;
+        border: 1px solid #f0f0f0;
+    }
+
+    .calendar-table th {
+        font-weight: bold;
+        border-bottom: 1px solid #ccc;
+    }
+
+    .calendar-table .time-slot {
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .calendar-table .cell {
+        position: relative;
+    }
+
+    .today-marker {
+        position: absolute;
+        top: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: #505AC9;
+        border-radius: 50%;
+    }
+	.today-header {
+		border: 2px solid #505AC9;
+		border-radius: 3px;
+		padding: 6px; 
+	}
+
+	.today-marker {
+		display: none;
+	}
+	
+	.day-abbreviation {
+		font-size: 14px;
+	}
+
+	.day-number {
+		font-size: 26px; 
+		font-weight: normal;
+	}
+/* marcando horario do dia em construção */
+	.time-slot.current-hour {
+		position: relative ;
+	}
+
+	.time-slot.current-hour::before {
+		content: '' ;
+		display: block ;
+		width: 20px ;
+		height: 20px ;
+		background-color: #505AC9;
+		border-radius: 50% ;
+		position: absolute ;
+		top: 10px ;
+		left: 10px ;
+		transform: translateY(0) ;
+	}
+/* tela de resumo */

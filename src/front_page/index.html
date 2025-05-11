@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TaskManger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons">
+  <link rel = "stylesheet" href="style.css">
+  <style>
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="left-section">
+      <button> 
+		<i class="material-icons">add_circle</i>
+	  </button>
+      <button> 
+		<i class="material-icons">download_for_offline</i>
+	  </button>
+      <button> 
+		<i class="material-icons">manage_search</i>
+	  </button>
+    </div>
+    <div class="right-section">
+	  <button> 
+		<i class="material-icons">list_alt</i>
+	  </button>
+      <button> 
+		<i class="material-icons">notifications</i>
+	  </button>
+	  <button> 
+		<i class="material-icons">contrast</i>
+	  </button>
+	  <button> 
+		<i class="material-icons">settings</i>
+	  </button>
+	  <button> 
+		<i class="material-icons">account_circle</i>
+	  </button>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <aside class="sidebar">
+      <div class="menu-box">
+	    <div class="mini-calendar">
+		  <div class="mini-calendar-header">
+		    <span id="miniCurrentMonthYear"></span>
+			<button id="miniPrevMonth">&lt;</button>			
+			<button id="miniNextMonth">&gt;</button>
+		  </div>	
+          <div class="mini-day-name">D</div>
+          <div class="mini-day-name">S</div>
+          <div class="mini-day-name">T</div>
+          <div class="mini-day-name">Q</div>
+          <div class="mini-day-name">Q</div>
+          <div class="mini-day-name">S</div>
+          <div class="mini-day-name">S</div>		  
+        </div>
+      </div>
+
+      <div class="menu-box">
+        <div class="categories">
+          <h4>FILTROS</h4>
+			<ul>
+			  <li class="category-item"><input type="checkbox"> Tarefas de Casa</li>
+			  <li class="category-item"><input type="checkbox" class="category-item"> Trabalho</li>
+			  <li class="category-item"><input type="checkbox" class="category-item"> Compromissos</li>
+			  <li class="category-item"><input type="checkbox" class="category-item"> Saúde</li>
+			</ul>
+        </div>
+      </div>
+    </aside>
+
+    <main class="calendar-container">
+      <div class="calendar-controls">
+		<span class="arrow">
+			<button> 
+				<i class="material-icons">arrow_back_ios</i>
+			</button>
+		</span>
+        <div class="week-range"></div>
+		<span class="arrow">
+			<button> 
+				<i class="material-icons">arrow_forward_ios</i>
+			</button>
+		</span>
+      </div>
+      <div class="calendar-grid">       
+		<div class="time-slot header"></div> 
+		<div class="day-header"></div>
+        <div class="day-header"></div>
+        <div class="day-header"></div>
+        <div class="day-header"></div>
+        <div class="day-header"></div>
+        <div class="day-header"></div>
+        <div class="day-header"></div>		
+      </div>
+    </main>
+  </div>
+</body>
+<script src="script.js"> 
+</script>
+</html>
