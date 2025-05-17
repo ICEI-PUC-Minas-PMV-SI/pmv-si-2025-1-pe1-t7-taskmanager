@@ -12,14 +12,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const usarioEncontrado = usuarios.find(user => user.nome === usuario)
     
-        if (usarioEncontrado.senha === senha) {
-            localStorage.setItem('usuario', JSON.stringify(usarioEncontrado));
-            alert('Usuário logado com sucesso!');
-            window.location.href = '../front_page/index.html';
-
-        } else {
+        if (usarioEncontrado.senha !== senha) {
             alert('Senha incorreta!');
+            return
         }
+
+        localStorage.setItem('usuario', JSON.stringify(usarioEncontrado));
+        alert('Usuário logado com sucesso!');
+        window.location.href = '../front_page/index.html';
 
         form.reset();
     });
