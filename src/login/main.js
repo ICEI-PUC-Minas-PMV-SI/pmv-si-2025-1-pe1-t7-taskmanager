@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return
         }
 
-        localStorage.setItem('usuario', JSON.stringify(usarioEncontrado));
+        localStorage.setItem(usarioEncontrado.email, JSON.stringify(usarioEncontrado));
         alert('Usuário logado com sucesso!');
         window.location.href = '../front_page/index.html';
 
