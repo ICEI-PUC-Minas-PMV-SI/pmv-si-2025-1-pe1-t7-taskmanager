@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="main.js"></script>
 </head>
 <body>
   <div class="topo"> <!--menu superior-->
@@ -13,27 +14,63 @@
       <span class="material-icons">notifications</span>
       <span class="material-icons" onclick="toggleTheme()">contrast</span>
       <span class="material-icons">settings</span>
-      <span class="material-icons">account_circle</span>
+      <span class="material-icons">account_circle</span>    
+      </span>
   </div>
   </div>
   <div class="caixaprincipal"> <!--menu-->
     <h1 class="titulo">Criar Nova Tarefa</h1>
-    <div class="campo">Título</div>
-    <div class="campo-row">
-      <div class="campo">Data</div>
-      <div class="campo">Horário</div>
-      <div class="campo">Recorrência</div>
-    </div>
-    <div class="campo">Categoria</div>
-    <div class="campo">Prioridade</div>
-    <div class="campodesc">Descrição</div>
-    <div class="botoes">
-      <button class="excluir">Excluir</button>
-      <div class="seqbto">
-        <div class="btnconf">Confirmar</div>
-        <div class="btncanc">Cancelar</div>
+    <form action="#" method="post">
+         <div class="form-group">
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" name="titulo" placeholder="Dê um título para sua tarefa." maxlength="26"required>
+      </div>
+
+        <div class="form-group-row">
+        <div class="form-group">
+        <label for="data">Data</label>
+        <input type="date" id="data" name="data" required>
+        </div>
+
+        <div class="form-group">
+        <label for="horario">Horário</label>
+        <div class="time-group-row">
+        <input type="time" id="horario" name="horario" required>
+        <input type="time" id="horario2" name="horario2"  required>
+        </div>
+        <small>Insira o início e o término da sua tarefa.</small>
+        </div>
+
+        <div class="form-group">
+        <label for="recorrencia">Recorrência</label>
+        <input type="text" id="recorrencia" name="recorrencia" required>
+        </div>
+        </div>
+
+        <div class="form-group">
+        <label for="categoria">Categoria</label>
+        <input type="text" id="categoria" name="categoria" placeholder="Dê uma categoria para sua tarefa." required>
+      </div>
+
+        <div class="form-group">
+        <label for="prioridade">Prioridade</label>
+        <input type="number" max="3" min="1" id="prioridade" name="prioridade" placeholder="Selecione uma prioridade, sendo '1' a sua tarefa mais importante." required>
+      </div>
+
+        <div class="form-group">
+        <div class="form-group-desc">
+        <label for="descricao">Descrição</label>
+        <input type="text" id="descricao" name="descricao" placeholder="Escreva um pouco sobre a sua tarefa." maxlength="182">
       </div>
     </div>
-    
+
+        <div class="botoes">
+          <div class="seqbto">
+          <button type="reset" class="excluir">Excluir</button>
+          <button type="submit" class="btnconf">Confirmar</button>
+          <button type="reset" class="btncanc">Cancelar</button>
+      </div>
+    </div>
+    </form>
   </div>
 </body>

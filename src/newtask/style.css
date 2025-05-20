@@ -48,9 +48,8 @@ body{ /*Estilo Fundo*/
   justify-self: center;
   border-radius: 15px;
 }
-.campo{ /*Estilo Campos*/
+.form-group { /*Estilo Campos*/
   width: 95%;
-  margin-bottom: 15px;
   margin: 15px 8px 8px;
   padding: 15px;
   border: none;
@@ -60,23 +59,33 @@ body{ /*Estilo Fundo*/
   color: #000000;
   font-size: 16px;
   }
-.campodesc{
-  max-width: 95%;
-  height: 30%;
-  margin: 15px 8px 8px;
-  padding: 15px;
-  border: none;
-  box-shadow: 0 0 5px #bdc1c4;
-  border-radius: 10px;
-  background-color: #eee;
-  color: #000000;
-  font-size: 16px;
-    }
-.campo-row {
+  .form-group-row {
+  text-align: center;
   display: flex;
   gap: 10px;
   margin: 8px 8px 8px;
-
+}
+.time-group-row{
+  text-align: center;
+  display: flex;
+  gap: 10px;
+  margin: 1px 8px 8px;
+}
+  .form-group label, .form-group-desc label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+.form-group input {
+  width: 100%;
+  margin-top: 5px;
+  padding: 8px;
+  box-sizing: border-box;
+  box-shadow: 0 0 5px #bdc1c4;
+  border: 0px;
+  border-radius: 4px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+  background-color: #eee;
 }
 .botoes{  /*todos botoes*/
   display: flex;
@@ -121,6 +130,9 @@ body{ /*Estilo Fundo*/
   max-width: 88%;
   margin: 8px 8px 8px;
 }
+.excluir, .btnconf, .btncanc {  /*botoes estilo*/
+  margin: 150px 8px 8px;
+}
 }
 @media screen and (max-width:600px){  /*trem responsivo*/
   .caixaprincipal{
@@ -145,4 +157,16 @@ body{ /*Estilo Fundo*/
   max-width: 88%;
   margin: 8px 8px 8px;
 }
+.excluir, .btnconf, .btncanc {  /*botoes estilo*/
+  margin: 150px 8px 8px;
+}
+}
+
+.excluir:hover, .btncanc:hover, .btnconf:hover {
+  background-color: #7B83EB;
+}
+
+.form-group input:hover{
+    background-color: #dfdfdf;
+
 }
