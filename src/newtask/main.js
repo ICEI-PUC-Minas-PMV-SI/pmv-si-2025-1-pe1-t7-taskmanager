@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         alert('Tarefa criada com sucesso!');
 
-        window.location.href = '../login/index.html';
+        window.location.href = '../front_page/index.html';
         form.reset();
     });
 });
