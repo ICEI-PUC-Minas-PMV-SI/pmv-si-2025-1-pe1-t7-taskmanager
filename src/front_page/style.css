@@ -1,338 +1,728 @@
-    body {
-		font-family: 'Montserrat';
-		background-color: #eee;
-		color: #333;
-    }
+body {
+    font-family: 'Montserrat';
+    background-color: #eee;
+    color: #333;
+}
 
-    .header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 12px 24px;
-		background-color: #eee;
-		box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: #eee;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
 
-    .left-section,
-    .right-section {
-		display: flex;
-		align-items: center;
-		gap: 16px;
-    }
+.left-section,
+.right-section {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
 
-    .left-section button {
-		background: none;
-		border: none;
-		font-size: 14px;
-		color: #333;
-		cursor: pointer;
-		padding: 8px 12px;
-		border-radius: 6px;
-		transition: background-color 0.2s;
-    }
-	
-	.right-section button {
-		background: none;
-		border: none;
-		font-size: 14px;
-		color: #333;
-		cursor: pointer;
-		padding: 8px 12px;
-		border-radius: 6px;
-		transition: background-color 0.2s;
-    }
+.left-section button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
 
-    .left-section button:hover {
-		background-color: #eaeaea;
-    }
+.right-section button {
+    background: none;
+    border: none;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: background-color 0.2s;
+}
 
-    .icon {
-		width: 24px;
-		height: 24px;
-		cursor: pointer;
-		fill: #333;
-		transition: filter 0.3s;
-    }
+.left-section button:hover {
+    background-color: #eaeaea;
+}
 
-    .icon:hover {
-		filter: brightness(0.6);
-    }
+.icon {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+    fill: #333;
+    transition: filter 0.3s;
+}
 
-    .main-content {
-		display: flex;
-		padding: 24px;
-		gap: 24px;
-    }
+.icon:hover {
+    filter: brightness(0.6);
+}
 
-    .sidebar {
-		width: 220px;
-		display: flex;
-		flex-direction: column;
-		gap: 16px;
-    }
+.main-content {
+    display: flex;
+    padding: 24px;
+    gap: 24px;
+}
 
-    .menu-box {
-		background-color: #fff;
-		border-radius: 12px;
-		box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-		padding: 16px;
-    }
+.sidebar {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
 
-    .mini-calendar {
-		display: grid;
-		grid-template-columns: repeat(7, 1fr);
-		gap: 4px;
-		font-size: 15px;
-		text-align: center;
-		font-weight: 600;
-    } 
-	.mini-calendar-header {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		padding: 5px;
-		margin-bottom: 5px;
-		grid-column: 1 / -1;
-	}
-	.mini-day-name {
-		text-align: center;
-		font-size: 12px; 
-		padding: 8px 0; 
-	}
+.menu-box {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 16px;
+}
 
-	.mini-day {
-		text-align: center;
-		font-size: 12px;
-		padding: 6px 0;
-		font-weight: 100;
-	}
-    .mini-day,.mini-day-name {
-		padding: 6px 0;
-    }
+.mini-calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    font-size: 15px;
+    text-align: center;
+    font-weight: 600;
+} 
 
-    .mini-day-name {
-		font-weight: bold;
-    }
+.mini-calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px;
+    margin-bottom: 5px;
+    grid-column: 1 / -1;
+}
 
-    .mini-day {
-		border-radius: 6px;
-		cursor: pointer;
-		transition: background-color 0.2s;
-    }
+.mini-day-name {
+    text-align: center;
+    font-size: 12px; 
+    padding: 8px 0; 
+}
 
-    .mini-day:hover {
-		background-color: #e0f0ff;
-    }
+.mini-day {
+    text-align: center;
+    font-size: 12px;
+    padding: 6px 0;
+    font-weight: 100;
+}
 
-    .categories h4 {
-		font-size: 14px;
-		margin-bottom: 8px;
-		font-weight: 600;
-		text-align: center;
-    }
+.mini-day, .mini-day-name {
+    padding: 6px 0;
+}
 
-    .categories ul {
-		list-style: none;
-		padding-left: 0;
-    }
+.mini-day-name {
+    font-weight: bold;
+}
 
-    .category-item {
-		font-size: 13px;
-		padding: 6px 10px;
-		margin-bottom: 4px;
-		border-radius: 6px;
-		cursor: pointer;
-		transition: background-color 0.2s;
-    }
+.mini-day {
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-    .category-item:hover {
-		background-color: #f0f0f0;
-    }
+.mini-day:hover {
+    background-color: #e0f0ff;
+}
 
-    .calendar-container {
-		flex: 1;
-		background-color: #fff;
-		padding: 16px;
-		border-radius: 12px;
-		box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-		overflow-x: auto;
-    }
+.categories h4 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-align: center;
+}
 
-    .calendar-controls {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		margin-bottom: 12px;
-    }
+.categories ul {
+    list-style: none;
+    padding-left: 0;
+}
 
-    .calendar-grid {
-		display: grid;
-		grid-template-columns: repeat(8, 1fr);
-		border: 1px solid #ddd;
-    }
+.category-item {
+    font-size: 13px;
+    padding: 6px 10px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
 
-    .time-slot {
-		background: #f9f9f9;
-		padding: 12px;
-		border-bottom: 1px solid #ddd; 
-		font-size: 15px;
-		text-align: center;
-    }
+.category-item:hover {
+    background-color: #f0f0f0;
+}
 
-	.day-header {
-		padding: 8px; 
-		background: #f0f0f0;
-		font-weight: 600;
-		border-bottom: 1px solid #ccc;
-		text-align: center;
-		display: flex; 
-		flex-direction: column; 
-		align-items: center;
-	}
+.calendar-container {
+    flex: 1;
+    background-color: #fff;
+    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
 
-    .cell {
-		height: 60px;
-		border-left: 1px solid #eee;
-		border-bottom: 1px solid #eee; 
-		cursor: pointer;
-		transition: background-color 0.2s;
-		position: relative;	  
-    }
+.calendar-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
 
-    .cell:hover {
-		background-color: #eaf6ff;
-    }
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 1fr);
+    border: 1px solid #ddd;
+}
 
-    .arrow {
-		cursor: pointer;
-		font-size: 20px;
-		padding: 4px 8px;
-		background-color: none;
-		border-radius: 6px;
-		user-select: none;
-    }
+.time-slot {
+    background: #f9f9f9;
+    padding: 12px;
+    border-bottom: 1px solid #ddd; 
+    font-size: 15px;
+    text-align: center;
+}
 
-    .arrow:hover {
-		background-color: #ddd;
-    }
+.day-header {
+    padding: 8px; 
+    background: #f0f0f0;
+    font-weight: 600;
+    border-bottom: 1px solid #ccc;
+    text-align: center;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center;
+}
 
-    .week-range {
-		font-size: 14px;
-    }
+.cell {
+    height: 60px;
+    border-left: 1px solid #eee;
+    border-bottom: 1px solid #eee; 
+    cursor: pointer;
+    transition: background-color 0.2s;
+    position: relative;    
+}
 
-    .event-label {
-		font-size: 12px;
-		padding: 4px 6px;
-		border-radius: 4px;
-		color: #fff;
-		background-color: #4CAF50;
-		display: inline-block;
-		margin: 4px;
-		max-width: 100%;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
-	}
-	
-	.calendar-controls button {
-		background: none;
-		border: none;
-		font-size: 14px;      
-		cursor: pointer;
-		padding: 8px 12px;
-		border-radius: none;
-    }
-	.today {
-		border: 2px solid #505AC9;
-		border-radius: 3px; 
-		padding: 4px; 
-	}
-	.mini-calendar-header button {
-		background: none;
-		border: none; 
-		cursor: pointer;
-		font-size: 14px;
-		padding: 3px 8px;
-	}
-	.today-marker {
-		position: absolute; 
-		top: 2px;          
-		left: 50%;         
-		transform: translateX(-50%); 
-		width: 6px;         
-		height: 6px;        
-		background-color: #505AC9; 
-		border-radius: 50%;     
-	}
+.cell:hover {
+    background-color: #eaf6ff;
+}
 
-	.calendar-table {
-        width: 100%;
-        border-collapse: collapse;
-    }
+.arrow {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 8px;
+    background-color: none;
+    border-radius: 6px;
+    user-select: none;
+}
 
-    .calendar-table th, .calendar-table td {
-        padding: 8px;
-        text-align: center;
-        border: 1px solid #f0f0f0;
-    }
+.arrow:hover {
+    background-color: #ddd;
+}
 
-    .calendar-table th {
-        font-weight: bold;
-        border-bottom: 1px solid #ccc;
-    }
+.week-range {
+    font-size: 14px;
+}
 
-    .calendar-table .time-slot {
-        font-weight: bold;
-        text-align: left;
-    }
+.event-label {
+    font-size: 12px;
+    padding: 4px 6px;
+    border-radius: 4px;
+    color: #fff;
+    background-color: #4CAF50;
+    display: inline-block;
+    margin: 4px;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-    .calendar-table .cell {
-        position: relative;
-    }
+.calendar-controls button {
+    background: none;
+    border: none;
+    font-size: 14px;      
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: none;
+}
 
-    .today-marker {
-        position: absolute;
-        top: 2px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 6px;
-        height: 6px;
-        background-color: #505AC9;
-        border-radius: 50%;
-    }
-	.today-header {
-		border: 2px solid #505AC9;
-		border-radius: 3px;
-		padding: 6px; 
-	}
+.today {
+    border: 2px solid #505AC9;
+    border-radius: 3px; 
+    padding: 4px; 
+}
 
-	.today-marker {
-		display: none;
-	}
-	
-	.day-abbreviation {
-		font-size: 14px;
-	}
+.mini-calendar-header button {
+    background: none;
+    border: none; 
+    cursor: pointer;
+    font-size: 14px;
+    padding: 3px 8px;
+}
 
-	.day-number {
-		font-size: 26px; 
-		font-weight: normal;
-	}
+.today-marker {
+    position: absolute; 
+    top: 2px;          
+    left: 50%;         
+    transform: translateX(-50%); 
+    width: 6px;         
+    height: 6px;        
+    background-color: #505AC9; 
+    border-radius: 50%;     
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar-table th, .calendar-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #f0f0f0;
+}
+
+.calendar-table th {
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+
+.calendar-table .time-slot {
+    font-weight: bold;
+    text-align: left;
+}
+
+.calendar-table .cell {
+    position: relative;
+}
+
+.today-marker {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    background-color: #505AC9;
+    border-radius: 50%;
+}
+
+.today-header {
+    border: 2px solid #505AC9;
+    border-radius: 3px;
+    padding: 6px; 
+}
+
+.today-marker {
+    display: none;
+}
+
+.day-abbreviation {
+    font-size: 14px;
+}
+
+.day-number {
+    font-size: 26px; 
+    font-weight: normal;
+}
+
 /* marcando horario do dia em construção */
-	.time-slot.current-hour {
-		position: relative ;
-	}
+.time-slot.current-hour {
+    position: relative;
+}
 
-	.time-slot.current-hour::before {
-		content: '' ;
-		display: block ;
-		width: 20px ;
-		height: 20px ;
-		background-color: #505AC9;
-		border-radius: 50% ;
-		position: absolute ;
-		top: 10px ;
-		left: 10px ;
-		transform: translateY(0) ;
-	}
-/* tela de resumo */
+.time-slot.current-hour::before {
+    content: '';
+    display: block;
+    width: 20px;
+    height: 20px;
+    background-color: #505AC9;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transform: translateY(0);
+}
+
+/* adicionar */
+event-label {
+    background-color: #4CAF50;
+    color: white;
+    padding: 2px 4px;
+    margin-top: 2px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+/* responsividade */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+    }
+}
+
+/* ================================ */
+/* Estilo da caixa de tarefas */
+.task-editor {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    padding: 1.25em;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 260px;
+    max-width: 90vw;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Estado oculto */
+.task-editor.hidden {
+    display: none;
+}
+
+/* Título do editor */
+.task-editor h3 {
+    margin: 0 0 0.75em;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Labels dos campos */
+.task-editor label {
+    display: block;
+    margin-bottom: 0.5em;
+    font-size: 0.85em;
+    font-weight: 500;
+    color: #555;
+}
+
+/* Campos de entrada (input, select, textarea) */
+.task-editor input,
+.task-editor select,
+.task-editor textarea {
+    width: 100%;
+    margin-top: 0.2em;
+    padding: 0.5em 0.7em;
+    font-size: 12px;
+    line-height: 1.4;
+    border: 1px solid #d0d0d0;
+    border-radius: 5px;
+    background: #f9f9f9;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Altura uniforme para todos os campos */
+.task-editor input,
+.task-editor select {
+    height: 32px; /* Altura fixa para uniformidade */
+}
+
+/* Textarea um pouco mais alta, mas ainda compacta */
+.task-editor textarea {
+    height: 60px;
+    resize: none;
+}
+
+/* Efeitos de foco e hover */
+.task-editor input:focus,
+.task-editor select:focus,
+.task-editor textarea:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.1);
+    background: #fff;
+}
+
+.task-editor input:hover,
+.task-editor select:hover,
+.task-editor textarea:hover {
+    border-color: #b0b0b0;
+}
+
+/* Container dos botões */
+.task-editor .buttons {
+    margin-top: 1.25em;
+    display: flex;
+    gap: 0.6em;
+    justify-content: flex-end;
+}
+
+/* Estilo dos botões */
+.task-editor .buttons button {
+    padding: 0.5em 1em;
+    font-size: 0.85em;
+    font-weight: 500;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+/* Botão de adicionar */
+.task-editor .buttons #add-task {
+    background: #4a90e2;
+    color: #ffffff;
+}
+
+.task-editor .buttons #add-task:hover {
+    background: #357abd;
+}
+
+.task-editor .buttons #add-task:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+}
+
+.task-editor .buttons #add-task:active {
+    transform: scale(0.98);
+}
+
+/* Botão de cancelar */
+.task-editor .buttons #cancel-task {
+    background: #f1f1f1;
+    color: #555;
+}
+
+.task-editor .buttons #cancel-task:hover {
+    background: #e0e0e0;
+}
+
+.task-editor .buttons #cancel-task:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+}
+
+.task-editor .buttons #cancel-task:active {
+    transform: scale(0.98);
+}
+
+/* Ajustes para acessibilidade */
+.task-editor input[required],
+.task-editor select[required],
+.task-editor textarea[required] {
+    border-left: 2px solid #4a90e2;
+}
+
+/* Media query para telas pequenas */
+@media (max-width: 480px) {
+    .task-editor {
+        width: 85%;
+        padding: 1em;
+    }
+
+    .task-editor h3 {
+        font-size: 1em;
+    }
+
+    .task-editor label,
+    .task-editor input,
+    .task-editor select,
+    .task-editor textarea {
+        font-size: 0.8em;
+    }
+
+    .task-editor input,
+    .task-editor select {
+        height: 30px;
+    }
+
+    .task-editor textarea {
+        height: 50px;
+    }
+
+    .task-editor .buttons button {
+        padding: 0.4em 0.8em;
+        font-size: 0.8em;
+    }
+}
+
+/* ===========================botao sair============================== */
+#logout-btn {
+    padding: 0.5em 1em;
+    font-size: 0.9em;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;
+}
+ut-btn:hover {
+    background: #d00000;
+}
+
+/* =========================== Novos Estilos ============================== */
+/* Estilo para tarefas clicáveis */
+.event-label {
+    cursor: pointer; /* Indica que é clicável */
+}
+
+.event-label:hover {
+    background-color: #45a049; /* Escurece o verde no hover */
+}
+
+/* Estilo para os novos botões do task-editor */
+.task-editor .buttons #save-task {
+    background: #505AC9; 
+    color: #ffffff;
+}
+
+.task-editor .buttons #save-task:hover {
+    background: #464eb8; 
+}
+
+.task-editor .buttons #save-task:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
+}
+
+.task-editor .buttons #save-task:active {
+    transform: scale(0.98);
+}
+
+.task-editor .buttons #edit-page-task {
+    background: #f1c40f; /* Amarelo para Editar */
+    color: #ffffff;
+}
+
+.task-editor .buttons #edit-page-task:hover {
+    background: #d4ac0d; /* Amarelo mais escuro no hover */
+}
+
+.task-editor .buttons #edit-page-task:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
+}
+
+.task-editor .buttons #edit-page-task:active {
+    transform: scale(0.98);
+}
+
+.task-editor .buttons #delete-task {
+    background: #e63946; /* Vermelho, igual ao logout-btn */
+    color: #ffffff;
+}
+
+.task-editor .buttons #delete-task:hover {
+    background: #d00000; /* Vermelho mais escuro no hover */
+}
+
+.task-editor .buttons #delete-task:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.3);
+}
+
+.task-editor .buttons #delete-task:active {
+    transform: scale(0.98);
+}
+
+/* Classe hidden para botões */
+.task-editor .buttons .hidden {
+    display: none;
+}
+#task-editor {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+  width: 250px;
+  border-radius: 8px;
+}
+
+#task-editor .buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+#task-editor button {
+  flex: 1 1 auto;
+}
+
+/* ----------------------------- */
+.profile-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  min-width: 120px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.dropdown a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown a:hover {
+  background-color: #f0f0f0;
+}
+
+.hidden {
+  display: none;
+}
+.profile-menu {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 180px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  border-radius: 8px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.dropdown-btn {
+  padding: 10px;
+  text-align: left;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  text-decoration: none;
+  color: #333;
+}
+
+.dropdown-btn:hover {
+  background-color: #e0e0e0;
+}
+
+.hidden {
+  display: none;
+}
