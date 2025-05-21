@@ -1,58 +1,134 @@
- body {
+body {
     font-family: 'Montserrat', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     background-color: #ffffff;
-    margin:0;
-    border: 1px solid black;
+    margin: 1px; 
+    border: 2px solid #7B83EB;
+    transition: background-color 0.3s ease, color 0.3s ease;
+   
 }
+
+body.dark-mode {
+    background-color: #656667; 
+    color: #ffffff; 
+    border-color: #ffffff; 
+}
+
 
 .container {
     background-color: #ffffff;
-    padding: 110px;
+    padding: 20px; 
     border-radius: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    text-align:center;
+    text-align: center; 
+    width: 90%; 
+    max-width: 400px;
+    transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dark-mode .container {
+    background-color: #4B4947; 
+    color: #ffffff;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); 
 }
 
 h1 {
+    color: #7B83EB;
+    text-align: center;
     margin-bottom: 100px;
-    color: #4B4947;
+    transition: color 0.3s ease;
+}
+
+.dark-mode h1 {
+    color: #ffffff;
 }
 
 .input-group {
     margin-bottom: 15px;
+    text-align: center; 
 }
 
 label {
-    display:block;
+    display: block;
     margin-bottom: 10px;
-    color: #4B4947;
-    text-align: left;
+    color: #464EB8;
+    transition: color 0.3s ease;
 }
+
+.dark-mode label {
+    color: #ffffff; 
+}
+
 
 input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
-    border: 1px solid #4B4947;
+    border: 1px solid #464EB8;
     border-radius: 0;
     box-sizing: border-box;
+    text-align: center; 
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;}
+
+     .dark-mode input[type="password"] {
+    border-color: #A78BFA; 
+    background-color: #4B4947; 
+    color: #ffffff; 
+}
+.button-container {
+    text-align: center; 
+    margin-top: 100px; 
 }
 
 button {
-    background-color: #ffffff;
-    color: black;
-    padding: 10px 20px;
-    border:  1px solid black;
+    background-color: #464EB8;
+    color: #ffffff;
+    padding: 10px 5px;
+    border: 1px solid #7B83EB;
     border-radius: 0;
     cursor: pointer;
-    font-size: 10px;
-    width: 250px;
-    text-align: center;
-    margin-top: 10px;
+    font-size: 0.8em;
+    width: auto; 
+    display: inline-block; 
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
-button:hover {
-    background-color: #ffffff;
+
+.dark-mode button {
+    background-color: #656667; 
+    color: #ffffff; 
+    border-color: #D2A6FF; 
+}
+
+
+/* Media Query para telas menores (celulares) */
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    
+    }
+
+    h1 {
+        font-size: 1.5em;
+        margin-bottom: 30px;
+    }
+}
+
+/* Media Query para telas médias (tablets) */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .container {
+        max-width: 500px;
+    }
+
+    h1 {
+        font-size: 1.8em;
+        margin-bottom: 40px;
+    }
+}
+
+.mensagem {
+    margin-top: 15px;
+    font-weight: bold;
+    font-size: 14px;
 }
