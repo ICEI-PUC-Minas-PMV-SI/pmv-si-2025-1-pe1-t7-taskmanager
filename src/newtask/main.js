@@ -34,11 +34,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         tarefas.push(novaTarefa);
 
-        localStorage.(setItem'tarefas', JSON.stringify(tarefas));
+        localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
         alert('Tarefa criada com sucesso!');
 
-        window.location.href = '../login/index.html';
+        window.location.href = '../front_page/index.html';
         form.reset();
     });
 });
