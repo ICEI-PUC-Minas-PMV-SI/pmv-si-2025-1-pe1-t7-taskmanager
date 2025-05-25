@@ -707,3 +707,37 @@
                     initialState[id] = checkbox.checked;
                 }
             });
+            
+           // Funcionalidade do botão Confirmar
+            if (confirmButton) {
+                confirmButton.addEventListener('click', function() {
+                    // Salvar o estado atual dos checkboxes
+                    checkboxes.forEach(function(checkbox) {
+                        const id = checkbox.id || checkbox.name;
+                        localStorage.setItem(`checkbox_${id}`, checkbox.checked);
+                        initialState[id] = checkbox.checked;
+                    });
+                    
+                    alert('Preferências salvas com sucesso!');
+                });
+            }
+            
+            // Funcionalidade do botão Cancelar
+            if (cancelButton) {
+                cancelButton.addEventListener('click', function() {
+                    // Restaurar o estado inicial dos checkboxes
+                    checkboxes.forEach(function(checkbox) {
+                        const id = checkbox.id || checkbox.name;
+                        checkbox.checked = initialState[id];
+                    });
+                    
+                    alert('Alterações descartadas.');
+                });
+            }
+            
+            // Log para confirmar que o script foi carregado
+            console.log('Script de funcionalidades dos ícones carregado com sucesso!');
+        });
+    </script>
+</body>
+</html>
