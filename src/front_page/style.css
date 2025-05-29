@@ -571,7 +571,8 @@ body.dark-theme .arrow:hover {
     background-color: #5a62e0;
 }
 
-/* ============================== Editor de Tarefas certo ============================== */
+/* ================================ */
+/* Estilo da caixa de tarefas */
 .task-editor {
     position: absolute;
     background: #fff;

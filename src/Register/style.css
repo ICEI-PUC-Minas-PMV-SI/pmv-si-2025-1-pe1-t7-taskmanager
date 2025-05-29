@@ -64,3 +64,20 @@ body {
 .form-button:hover {
   background-color: #3a42a0;
 }
+
+.form-link {
+  text-align: center;
+  margin-top: 15px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+.form-link a {
+  color: #464eb8;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.form-link a:hover {
+  text-decoration: underline;
+}
