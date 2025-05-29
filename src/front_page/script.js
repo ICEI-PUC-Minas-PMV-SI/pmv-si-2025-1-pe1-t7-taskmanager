@@ -1,11 +1,81 @@
-document.addEventListener('DOMContentLoaded', function() {
-    // Mini Calendário
-    const miniPrevMonthBtn = document.getElementById('miniPrevMonth');
-    const miniNextMonthBtn = document.getElementById('miniNextMonth');
-    const miniCurrentMonthYear = document.getElementById('miniCurrentMonthYear');
-    const miniCalendar = document.querySelector('.mini-calendar');
+document.addEventListener('DOMContentLoaded', () => {
+    // Estado global
     let miniCurrentDate = new Date();
+    let mainCurrentDate = new Date();
+    let activeCell = null;
+    let tasks = [];
+    let currentUserId = null;
+    let editingTaskIndex = null;    
 
+    // Elementos do DOM
+    const elements = {
+        miniPrevMonthBtn: document.getElementById('miniPrevMonth'),
+        miniNextMonthBtn: document.getElementById('miniNextMonth'),
+        miniCurrentMonthYear: document.getElementById('miniCurrentMonthYear'),
+        miniCalendar: document.querySelector('.mini-calendar'),
+        calendarGrid: document.querySelector('.calendar-grid'),
+        weekRangeDisplay: document.querySelector('.week-range'),
+        arrowBack: document.querySelector('.calendar-controls .arrow:first-child button'),
+        arrowForward: document.querySelector('.calendar-controls .arrow:last-child button'),
+        taskEditor: document.getElementById('task-editor'),
+        taskTitle: document.getElementById('task-title'),
+        startTime: document.getElementById('start-time'),
+        endTime: document.getElementById('end-time'),
+        taskCategory: document.getElementById('task-category'),
+        taskPriority: document.getElementById('task-priority'),
+        addTaskBtn: document.getElementById('add-task'),
+        cancelTaskBtn: document.getElementById('cancel-task'),
+        logoutBtn: document.getElementById('logout-btn'),        
+        editPageTaskBtn: document.getElementById('edit-page-task'),      
+    };
+    // --- Funções de LocalStorage ---
+    function getTasksFromStorage(userId) {
+        const tasksJson = localStorage.getItem(`tasks_${userId}`);
+        return tasksJson ? JSON.parse(tasksJson) : [];
+    }
+    // --- Salva as tarefas do usuário no localStorage ---
+    function saveTasksToStorage(userId, tasks) {
+        localStorage.setItem(`tasks_${userId}`, JSON.stringify(tasks));
+    }
+
+    // --- Verificação de Usuário Logado ---
+    function getLoggedInUser() {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        for (const user of usuarios) {
+            const userData = localStorage.getItem(user.email);
+            if (userData) {
+                return JSON.parse(userData);
+            }
+        }
+        return null;
+    }
+     // --- Inicia a agenda carregando tarefas e verificando login --- 
+    function initializeUser() {
+        const user = getLoggedInUser();
+        if (!user) {
+            alert('Você precisa estar logado para usar a agenda.');
+            window.location.href = '../login/index.html';
+            return;
+        }
+        currentUserId = user.email.toLowerCase();
+        tasks = getTasksFromStorage(currentUserId);
+        renderMainCalendar();
+    }
+
+    // --- Função de Logout ---
+    function logout() {
+        if (currentUserId) {
+            // Remove apenas a chave do usuário logado (ex.: teste1@gmail.com)
+            // Preserva as tarefas (tasks_${currentUserId}) e a lista de usuários (usuarios)
+            localStorage.removeItem(currentUserId);
+            currentUserId = null;
+            tasks = []; // Limpa as tarefas locais apenas para a sessão atual
+            alert('Logout realizado com sucesso!');
+            window.location.href = '../login/index.html';
+        }
+    }
+
+    // --- Mini-Calendário ---
     function renderMiniCalendar() {
         const year = miniCurrentDate.getFullYear();
         const month = miniCurrentDate.getMonth();
@@ -14,51 +84,44 @@ document.addEventListener('DOMContentLoaded', function() {
         const daysInMonth = lastDayOfMonth.getDate();
         const dayOfWeekOfFirstDay = firstDayOfMonth.getDay();
 
-        miniCurrentMonthYear.textContent = new Intl.DateTimeFormat('pt-BR', { month: 'short', year: 'numeric' }).format(miniCurrentDate);
+        elements.miniCurrentMonthYear.textContent = new Intl.DateTimeFormat('pt-BR', {
+            month: 'short',
+            year: 'numeric',
+        }).format(miniCurrentDate);
 
-        // Remove apenas os elementos com a classe 'mini-day' e os divs vazios (sem classe ou id) que representam os dias vazios
-        const existingDays = miniCalendar.querySelectorAll('.mini-day');
-        existingDays.forEach(day => day.remove());
+        elements.miniCalendar.querySelectorAll('.mini-day, div:not([class]):not([id])').forEach(el => el.remove());
 
-        const existingEmpty = miniCalendar.querySelectorAll('div:not([class]):not([id])');
-        existingEmpty.forEach(empty => empty.remove());
-
-        // Adiciona os dias vazios no início
         for (let i = 0; i < dayOfWeekOfFirstDay; i++) {
-            const emptyDiv = document.createElement('div');
-            miniCalendar.appendChild(emptyDiv);
+            elements.miniCalendar.appendChild(document.createElement('div'));
         }
 
         const today = new Date();
-        const currentDay = today.getDate();
-        const currentMonth = today.getMonth();
-        const currentYear = today.getFullYear();
-
-        // Adiciona os dias do mês
         for (let day = 1; day <= daysInMonth; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.classList.add('mini-day');
             dayDiv.textContent = day;
 
-            if (year === currentYear && month === currentMonth && day === currentDay) {
+            if (
+                year === today.getFullYear() &&
+                month === today.getMonth() &&
+                day === today.getDate()
+            ) {
                 dayDiv.classList.add('today');
             }
 
             dayDiv.addEventListener('click', () => {
                 const selectedDate = new Date(year, month, day);
-                console.log('Data selecionada:', selectedDate);
-                // Aqui você pode adicionar a lógica para comunicar com seu calendário principal
+                mainCurrentDate = selectedDate;
+                renderMainCalendar();
             });
 
-            miniCalendar.appendChild(dayDiv);
+            elements.miniCalendar.appendChild(dayDiv);
         }
 
-        // Adiciona os dias vazios no final para completar a última semana
-        const totalChildren = miniCalendar.children.length;
-        const expectedChildren = Math.ceil((dayOfWeekOfFirstDay + daysInMonth) / 7) * 7 + 7; // +7 para os dias da semana
+        const totalChildren = elements.miniCalendar.children.length;
+        const expectedChildren = Math.ceil((dayOfWeekOfFirstDay + daysInMonth) / 7) * 7 + 7;
         for (let i = totalChildren; i < expectedChildren; i++) {
-            const emptyDiv = document.createElement('div');
-            miniCalendar.appendChild(emptyDiv);
+            elements.miniCalendar.appendChild(document.createElement('div'));
         }
     }
 
@@ -67,112 +130,259 @@ document.addEventListener('DOMContentLoaded', function() {
         renderMiniCalendar();
     }
 
-    miniPrevMonthBtn.addEventListener('click', () => changeMiniMonth(-1));
-    miniNextMonthBtn.addEventListener('click', () => changeMiniMonth(1));
-
-    renderMiniCalendar();
-
-    // Calendário Principal (Grade de Horários)
-    const calendarGrid = document.querySelector('.calendar-grid');
-    const dayHeaders = document.querySelectorAll('.day-header');
-    const weekRangeDisplay = document.querySelector('.week-range');
-    const arrowBack = document.querySelector('.calendar-controls .arrow:first-child button');
-    const arrowForward = document.querySelector('.calendar-controls .arrow:last-child button');
-
-    let currentDate = new Date();
-
+    // --- Calendário Principal ---
     function formatDate(date) {
         const day = String(date.getDate()).padStart(2, '0');
         const month = String(date.getMonth() + 1).padStart(2, '0');
         return `${day}/${month}`;
     }
 
+    function renderMainCalendar() {
+        const today = new Date();
+        const currentHour = today.getHours();
+        const daysOfWeekShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 
-    // Função para destacar a coluna do dia
-    function expandDay(dayIndex) {
-        // Remove a classe de destaque de qualquer coluna previamente destacada
-        calendarGrid.querySelectorAll('.cell.expanded-day').forEach(cell => cell.classList.remove('expanded-day'));
+        const firstDayOfWeek = new Date(mainCurrentDate);
+        firstDayOfWeek.setDate(mainCurrentDate.getDate() - mainCurrentDate.getDay());
 
-        // Seleciona todas as células da coluna do dia clicado
-        const cellsToExpand = calendarGrid.querySelectorAll(`.cell:nth-child(8n + ${dayIndex + 2})`);
-        // O seletor :nth-child(8n + k) seleciona elementos que estão nas posições k, k+8, k+16, etc.
-        // Aqui, +2 é usado porque o primeiro filho é o header vazio.
+        document.querySelectorAll('.day-header').forEach((header, index) => {
+            const displayDate = new Date(firstDayOfWeek);
+            displayDate.setDate(firstDayOfWeek.getDate() + index);
 
-        // Adiciona a classe de destaque a essas células
-        cellsToExpand.forEach(cell => cell.classList.add('expanded-day'));
+            header.innerHTML = '';
+            const dayAbbreviation = document.createElement('div');
+            dayAbbreviation.classList.add('day-abbreviation');
+            dayAbbreviation.textContent = daysOfWeekShort[index];
+            const dayNumber = document.createElement('div');
+            dayNumber.classList.add('day-number');
+            dayNumber.textContent = displayDate.getDate();
+            header.appendChild(dayAbbreviation);
+            header.appendChild(dayNumber);
+
+            header.classList.toggle(
+                'today-header',
+                displayDate.getDate() === today.getDate() &&
+                displayDate.getMonth() === today.getMonth() &&
+                displayDate.getFullYear() === today.getFullYear()
+            );
+        });
+
+        elements.calendarGrid.querySelectorAll('.time-slot:not(.header), .cell').forEach(el => el.remove());
+
+        for (let hour = 0; hour < 24; hour++) {
+            const timeSlot = document.createElement('div');
+            timeSlot.classList.add('time-slot');
+            timeSlot.textContent = `${String(hour).padStart(2, '0')}:00`;
+
+            if (
+                hour === currentHour &&
+                mainCurrentDate.getDate() === today.getDate() &&
+                mainCurrentDate.getMonth() === today.getMonth() &&
+                mainCurrentDate.getFullYear() === today.getFullYear()
+            ) {
+                timeSlot.classList.add('current-hour');
+            }
+
+            elements.calendarGrid.appendChild(timeSlot);
+
+            for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                const cellDate = new Date(firstDayOfWeek);
+                cellDate.setDate(firstDayOfWeek.getDate() + dayOffset);
+                cellDate.setHours(hour, 0, 0, 0);
+                cell.setAttribute('data-date', cellDate.toISOString());
+                elements.calendarGrid.appendChild(cell);
+            }
+        }
+
+        tasks.forEach(task => {
+            const cell = elements.calendarGrid.querySelector(`.cell[data-date="${task.date}"]`);
+            if (cell) {
+                const label = document.createElement('div');
+                label.classList.add('event-label');
+                label.textContent = `${task.title} (${task.category}, P${task.priority})`;
+                label.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Impede que o clique também dispare o editor da célula
+                    openTaskEditor(cell, task);
+                });
+                cell.appendChild(label);
+            }
+        });
+
+        const lastDayOfWeek = new Date(firstDayOfWeek);
+        lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+        elements.weekRangeDisplay.textContent = `${formatDate(firstDayOfWeek)} - ${formatDate(lastDayOfWeek)}`;
     }
-    function renderMainCalendar(date) {
-    const today = new Date();
-    const currentDayOfWeek = today.getDay();
-    const currentHour = today.getHours(); // Obtém a hora atual
 
-    const daysOfWeekShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+    // --- Editor de Tarefas ---
+function openTaskEditor(cell, task = null) {
+    activeCell = cell;
+    const rect = cell.getBoundingClientRect();
+    elements.taskEditor.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
+    elements.taskEditor.classList.remove('hidden');
 
-    const firstDayOfWeek = new Date(date);
-    firstDayOfWeek.setDate(date.getDate() - date.getDay());
+    if (task) {
+        editingTaskIndex = tasks.findIndex(t =>
+            t.date === task.date &&
+            t.title === task.title &&
+            t.category === task.category &&
+            t.priority === task.priority
+        );
 
-    const dayHeaders = document.querySelectorAll('.day-header');
-    dayHeaders.forEach((header, index) => {
-        const displayDate = new Date(firstDayOfWeek);
-        displayDate.setDate(firstDayOfWeek.getDate() + index);
+        elements.taskTitle.value = task.title;
+        elements.startTime.value = task.startTime || '';
+        elements.endTime.value = task.endTime || '';
+        elements.taskCategory.value = task.category;
+        elements.taskPriority.value = task.priority;
 
-        header.innerHTML = '';
-        const dayAbbreviation = document.createElement('div');
-        dayAbbreviation.classList.add('day-abbreviation');
-        dayAbbreviation.textContent = daysOfWeekShort[index];
-        const dayNumber = document.createElement('div');
-        dayNumber.classList.add('day-number');
-        dayNumber.textContent = displayDate.getDate();
-        header.appendChild(dayAbbreviation);
-        header.appendChild(dayNumber);
+        elements.addTaskBtn.classList.add('hidden');
+        elements.editTaskBtn.classList.remove('hidden');
+        elements.deleteTaskBtn.classList.remove('hidden');
+        elements.editPageTaskBtn.classList.remove('hidden'); // MOSTRA 
+    } else {
+        editingTaskIndex = null;
+        elements.taskTitle.value = '';
+        const cellDateStr = cell.getAttribute('data-date');
+        const clickedDate = new Date(cellDateStr);
+        const start = new Date(clickedDate);
+        const end = new Date(start.getTime() + 30 * 60000);
 
-        header.classList.remove('today-header');
-        if (displayDate.getDate() === today.getDate() &&
-            displayDate.getMonth() === today.getMonth() &&
-            displayDate.getFullYear() === today.getFullYear()) {
-            header.classList.add('today-header');
-        }
-    });
+        const formatDateToInput = date => {
+            const pad = num => String(num).padStart(2, '0');
+            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        };
 
-    const existingRows = calendarGrid.querySelectorAll('.time-slot:not(.header), .cell');
-    existingRows.forEach(row => row.remove());
+        elements.startTime.value = formatDateToInput(start);
+        elements.endTime.value = formatDateToInput(end);
+        elements.taskCategory.value = 'trabalho';
+        elements.taskPriority.value = '2';
 
-    for (let hour = 0; hour < 24; hour++) {
-        const timeSlot = document.createElement('div');
-        timeSlot.classList.add('time-slot');
-        timeSlot.textContent = `${String(hour).padStart(2, '0')}:00`;
-
-        // Adiciona uma classe especial à célula da hora atual
-        if (hour === currentHour &&
-            date.getDate() === today.getDate() &&
-            date.getMonth() === today.getMonth() &&
-            date.getFullYear() === today.getFullYear()) {
-            timeSlot.classList.add('current-hour');
-        }
-
-        calendarGrid.appendChild(timeSlot);
-
-        for (let dayOffset = 0; dayOffset < 7; dayOffset++) {
-            const cell = document.createElement('div');
-            cell.classList.add('cell');
-            calendarGrid.appendChild(cell);
+        elements.addTaskBtn.classList.remove('hidden'); 
+        elements.editTaskBtn.classList.add('hidden');
+        elements.deleteTaskBtn.classList.add('hidden'); // ESCONDE
+        elements.editPageTaskBtn.classList.add('hidden'); 
         }
     }
+/* função começa editar e excluir */
+function updateTask() {
+    if (editingTaskIndex === null || !activeCell) return;
 
-    const lastDayOfWeek = new Date(firstDayOfWeek);
-    lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
-    weekRangeDisplay.textContent = `${formatDate(firstDayOfWeek)} - ${formatDate(lastDayOfWeek)}`;
+    const title = elements.taskTitle.value.trim();
+    const updatedTask = {
+        date: activeCell.getAttribute('data-date'),
+        title,
+        category: elements.taskCategory.value,
+        priority: elements.taskPriority.value,
+        startTime: elements.startTime.value,
+        endTime: elements.endTime.value,
+    };
+
+    tasks[editingTaskIndex] = updatedTask;
+    saveTasksToStorage(currentUserId, tasks);
+    renderMainCalendar();
+    elements.taskEditor.classList.add('hidden');
 }
 
-    renderMainCalendar(currentDate);
+function deleteTask() {
+    if (editingTaskIndex === null) return;
+    tasks.splice(editingTaskIndex, 1);
+    saveTasksToStorage(currentUserId, tasks);
+    renderMainCalendar();
+    elements.taskEditor.classList.add('hidden');
+}
+/* função fim editar e excluir */
+    function saveTask() {
+        if (!currentUserId) {
+            alert('Por favor, faça login para salvar tarefas.');
+            window.location.href = '../login/index.html';
+            return;
+        }
 
-    arrowBack.addEventListener('click', () => {
-        currentDate.setDate(currentDate.getDate() - 7);
-        renderMainCalendar(currentDate);
+        const title = elements.taskTitle.value.trim();
+        if (!title || !activeCell) return;
+
+        const task = {
+            date: activeCell.getAttribute('data-date'),
+            title,
+            category: elements.taskCategory.value,
+            priority: elements.taskPriority.value,
+            startTime: elements.startTime.value,
+            endTime: elements.endTime.value,
+        };
+
+        tasks.push(task);
+        saveTasksToStorage(currentUserId, tasks);
+        renderMainCalendar(); // Atualiza todas as grids e adiciona os eventos
+
+        const label = document.createElement('div');
+        label.classList.add('event-label');
+        label.textContent = `${title} (${task.category}, P${task.priority})`;
+        activeCell.appendChild(label);
+
+        elements.taskEditor.classList.add('hidden');
+    }
+
+    // --- Eventos ---
+    elements.miniPrevMonthBtn.addEventListener('click', () => changeMiniMonth(-1));
+    elements.miniNextMonthBtn.addEventListener('click', () => changeMiniMonth(1));
+
+    elements.arrowBack.addEventListener('click', () => {
+        mainCurrentDate.setDate(mainCurrentDate.getDate() - 7);
+        renderMainCalendar();
     });
 
-    arrowForward.addEventListener('click', () => {
-        currentDate.setDate(currentDate.getDate() + 7);
-        renderMainCalendar(currentDate);
+    elements.arrowForward.addEventListener('click', () => {
+        mainCurrentDate.setDate(mainCurrentDate.getDate() + 7);
+        renderMainCalendar();
     });
+
+    elements.calendarGrid.addEventListener('click', e => {
+        const cell = e.target.closest('.cell');
+        if (cell) openTaskEditor(cell);
+    });
+
+    elements.addTaskBtn.addEventListener('click', saveTask);
+    elements.cancelTaskBtn.addEventListener('click', () => {
+        elements.taskEditor.classList.add('hidden');
+    });
+
+    // Evento de logout
+    elements.logoutBtn = document.getElementById('logout-btn');
+    if (elements.logoutBtn) {
+        elements.logoutBtn.addEventListener('click', logout);
+    }
+    elements.editTaskBtn = document.getElementById('save-task');
+    elements.deleteTaskBtn = document.getElementById('delete-task');
+
+    elements.editTaskBtn.addEventListener('click', updateTask);
+    elements.deleteTaskBtn.addEventListener('click', deleteTask);
+    
+    const goToNewTaskBtn = document.getElementById('nova-tarefa');
+    if (goToNewTaskBtn) {
+        goToNewTaskBtn.addEventListener('click', () => {
+            window.location.href = '../newtask/index.html';
+        });
+    }
+    elements.editPageTaskBtn.addEventListener('click', () => {
+        window.location.href = '../newtask/index.html';
+    });
+    const profileButton = document.getElementById('botao-perfil');
+    const profileDropdown = document.getElementById('perfil-dropdown');
+    // Alterna a visibilidade da caixa ao clicar no botão
+    profileButton.addEventListener('click', () => {
+        profileDropdown.classList.toggle('hidden');
+    });
+
+    // Fecha o menu se clicar fora dele
+    document.addEventListener('click', (event) => {
+        if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+            profileDropdown.classList.add('hidden');
+        }
+    });
+
+    // --- Inicialização ---
+    initializeUser();
+    renderMiniCalendar();
 });
