@@ -22,16 +22,16 @@
       </button>
     </div>
     <div class="right-section">
-      <button> 
+      <button id="abrirResumo"> 
         <i class="material-icons">list_alt</i>
       </button>
       <button> 
         <i class="material-icons">notifications</i>
       </button>
-      <button> 
+      <button id="toggle-theme-btn"> 
         <i class="material-icons">contrast</i>
       </button>
-      <button> 
+      <button id="btnConfiguracoes"> 
         <i class="material-icons">settings</i>
       </button>
       <div class="profile-menu">
@@ -64,18 +64,18 @@
           <div class="mini-day-name">S</div>      
         </div>
       </div>
-
-      <div class="menu-box">
-        <div class="categories">
-          <h4>FILTROS</h4>
-          <ul>
-            <li class="category-item"><input type="checkbox"> Tarefas de Casa</li>
-            <li class="category-item"><input type="checkbox"> Trabalho</li>
-            <li class="category-item"><input type="checkbox"> Compromissos</li>
-            <li class="category-item"><input type="checkbox"> Saúde</li>
-          </ul>
-        </div>
-      </div>
+    <div class="menu-box">
+    <div class="categories">
+      <h4>FILTROS</h4>
+      <ul>
+          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="trabalho"> Trabalho</li>
+          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="casa"> Casa</li>
+          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="saude"> Saúde</li>
+          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="pessoal"> Pessoal</li>
+          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="outros"> Outros</li>
+      </ul>
+    </div>
+    </div>
     </aside>
 
     <main class="calendar-container">
@@ -124,6 +124,7 @@
         <option value="trabalho">Trabalho</option>
         <option value="casa">Casa</option>
         <option value="saude">Saúde</option>
+        <option value="pessoal">Pessoal</option>
         <option value="outros">Outros</option>
       </select>
     </label>
@@ -143,7 +144,23 @@
       <button id="cancel-task">Cancelar</button>
     </div>
   </div>
-
+    <!-- Modal de resumo -->
+  <div id="modalResumo" class="modal">
+    <div class="modal-content">
+      <span class="fechar" id="fecharModal">&times;</span>
+      <h2>Tarefas de Hoje</h2>
+      <ul id="listaTarefasHoje"></ul>
+    </div>    
+  </div>
+    <!-- Menu suspenso -->
+  <div id="menuConfiguracoes" class="dropdown hidden">
+    <ul>
+      <li><button id="alterar-senha">Alterar senha</button></li>
+      <li><button id="alterar-idioma">Idioma</button></li>
+      <li><button id="redefinir-agenda">Redefinir agenda</button></li>
+      <li><button id="config-notificacoes">Notificações</button></li>
+    </ul>
+  </div>
   <script src="script.js"></script>
 </body>
 </html>

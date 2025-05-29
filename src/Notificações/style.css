@@ -85,7 +85,8 @@ main {
     width: 22px;
     height: 22px;
     cursor: pointer;
-    accent-color: ##505ac9;
+    accent-color: #505ac9;
+
 }
 
 /* Rodapé */
@@ -131,3 +132,44 @@ footer button#cancel:hover {
     border-color: #C8C8C8;
 }
 
+notificacao {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 15px 20px;
+  background-color: white;
+  border-left: 4px solid #505ac9;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  border-radius: 4px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transform: translateX(120%);
+  transition: transform 0.3s ease;
+  max-width: 350px;
+}
+
+.notificacao.visivel {
+  transform: translateX(0);
+}
+
+.notificacao.sucesso {
+  border-left-color: #4CAF50;
+}
+
+.notificacao.alerta {
+  border-left-color: #FF9800;
+}
+
+.notificacao.erro {
+  border-left-color: #F44336;
+}
+
+.notificacao-fechar {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+}
