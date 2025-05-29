@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let tasks = [];
     let currentUserId = null;
     let editingTaskIndex = null;    
+    let currentHourLineInterval = null;
 
     // Elementos do DOM
     const elements = {
@@ -26,16 +27,30 @@ document.addEventListener('DOMContentLoaded', () => {
         addTaskBtn: document.getElementById('add-task'),
         cancelTaskBtn: document.getElementById('cancel-task'),
         logoutBtn: document.getElementById('logout-btn'),        
-        editPageTaskBtn: document.getElementById('edit-page-task'),      
+        editPageTaskBtn: document.getElementById('edit-page-task'),
+        themeToggleBtn: document.querySelector('button i.material-icons[textContent="contrast"]')?.parentElement,
     };
+
     // --- Funções de LocalStorage ---
     function getTasksFromStorage(userId) {
         const tasksJson = localStorage.getItem(`tasks_${userId}`);
         return tasksJson ? JSON.parse(tasksJson) : [];
     }
-    // --- Salva as tarefas do usuário no localStorage ---
+
     function saveTasksToStorage(userId, tasks) {
         localStorage.setItem(`tasks_${userId}`, JSON.stringify(tasks));
+    }
+
+    // --- Gerenciamento de Tema ---
+    function setTheme(theme) {
+        document.body.classList.remove('light-theme', 'dark-theme');
+        document.body.classList.add(theme);
+        localStorage.setItem('theme', theme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.body.classList.contains('dark-theme') ? 'light-theme' : 'dark-theme';
+        setTheme(currentTheme);
     }
 
     // --- Verificação de Usuário Logado ---
@@ -49,7 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         return null;
     }
-     // --- Inicia a agenda carregando tarefas e verificando login --- 
+
+    // --- Inicia a agenda carregando tarefas e verificando login --- 
     function initializeUser() {
         const user = getLoggedInUser();
         if (!user) {
@@ -59,17 +75,45 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         currentUserId = user.email.toLowerCase();
         tasks = getTasksFromStorage(currentUserId);
+
+        // Configura o tema
+        const savedTheme = localStorage.getItem('theme') || 'light-theme';
+        setTheme(savedTheme);
+
+        // Adiciona listener para o botão de tema
+        if (elements.themeToggleBtn) {
+            elements.themeToggleBtn.addEventListener('click', toggleTheme);
+        }
+
+        // Função para configurar os checkboxes
+        function setupCheckboxes() {
+            const checkboxes = document.querySelectorAll('.filtro-categoria');
+            if (checkboxes.length === 0) {
+                return;
+            }
+            checkboxes.forEach(checkbox => {
+                checkbox.removeEventListener('change', aplicarFiltroCategorias);
+                checkbox.addEventListener('change', aplicarFiltroCategorias);
+            });
+        }
+
+        // Configura os checkboxes imediatamente
+        setupCheckboxes();
+
+        // Tenta novamente após 1 segundo, caso o DOM seja carregado dinamicamente
+        setTimeout(setupCheckboxes, 1000);
+
+        // Renderiza o calendário inicialmente sem filtros
         renderMainCalendar();
+        renderMiniCalendar();
     }
 
     // --- Função de Logout ---
     function logout() {
         if (currentUserId) {
-            // Remove apenas a chave do usuário logado (ex.: teste1@gmail.com)
-            // Preserva as tarefas (tasks_${currentUserId}) e a lista de usuários (usuarios)
             localStorage.removeItem(currentUserId);
             currentUserId = null;
-            tasks = []; // Limpa as tarefas locais apenas para a sessão atual
+            tasks = [];
             alert('Logout realizado com sucesso!');
             window.location.href = '../login/index.html';
         }
@@ -137,7 +181,53 @@ document.addEventListener('DOMContentLoaded', () => {
         return `${day}/${month}`;
     }
 
-    function renderMainCalendar() {
+    function updateCurrentHourLine() {
+        const today = new Date();
+        const currentHour = today.getHours();
+        const currentMinutes = today.getMinutes();
+        const isTodayInView = document.querySelector('.today-header');
+
+        // Remove linhas existentes
+        document.querySelectorAll('.current-hour-line').forEach(line => line.remove());
+
+        if (!isTodayInView) return;
+
+        // Encontra a coluna do dia atual
+        const dayHeaders = document.querySelectorAll('.day-header');
+        let todayColumnIndex = -1;
+        dayHeaders.forEach((header, index) => {
+            if (header.classList.contains('today-header')) {
+                todayColumnIndex = index;
+            }
+        });
+
+        if (todayColumnIndex === -1) return;
+
+        // Encontra a célula da hora atual na coluna do dia atual
+        const cells = document.querySelectorAll('.cell');
+        const cellIndex = currentHour * 7 + todayColumnIndex; // 7 células por linha (uma por dia)
+        const targetCell = cells[cellIndex];
+        if (!targetCell) return;
+
+        const cellRect = targetCell.getBoundingClientRect();
+        const calendarRect = elements.calendarGrid.getBoundingClientRect();
+        const cellHeight = cellRect.height;
+        const minutesFraction = currentMinutes / 60;
+        const lineOffset = minutesFraction * cellHeight;
+
+        // Cria a linha
+        const line = document.createElement('div');
+        line.classList.add('current-hour-line');
+
+        // Posiciona a linha
+        line.style.top = `${cellRect.top - calendarRect.top + lineOffset}px`;
+        line.style.left = `${cellRect.left - calendarRect.left}px`;
+        line.style.width = `${cellRect.width}px`;
+
+        elements.calendarGrid.appendChild(line);
+    }
+
+    function renderMainCalendar(filteredTasks = null) {
         const today = new Date();
         const currentHour = today.getHours();
         const daysOfWeekShort = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
@@ -196,14 +286,26 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        tasks.forEach(task => {
-            const cell = elements.calendarGrid.querySelector(`.cell[data-date="${task.date}"]`);
+        const tasksToRender = filteredTasks || tasks;
+
+        tasksToRender.forEach(task => {
+            const taskDate = new Date(task.startTime);
+            const cell = Array.from(elements.calendarGrid.querySelectorAll('.cell')).find(cell => {
+                const cellDate = new Date(cell.getAttribute('data-date'));
+                return (
+                    cellDate.getFullYear() === taskDate.getFullYear() &&
+                    cellDate.getMonth() === taskDate.getMonth() &&
+                    cellDate.getDate() === taskDate.getDate() &&
+                    cellDate.getHours() === taskDate.getHours()
+                );
+            });
+
             if (cell) {
                 const label = document.createElement('div');
                 label.classList.add('event-label');
                 label.textContent = `${task.title} (${task.category}, P${task.priority})`;
                 label.addEventListener('click', (e) => {
-                    e.stopPropagation(); // Impede que o clique também dispare o editor da célula
+                    e.stopPropagation();
                     openTaskEditor(cell, task);
                 });
                 cell.appendChild(label);
@@ -213,86 +315,221 @@ document.addEventListener('DOMContentLoaded', () => {
         const lastDayOfWeek = new Date(firstDayOfWeek);
         lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
         elements.weekRangeDisplay.textContent = `${formatDate(firstDayOfWeek)} - ${formatDate(lastDayOfWeek)}`;
+
+        // Atualiza a linha da hora atual
+        updateCurrentHourLine();
+
+        // Configura intervalo para atualizar a linha a cada minuto
+        if (currentHourLineInterval) {
+            clearInterval(currentHourLineInterval);
+        }
+        currentHourLineInterval = setInterval(updateCurrentHourLine, 60000);
+
+        // Adiciona listener para redimensionamento
+        window.removeEventListener('resize', updateCurrentHourLine); // Evita duplicatas
+        window.addEventListener('resize', updateCurrentHourLine);
+    }
+
+    // --- Função de Filtragem ---
+    function aplicarFiltroCategorias() {
+        const user = getLoggedInUser();
+        if (!user) {
+            alert('Nenhum usuário logado.');
+            return;
+        }
+
+        const userId = user.email.toLowerCase();
+        const todasTarefas = getTasksFromStorage(userId);
+
+        const checkboxes = document.querySelectorAll('.filtro-categoria');
+        const filtrosAtivos = Array.from(checkboxes)
+            .filter(cb => cb.checked)
+            .map(cb => cb.dataset.category.toLowerCase());
+
+        const tarefasFiltradas = filtrosAtivos.length === 0
+            ? todasTarefas
+            : todasTarefas.filter(tarefa => {
+                const category = tarefa.category ? tarefa.category.toLowerCase() : '';
+                return filtrosAtivos.includes(category);
+            });
+
+        renderMainCalendar(tarefasFiltradas);
+    }
+
+    // --- Painel de Resumo --- 
+    const abrirBtn = document.getElementById('abrirResumo');
+    const fecharBtn = document.getElementById('fecharModal');
+    const modal = document.getElementById('modalResumo');
+    const lista = document.getElementById('listaTarefasHoje');
+
+    if (abrirBtn && fecharBtn && modal && lista) {
+        abrirBtn.addEventListener('click', () => {
+            const user = getLoggedInUser();
+            if (!user) return;
+
+            const userId = user.email.toLowerCase();
+            const tasks = JSON.parse(localStorage.getItem(`tasks_${userId}`)) || [];
+
+            const hoje = new Date().toISOString().split('T')[0];
+            const tarefasHoje = tasks.filter(t => {
+                if (!t.date) return false;
+                const dataTarefa = new Date(t.date);
+                const hojeData = new Date();
+                return (
+                    dataTarefa.getFullYear() === hojeData.getFullYear() &&
+                    dataTarefa.getMonth() === hojeData.getMonth() &&
+                    dataTarefa.getDate() === hojeData.getDate()
+                );
+            });
+
+            lista.innerHTML = '';
+
+            if (tarefasHoje.length === 0) {
+                lista.innerHTML = '<li>Nenhuma tarefa para hoje.</li>';
+            } else {
+                tarefasHoje.forEach(t => {
+                    const li = document.createElement('li');
+                    const inicio = t.startTime?.substring(11, 16) || '??:??';
+                    const fim = t.endTime?.substring(11, 16) || '??:??';
+                    li.textContent = `${t.title} (${inicio} - ${fim})`;
+                    lista.appendChild(li);
+                });
+            }
+
+            modal.style.display = 'block';
+        });
+
+        fecharBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    }
+
+    // --- Menu Configurações ---
+    const btnConfig = Array.from(document.querySelectorAll('button'))
+        .find(btn => btn.querySelector('i')?.textContent.trim() === 'settings');
+
+    const menuConfig = document.getElementById('menuConfiguracoes');
+    const btnAlterarSenha = document.getElementById('alterar-senha');
+    const btnNotificacoes = document.getElementById('config-notificacoes');
+
+    if (btnConfig && menuConfig) {
+        btnConfig.addEventListener('click', () => {
+            menuConfig.classList.toggle('hidden');
+        });
+    }
+
+    if (btnAlterarSenha) {
+        btnAlterarSenha.addEventListener('click', () => {
+            window.location.href = '../AlterarSenha/index.html';
+        });
+    }
+
+    if (btnNotificacoes) {
+        btnNotificacoes.addEventListener('click', () => {
+            window.location.href = '../Notificações/index.html';
+        });
+    }
+
+    // --- Redefinir Agenda ---
+    const btnRedefinirAgenda = document.getElementById('redefinir-agenda');
+
+    if (btnRedefinirAgenda) {
+        btnRedefinirAgenda.addEventListener('click', () => {
+            const user = getLoggedInUser();
+            if (!user) {
+                alert('Nenhum usuário logado.');
+                return;
+            }
+
+            const confirmacao = confirm('Tem certeza que deseja redefinir sua agenda? Isso apagará todas as tarefas.');
+            if (!confirmacao) return;
+
+            const userId = user.email.toLowerCase();
+            localStorage.removeItem(`tasks_${userId}`);
+
+            alert('Agenda redefinida com sucesso!');
+            location.reload();
+        });
     }
 
     // --- Editor de Tarefas ---
-function openTaskEditor(cell, task = null) {
-    activeCell = cell;
-    const rect = cell.getBoundingClientRect();
-    elements.taskEditor.style.top = `${rect.bottom + window.scrollY + 5}px`;
-    elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
-    elements.taskEditor.classList.remove('hidden');
+    function openTaskEditor(cell, task = null) {
+        activeCell = cell;
+        const rect = cell.getBoundingClientRect();
+        elements.taskEditor.style.top = `${rect.bottom + window.scrollY + 5}px`;
+        elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
+        elements.taskEditor.classList.remove('hidden');
 
-    if (task) {
-        editingTaskIndex = tasks.findIndex(t =>
-            t.date === task.date &&
-            t.title === task.title &&
-            t.category === task.category &&
-            t.priority === task.priority
-        );
+        if (task) {
+            editingTaskIndex = tasks.findIndex(t =>
+                t.date === task.date &&
+                t.title === task.title &&
+                t.category === task.category &&
+                t.priority === task.priority
+            );
 
-        elements.taskTitle.value = task.title;
-        elements.startTime.value = task.startTime || '';
-        elements.endTime.value = task.endTime || '';
-        elements.taskCategory.value = task.category;
-        elements.taskPriority.value = task.priority;
+            elements.taskTitle.value = task.title;
+            elements.startTime.value = task.startTime || '';
+            elements.endTime.value = task.endTime || '';
+            elements.taskCategory.value = task.category;
+            elements.taskPriority.value = task.priority;
 
-        elements.addTaskBtn.classList.add('hidden');
-        elements.editTaskBtn.classList.remove('hidden');
-        elements.deleteTaskBtn.classList.remove('hidden');
-        elements.editPageTaskBtn.classList.remove('hidden'); // MOSTRA 
-    } else {
-        editingTaskIndex = null;
-        elements.taskTitle.value = '';
-        const cellDateStr = cell.getAttribute('data-date');
-        const clickedDate = new Date(cellDateStr);
-        const start = new Date(clickedDate);
-        const end = new Date(start.getTime() + 30 * 60000);
+            elements.addTaskBtn.classList.add('hidden');
+            elements.editTaskBtn.classList.remove('hidden');
+            elements.deleteTaskBtn.classList.remove('hidden');
+            elements.editPageTaskBtn.classList.remove('hidden');
+        } else {
+            editingTaskIndex = null;
+            elements.taskTitle.value = '';
+            const cellDateStr = cell.getAttribute('data-date');
+            const clickedDate = new Date(cellDateStr);
+            const start = new Date(clickedDate);
+            const end = new Date(start.getTime() + 30 * 60000);
 
-        const formatDateToInput = date => {
-            const pad = num => String(num).padStart(2, '0');
-            return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-        };
+            const formatDateToInput = date => {
+                const pad = num => String(num).padStart(2, '0');
+                return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+            };
 
-        elements.startTime.value = formatDateToInput(start);
-        elements.endTime.value = formatDateToInput(end);
-        elements.taskCategory.value = 'trabalho';
-        elements.taskPriority.value = '2';
+            elements.startTime.value = formatDateToInput(start);
+            elements.endTime.value = formatDateToInput(end);
+            elements.taskCategory.value = 'trabalho';
+            elements.taskPriority.value = '2';
 
-        elements.addTaskBtn.classList.remove('hidden'); 
-        elements.editTaskBtn.classList.add('hidden');
-        elements.deleteTaskBtn.classList.add('hidden'); // ESCONDE
-        elements.editPageTaskBtn.classList.add('hidden'); 
+            elements.addTaskBtn.classList.remove('hidden');
+            elements.editTaskBtn.classList.add('hidden');
+            elements.deleteTaskBtn.classList.add('hidden');
+            elements.editPageTaskBtn.classList.add('hidden');
         }
     }
-/* função começa editar e excluir */
-function updateTask() {
-    if (editingTaskIndex === null || !activeCell) return;
 
-    const title = elements.taskTitle.value.trim();
-    const updatedTask = {
-        date: activeCell.getAttribute('data-date'),
-        title,
-        category: elements.taskCategory.value,
-        priority: elements.taskPriority.value,
-        startTime: elements.startTime.value,
-        endTime: elements.endTime.value,
-    };
+    function updateTask() {
+        if (editingTaskIndex === null || !activeCell) return;
 
-    tasks[editingTaskIndex] = updatedTask;
-    saveTasksToStorage(currentUserId, tasks);
-    renderMainCalendar();
-    elements.taskEditor.classList.add('hidden');
-}
+        const title = elements.taskTitle.value.trim();
+        const updatedTask = {
+            date: activeCell.getAttribute('data-date'),
+            title,
+            category: elements.taskCategory.value || 'trabalho',
+            priority: elements.taskPriority.value,
+            startTime: elements.startTime.value,
+            endTime: elements.endTime.value,
+        };
 
-function deleteTask() {
-    if (editingTaskIndex === null) return;
-    tasks.splice(editingTaskIndex, 1);
-    saveTasksToStorage(currentUserId, tasks);
-    renderMainCalendar();
-    elements.taskEditor.classList.add('hidden');
-}
-/* função fim editar e excluir */
+        tasks[editingTaskIndex] = updatedTask;
+        saveTasksToStorage(currentUserId, tasks);
+        renderMainCalendar();
+        elements.taskEditor.classList.add('hidden');
+    }
+
+    function deleteTask() {
+        if (editingTaskIndex === null) return;
+        tasks.splice(editingTaskIndex, 1);
+        saveTasksToStorage(currentUserId, tasks);
+        renderMainCalendar();
+        elements.taskEditor.classList.add('hidden');
+    }
+
     function saveTask() {
         if (!currentUserId) {
             alert('Por favor, faça login para salvar tarefas.');
@@ -306,7 +543,7 @@ function deleteTask() {
         const task = {
             date: activeCell.getAttribute('data-date'),
             title,
-            category: elements.taskCategory.value,
+            category: elements.taskCategory.value || 'trabalho',
             priority: elements.taskPriority.value,
             startTime: elements.startTime.value,
             endTime: elements.endTime.value,
@@ -314,7 +551,7 @@ function deleteTask() {
 
         tasks.push(task);
         saveTasksToStorage(currentUserId, tasks);
-        renderMainCalendar(); // Atualiza todas as grids e adiciona os eventos
+        renderMainCalendar();
 
         const label = document.createElement('div');
         label.classList.add('event-label');
@@ -323,7 +560,28 @@ function deleteTask() {
 
         elements.taskEditor.classList.add('hidden');
     }
+    // -- dark theme --
+    const toggleBtn = document.getElementById('toggle-theme-btn');
 
+    toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-theme');
+    // Opcional: salvar a preferência no localStorage para manter o tema após reload
+    if(document.body.classList.contains('dark-theme')) {
+    localStorage.setItem('theme', 'dark');
+    } else {
+    localStorage.setItem('theme', 'light');
+    }
+    });
+
+    // Opcional: aplicar o tema salvo ao carregar a página
+    window.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+    document.body.classList.add('dark-theme');
+    } else {
+    document.body.classList.remove('dark-theme');
+    }
+    });
     // --- Eventos ---
     elements.miniPrevMonthBtn.addEventListener('click', () => changeMiniMonth(-1));
     elements.miniNextMonthBtn.addEventListener('click', () => changeMiniMonth(1));
@@ -348,41 +606,53 @@ function deleteTask() {
         elements.taskEditor.classList.add('hidden');
     });
 
-    // Evento de logout
     elements.logoutBtn = document.getElementById('logout-btn');
     if (elements.logoutBtn) {
         elements.logoutBtn.addEventListener('click', logout);
     }
+
     elements.editTaskBtn = document.getElementById('save-task');
     elements.deleteTaskBtn = document.getElementById('delete-task');
 
     elements.editTaskBtn.addEventListener('click', updateTask);
     elements.deleteTaskBtn.addEventListener('click', deleteTask);
-    
+
     const goToNewTaskBtn = document.getElementById('nova-tarefa');
     if (goToNewTaskBtn) {
         goToNewTaskBtn.addEventListener('click', () => {
             window.location.href = '../newtask/index.html';
         });
     }
-    elements.editPageTaskBtn.addEventListener('click', () => {
+
+    elements.editPageTaskBtn.addEventListener('click', () => {  
+        if (editingTaskIndex === null || !activeCell) return;
+
+        const date = activeCell.getAttribute('data-date');
+
+        const editReference = {
+            date,
+            index: editingTaskIndex
+        };
+
+        localStorage.setItem('editTaskReference', JSON.stringify(editReference));      
         window.location.href = '../newtask/index.html';
     });
+
     const profileButton = document.getElementById('botao-perfil');
     const profileDropdown = document.getElementById('perfil-dropdown');
-    // Alterna a visibilidade da caixa ao clicar no botão
-    profileButton.addEventListener('click', () => {
-        profileDropdown.classList.toggle('hidden');
-    });
 
-    // Fecha o menu se clicar fora dele
-    document.addEventListener('click', (event) => {
-        if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
-            profileDropdown.classList.add('hidden');
-        }
-    });
+    if (profileButton && profileDropdown) {
+        profileButton.addEventListener('click', () => {
+            profileDropdown.classList.toggle('hidden');
+        });
+
+        document.addEventListener('click', (event) => {
+            if (!profileButton.contains(event.target) && !profileDropdown.contains(event.target)) {
+                profileDropdown.classList.add('hidden');
+            }
+        });
+    }
 
     // --- Inicialização ---
     initializeUser();
-    renderMiniCalendar();
 });
