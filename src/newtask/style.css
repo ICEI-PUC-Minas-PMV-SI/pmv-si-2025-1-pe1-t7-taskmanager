@@ -71,7 +71,7 @@ body{ /*Estilo Fundo*/
   gap: 10px;
   margin: 1px 8px 8px;
 }
-  .form-group label, .form-group-desc label {
+  .form-group label, .form-group-desc label .form-group select{
   margin-bottom: 5px;
   font-weight: bold;
 }
@@ -86,6 +86,33 @@ body{ /*Estilo Fundo*/
   font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   background-color: #eee;
+}
+#prioridade, #categoria{ /* caixa selecao prioridade */
+  background-color: #eee;
+  border: 0px;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+.camposelec{ /* caixa selecao prioridade */
+  min-width:15%;
+  margin-top: 6px;
+  padding: 4px;
+  border: none;
+  box-shadow: 0 0 5px #bdc1c4;
+  border-radius: 10px;
+  background-color: #eee;
+  color: #000000;
+}
+.campocat{
+  min-width: 9%;
+  margin-top: 6px;
+  padding: 4px;
+  border: none;
+  box-shadow: 0 0 5px #bdc1c4;
+  border-radius: 10px;
+  background-color: #eee;
+  color: #000000;
 }
 .botoes{  /*todos botoes*/
   display: flex;
@@ -107,7 +134,42 @@ body{ /*Estilo Fundo*/
   font-size: 16px;
   box-shadow: 0 0 5px #bdc1c4;
 }
-@media screen and (max-width:1300px){  /*trem responsivo*/
+.excluir:hover, .btncanc:hover, .btnconf:hover {
+  background-color: #7B83EB;
+}
+
+.form-group input:hover{
+    background-color: #dfdfdf;
+
+}
+@media screen and (max-width:1300px){  /*trem responsivo grande*/
+  .caixaprincipal{
+    width: 75%;
+  }
+  .campo-row {
+    max-width: 95%;
+    display: flex;
+    gap: 1px;
+    margin: 10px 1px 8px;
+
+}
+.campo{
+  max-width: 75%;
+  margin-bottom: 10px;
+  margin: 10px 8px 8px;
+  padding: 10px;
+  border: none;
+  border-radius: 6px;
+}
+.campodesc{
+  max-width: 88%;
+  margin: 8px 8px 8px;
+}
+.excluir, .btnconf, .btncanc {  /*botoes estilo*/
+  margin: 100px 8px 8px;
+}
+}
+@media screen and (max-width:850px){  /*trem responsivo*/
   .caixaprincipal{
     width: 95%;
   }
@@ -131,7 +193,7 @@ body{ /*Estilo Fundo*/
   margin: 8px 8px 8px;
 }
 .excluir, .btnconf, .btncanc {  /*botoes estilo*/
-  margin: 150px 8px 8px;
+  margin: 80px 8px 8px;
 }
 }
 @media screen and (max-width:600px){  /*trem responsivo*/
@@ -160,13 +222,4 @@ body{ /*Estilo Fundo*/
 .excluir, .btnconf, .btncanc {  /*botoes estilo*/
   margin: 150px 8px 8px;
 }
-}
-
-.excluir:hover, .btncanc:hover, .btnconf:hover {
-  background-color: #7B83EB;
-}
-
-.form-group input:hover{
-    background-color: #dfdfdf;
-
 }
