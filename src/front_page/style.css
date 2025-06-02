@@ -469,7 +469,7 @@ body.light-theme .day-header {
 
 /* ============================== Modo Escuro ============================== */
 body.dark-theme {
-    background-color: #7b83eb;
+    background-color: #4B4947;
     color: #ffffff;
 }
 
@@ -479,7 +479,7 @@ body.dark-theme .menu-box,
 body.dark-theme .task-editor,
 body.dark-theme .modal-content,
 body.dark-theme .dropdown {
-    background-color: #464eb8;
+    background-color: #4B4947;
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
@@ -517,7 +517,7 @@ body.dark-theme .task-editor label {
 body.dark-theme .task-editor input,
 body.dark-theme .task-editor select,
 body.dark-theme .task-editor textarea {
-    background: #5a62e0;
+    background: #4B4947;
     color: #ffffff;
     border-color: #ffffff;
 }
@@ -525,7 +525,7 @@ body.dark-theme .task-editor textarea {
 body.dark-theme .task-editor input:focus,
 body.dark-theme .task-editor select:focus,
 body.dark-theme .task-editor textarea:focus {
-    background: #6a72e8;
+    background: #4B4947;
     border-color: #ffffff;
 }
 
@@ -538,7 +538,7 @@ body.dark-theme .cell {
 
 body.dark-theme .time-slot,
 body.dark-theme .day-header {
-    background-color: #464eb8;
+    background-color: #4B4947;
 }
 
 body.dark-theme .event-label {

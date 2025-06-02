@@ -14,6 +14,7 @@
       root.setAttribute('data-theme', currentTheme === 'dark' ? 'light' : 'dark');
     }
   </script>
+  <script src="main.js"></script>
 </head>
 <body>
   <div class="container">
@@ -22,7 +23,7 @@
         <span class="material-icons">notifications</span>
         <span class="material-icons" onclick="toggleTheme()">contrast</span>
         <span class="material-icons">settings</span>
-        <span class="material-icons">account_circle</span>
+        <span class="material-icons" id="perfilIcone">account_circle</span>
       </div>
     </header>
     <main class="profile-box">
