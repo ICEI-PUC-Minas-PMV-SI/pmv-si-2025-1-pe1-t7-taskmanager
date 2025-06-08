@@ -745,7 +745,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (profileButton && profileDropdown) {
         profileButton.addEventListener('click', () => {
-            profileDropdown.classList.toggle('hidden');
+            if (!menuConfig.classList.contains('hidden')) {
+                menuConfig.classList.toggle('hidden');
+            }
+            profileDropdown.classList.toggle('hidden');                        
         });
 
         document.addEventListener('click', (event) => {
