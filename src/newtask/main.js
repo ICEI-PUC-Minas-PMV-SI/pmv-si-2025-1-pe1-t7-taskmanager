@@ -1,10 +1,4 @@
 
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.querySelector('form');
-
-    form.addEventListener('submit', function (event) {
-        event.preventDefault();
-
 // Função que retorna o usuário logado com base nos dados do localStorage
 function getLoggedInUser() {
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
@@ -16,6 +10,41 @@ function getLoggedInUser() {
     }
     return null;
 }
+
+function slugify(str) {
+    return str.toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '-');
+  }
+
+function renderCategorias(usuarioLogado) {
+    const select = document.getElementById('categoria');
+    if (!select) return;
+
+    const categoriasIniciais = ['Trabalho', 'Casa', 'Saúde', 'Pessoal', 'Outros'];
+  
+    const userData = JSON.parse(localStorage.getItem(usuarioLogado.email)) || { categorias: [] };
+    const categorias = userData.categorias || [];
+  
+    select.innerHTML = '';
+  
+    [...categoriasIniciais, ...categorias].forEach(categoria => {
+        const option = document.createElement('option');
+        option.value = slugify(categoria);
+        option.textContent = categoria;
+        select.appendChild(option);
+    });
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.querySelector('form');
+
+    const usuarioLogado = getLoggedInUser();
+    renderCategorias(usuarioLogado);
+
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
 // Função que obtém todas as tarefas do usuário
 function getTasksFromStorage(userId) {
     const tasksJson = localStorage.getItem(`tasks_${userId}`);
