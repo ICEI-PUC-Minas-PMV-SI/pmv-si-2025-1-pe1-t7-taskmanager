@@ -36,7 +36,7 @@
       </button>
       <div class="profile-menu">
         <button id="botao-perfil"> 
-          <i class="material-icons">account_circle</i>
+          <i class="material-icons" id="perfilIcone">account_circle</i>
         </button>
         <div id="perfil-dropdown" class="dropdown hidden">
           <a href="../profile/index.html">Editar perfil</a>
@@ -67,14 +67,8 @@
     <div class="menu-box">
     <div class="categories">
       <h4>FILTROS</h4>
-      <ul>
-          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="trabalho"> Trabalho</li>
-          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="casa"> Casa</li>
-          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="saude"> Saúde</li>
-          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="pessoal"> Pessoal</li>
-          <li class="category-item"><input type="checkbox" class="filtro-categoria" data-category="outros"> Outros</li>
-      </ul>
-    </div>
+      <ul id="category-list"></ul>
+    </div>  
     </div>
     </aside>
 
@@ -120,14 +114,8 @@
     </label>
     <label>
       Categoria:
-      <select id="task-category">
-        <option value="trabalho">Trabalho</option>
-        <option value="casa">Casa</option>
-        <option value="saude">Saúde</option>
-        <option value="pessoal">Pessoal</option>
-        <option value="outros">Outros</option>
-      </select>
-    </label>
+      <select id="task-category"></select>
+    </label>    
     <label>
       Prioridade:
       <select id="task-priority">

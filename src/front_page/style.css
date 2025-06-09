@@ -164,6 +164,36 @@ body {
     background-color: #f0f0f0;
 }
 
+.add-category-item {
+    display: flex;
+    gap: 0.25em;
+}
+
+.new-category-input {
+    border: none;
+    border-bottom: 1px solid #555;
+    outline: none;
+    width: 75%;
+    background-color: transparent;
+}
+
+.add-category-icon {
+    font-size: 20px;
+}
+
+.created-categories {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.delete-category {
+    color: #e63946;
+    cursor: pointer;
+    font-size: 20px;
+}
+
 /* ============================== Calendário ============================== */
 .calendar-container {
     flex: 1;
@@ -265,7 +295,7 @@ body {
 }
 
 .event-label:hover {
-    background-color: #7b8eb;
+    background-color: #7b83eb;
 }
 
 .current-hour-line {
@@ -569,6 +599,10 @@ body.dark-theme .category-item:hover {
 
 body.dark-theme .arrow:hover {
     background-color: #5a62e0;
+}
+
+body.dark-theme .new-category-input {
+    color: white;
 }
 
 /* ================================ */

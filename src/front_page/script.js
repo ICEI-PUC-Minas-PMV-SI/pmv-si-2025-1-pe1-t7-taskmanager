@@ -67,6 +67,27 @@ document.addEventListener('DOMContentLoaded', () => {
         return null;
     }
 
+    // --- Busca a imagem do usuario ---
+    function getUserImage() {
+        const perfilIcone = document.getElementById('perfilIcone');
+        const usuarioLogado = JSON.parse(localStorage.getItem(currentUserId));
+
+        if (usuarioLogado?.perfil?.imagem) {
+            const img = document.createElement('img');
+            img.src = usuarioLogado.perfil.imagem;
+            img.alt = 'Perfil';
+            img.style.width = '26px';
+            img.style.height = '26px';
+            img.style.borderRadius = '50%';
+            img.style.objectFit = 'cover';
+            img.style.cursor = 'pointer';
+            img.style.border = '1.5px solid #ccc';
+
+            perfilIcone.replaceWith(img);
+        }
+    }
+
+
     // --- Inicia a agenda carregando tarefas e verificando login --- 
     function initializeUser() {
         const user = getLoggedInUser();
@@ -99,6 +120,13 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        // Configura as categorias dinamicamente
+        renderCategorias();
+        renderCategoriasSelect();
+
+        // Configura a imagem do usuario
+        getUserImage();
+
         // Configura os checkboxes imediatamente
         setupCheckboxes();
 
@@ -127,6 +155,135 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('Logout realizado com sucesso!');
             window.location.href = '../login/index.html';
         }
+    }
+
+    // --- Categorias ----
+
+    function slugify(str) {
+        return str.toLowerCase()
+            .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+            .replace(/\s+/g, '-');
+    }
+
+    function criarCategoriaLi(nome) {
+        const slug = slugify(nome);
+        const li = document.createElement('li');
+        li.className = 'category-item';
+        li.innerHTML = `<input type="checkbox" class="filtro-categoria" data-category="${slug}"> ${nome}`;
+        return li;
+    }
+
+    function renderCategorias() {
+        const categoriasIniciais = ['Trabalho', 'Casa', 'Saúde', 'Pessoal', 'Outros'];
+        const categoryList = document.getElementById('category-list');
+
+        categoryList.innerHTML = '';
+  
+        const userData = JSON.parse(localStorage.getItem(currentUserId));
+        const categorias = userData?.categorias || [];
+    
+        categoriasIniciais.forEach(nome => {
+            const slug = slugify(nome);
+            const li = criarCategoriaLi(nome, slug);
+            categoryList.appendChild(li);
+        });
+
+        categorias.forEach(nome => {
+          const li = criarCategoriaLi(nome);
+          const slug = slugify(nome);
+          li.className = 'category-item';
+          li.innerHTML = `<div class="created-categories"><span>
+            <input type="checkbox" class="filtro-categoria" data-category="${slug}"> ${nome}</span>
+            <i class="material-icons delete-category" title="Excluir">delete</i></div>`;
+
+          categoryList.appendChild(li);
+
+          const deleteIcon = li.querySelector('.delete-category');
+          deleteIcon.addEventListener('click', () => {
+              if (confirm(`Deseja realmente excluir a categoria "${nome}"?`)) {
+                  const novaLista = categorias.filter(c => c !== nome);
+                  userData.categorias = novaLista;
+                  localStorage.setItem(currentUserId, JSON.stringify(userData));
+  
+                  const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                  const index = usuarios.findIndex(user => user.email === currentUserId);
+                  if (index !== -1) {
+                      usuarios[index] = userData;
+                      localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                  }
+  
+                  renderCategorias();
+              }
+          });
+        });
+  
+        const liInput = document.createElement('li');
+        liInput.className = 'add-category-item category-item';
+        liInput.innerHTML = `
+          <i class="material-icons add-category-icon" id="add-icon">add_circle</i>
+          <input type="text" class="new-category-input" id="new-category-input" placeholder="Nova categoria">
+        `;  
+        categoryList.appendChild(liInput);
+
+        const addIcon = document.getElementById('add-icon');
+        const newCategoryInput = document.getElementById('new-category-input');
+  
+        function adicionarCategoria() {
+            const nome = newCategoryInput.value.trim();
+            if (!nome) return;
+
+            const slug = slugify(nome);
+            const existe = categorias.some(c => slugify(c) === slug);
+            if (existe) {
+                alert('Essa categoria já existe.');
+                return;
+            }
+
+            categorias.push(nome);
+            userData.categorias = categorias;
+            localStorage.setItem(currentUserId, JSON.stringify(userData));
+
+            console.log(categorias)
+            console.log(userData)
+            
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            console.log(usuarios)
+
+            const index = usuarios.findIndex(user => user.email === currentUserId);
+            console.log(index)
+            if (index !== -1) {
+                usuarios[index] = userData;
+                localStorage.setItem('usuarios', JSON.stringify(usuarios));
+            }
+
+            renderCategorias();                         
+        }
+  
+        addIcon.addEventListener('click', adicionarCategoria);
+        newCategoryInput.addEventListener('keydown', e => {
+          if (e.key === 'Enter') {
+            adicionarCategoria();
+          }
+        });
+    }
+
+    function renderCategoriasSelect() {
+        const select = document.getElementById('task-category');
+        if (!select) return;
+
+        const categoriasIniciais = ['Trabalho', 'Casa', 'Saúde', 'Pessoal', 'Outros'];
+      
+        const userData = JSON.parse(localStorage.getItem(currentUserId)) || { categorias: [] };
+        const categorias = userData.categorias || [];
+      
+        select.innerHTML = '';
+      
+        [...categoriasIniciais, ...categorias].forEach(categoria => {
+            const option = document.createElement('option');
+            option.value = slugify(categoria);
+            option.textContent = categoria;
+            select.appendChild(option);
+        });
     }
 
     // --- Mini-Calendário ---
