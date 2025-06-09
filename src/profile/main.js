@@ -1,17 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const savedTheme = localStorage.getItem('theme') || 'light-theme';
+
+    document.body.classList.remove('light-theme', 'dark-theme');
+    document.body.classList.add(savedTheme);
+    localStorage.setItem('theme', savedTheme);
+
+
     const fileInput = document.getElementById('fileInput');
     const botaoConfirmar = document.querySelector('.confirm');
     const botaoCancelar = document.querySelector('.cancel');
     const imagePlaceholder = document.querySelector('.image-placeholder');
 
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    const usuarioLogado = JSON.parse(localStorage.getItem('usuarioLogado'));
+    const usuarioLogado = getLoggedInUser();
+
+    function getLoggedInUser() {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        for (const user of usuarios) {
+            const userData = localStorage.getItem(user.email);
+            if (userData) {
+                return JSON.parse(userData);
+            }
+        }
+        return null;
+    }
 
     if (!usuarioLogado) {
         alert('Nenhum usuário logado!');
         window.location.href = '../login/index.html';
         return;
     }
+
 
     document.querySelector('input[name="email"]').value = usuarioLogado.email;
 
@@ -70,7 +89,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         usuarioLogado.perfil = perfil;
 
-        localStorage.setItem('usuarioLogado', JSON.stringify(usuarioLogado));
+        localStorage.setItem(usuarioLogado.email, JSON.stringify(usuarioLogado));
 
         const index = usuarios.findIndex(user => user.email === usuarioLogado.email);
 
@@ -80,26 +99,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         alert('Perfil atualizado com sucesso!');
+
+        window.location.href = '../front_page/index.html';
     });
 
     botaoCancelar.addEventListener('click', () => {
         window.location.href = '../front_page/index.html';
     });
-
-    const perfilIcone = document.getElementById('perfilIcone');
-
-    if (usuarioLogado?.perfil?.imagem) {
-        const img = document.createElement('img');
-        img.src = usuarioLogado.perfil.imagem;
-        img.alt = 'Perfil';
-        img.style.width = '40px';
-        img.style.height = '40px';
-        img.style.borderRadius = '50%';
-        img.style.objectFit = 'cover';
-        img.style.cursor = 'pointer';
-        img.style.border = '1.5px solid #ccc';
-
-        perfilIcone.replaceWith(img);
-    }
 });
   
