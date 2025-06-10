@@ -320,7 +320,7 @@ body {
 }
 
 .week-range {
-    font-size: 14px;
+    font-size: 32px;
     transition: color 0.3s;
 }
 
@@ -376,16 +376,6 @@ body {
 
 .hidden {
     display: none;
-}
-.dropdown a {
-    display: block;
-    color: rgb(51, 51, 51);
-    padding: 8px 12px;
-    text-decoration: none;
-}
-.dropdown a:hover {
-    color: rgb(30, 30, 30); /* cor mais escura */
-    background-color: #eee; /* opcional, para um fundo claro ao passar o mouse */
 }
 /* ============================== Modal ============================== */
 .modal {
@@ -496,10 +486,40 @@ body.light-theme .time-slot,
 body.light-theme .day-header {
     background-color: #f0f0f0;
 }
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+.dropdown a {
+    display: block;
+    color: #333333;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-weight: normal;
+    background-color: transparent;
+    border-radius: 0;
+}
+.dropdown a:hover {
+    color: #1e1e1e;
+    background-color: #eeeeee;
+}
 
 /* ============================== Modo Escuro ============================== */
 body.dark-theme {
-    background-color: #4B4947;
+    background-color: #2e2e2e;
     color: #ffffff;
 }
 
@@ -604,7 +624,15 @@ body.dark-theme .arrow:hover {
 body.dark-theme .new-category-input {
     color: white;
 }
+body.dark-theme .dropdown a {
+    color: #e0e0e0;
+    background-color: transparent;
+}
 
+body.dark-theme .dropdown a:hover {
+    color: #ffffff;
+    background-color: #f0f0f0;
+}
 /* ================================ */
 /* Estilo da caixa de tarefas */
 .task-editor {

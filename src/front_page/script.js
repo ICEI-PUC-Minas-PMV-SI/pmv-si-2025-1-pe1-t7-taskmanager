@@ -928,7 +928,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Aplica o tema salvo ao carregar a página
+    // Aplica o tema salvo(dark/light) ao carregar a página
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark-theme') {
         document.body.classList.add('dark-theme');
