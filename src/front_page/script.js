@@ -7,8 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentUserId = null;
     let editingTaskIndex = null;    
     let currentHourLineInterval = null;
-    let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true'; // Persistir estado
-    let notificationTimeouts = []; // Armazena IDs dos setTimeout
+    let notificationsEnabled = localStorage.getItem('notificationsEnabled') === 'true';
+    let notificationTimeouts = [];
 
     // Elementos do DOM
     const elements = {
@@ -26,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
         endTime: document.getElementById('end-time'),
         taskCategory: document.getElementById('task-category'),
         taskPriority: document.getElementById('task-priority'),
+        taskRecurrence: document.getElementById('task-recurrence'),
         addTaskBtn: document.getElementById('add-task'),
         cancelTaskBtn: document.getElementById('cancel-task'),
         logoutBtn: document.getElementById('logout-btn'),        
@@ -82,11 +83,56 @@ document.addEventListener('DOMContentLoaded', () => {
             img.style.objectFit = 'cover';
             img.style.cursor = 'pointer';
             img.style.border = '1.5px solid #ccc';
-
             perfilIcone.replaceWith(img);
         }
     }
 
+    // --- Função para gerar datas recorrentes ---
+    function generateRecurringDates(startDate, recurrence, limitDate) {
+        const dates = [];
+        let currentDate = new Date(startDate);
+        const originalDay = startDate.getDate();
+
+        while (currentDate <= limitDate) {
+            dates.push(new Date(currentDate));
+            if (recurrence === 'diaria') {
+                currentDate.setDate(currentDate.getDate() + 1);
+            } else if (recurrence === 'semanal') {
+                currentDate.setDate(currentDate.getDate() + 7);
+            } else if (recurrence === 'mensal') {
+                // Avança o mês
+                const nextMonth = currentDate.getMonth() + 1;
+                currentDate.setMonth(nextMonth, 1); // vai para o primeiro dia do próximo mês
+                // Tenta setar o dia original
+                const daysInMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0).getDate();
+                currentDate.setDate(Math.min(originalDay, daysInMonth));
+            } else {
+                break;
+            }
+        }
+        return dates;
+    }
+
+    // --- Popula o campo de recorrência ---
+    function renderRecorrencia() {
+        const select = elements.taskRecurrence;
+        if (!select) return;
+
+        const opcoesRecorrencia = [
+            { value: 'nenhuma', text: 'Nenhuma' },
+            { value: 'diaria', text: 'Diária' },
+            { value: 'semanal', text: 'Semanal' },
+            { value: 'mensal', text: 'Mensal' }
+        ];
+
+        select.innerHTML = '';
+        opcoesRecorrencia.forEach(opcao => {
+            const option = document.createElement('option');
+            option.value = opcao.value;
+            option.textContent = opcao.text;
+            select.appendChild(option);
+        });
+    }
 
     // --- Inicia a agenda carregando tarefas e verificando login --- 
     function initializeUser() {
@@ -99,50 +145,35 @@ document.addEventListener('DOMContentLoaded', () => {
         currentUserId = user.email.toLowerCase();
         tasks = getTasksFromStorage(currentUserId);
 
-        // Configura o tema
         const savedTheme = localStorage.getItem('theme') || 'light-theme';
         setTheme(savedTheme);
 
-        // Adiciona listener para o botão de tema
         if (elements.themeToggleBtn) {
             elements.themeToggleBtn.addEventListener('click', toggleTheme);
         }
 
-        // Função para configurar os checkboxes
         function setupCheckboxes() {
             const checkboxes = document.querySelectorAll('.filtro-categoria');
-            if (checkboxes.length === 0) {
-                return;
-            }
+            if (checkboxes.length === 0) return;
             checkboxes.forEach(checkbox => {
                 checkbox.removeEventListener('change', aplicarFiltroCategorias);
                 checkbox.addEventListener('change', aplicarFiltroCategorias);
             });
         }
 
-        // Configura as categorias dinamicamente
         renderCategorias();
         renderCategoriasSelect();
-
-        // Configura a imagem do usuario
+        renderRecorrencia();
         getUserImage();
-
-        // Configura os checkboxes imediatamente
         setupCheckboxes();
-
-        // Tenta novamente após 1 segundo, caso o DOM seja carregado dinamicamente
         setTimeout(setupCheckboxes, 1000);
-
-        // Renderiza o calendário inicialmente sem filtros
         renderMainCalendar();
         renderMiniCalendar();
 
-        // Agenda notificações para tarefas existentes, se habilitadas
         if (notificationsEnabled) {
             pedirPermissaoNotificacoes().then(() => agendarNotificacoesParaHoje());
         }
 
-        // Define o ícone inicial
         toggleNotificationIcon();
     }
 
@@ -158,7 +189,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Categorias ----
-
     function slugify(str) {
         return str.toLowerCase()
             .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
@@ -176,7 +206,6 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderCategorias() {
         const categoriasIniciais = ['Trabalho', 'Casa', 'Saúde', 'Pessoal', 'Outros'];
         const categoryList = document.getElementById('category-list');
-
         categoryList.innerHTML = '';
   
         const userData = JSON.parse(localStorage.getItem(currentUserId));
@@ -189,39 +218,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         categorias.forEach(nome => {
-          const li = criarCategoriaLi(nome);
-          const slug = slugify(nome);
-          li.className = 'category-item';
-          li.innerHTML = `<div class="created-categories"><span>
-            <input type="checkbox" class="filtro-categoria" data-category="${slug}"> ${nome}</span>
-            <i class="material-icons delete-category" title="Excluir">delete</i></div>`;
+            const li = criarCategoriaLi(nome);
+            const slug = slugify(nome);
+            li.className = 'category-item';
+            li.innerHTML = `<div class="created-categories"><span>
+                <input type="checkbox" class="filtro-categoria" data-category="${slug}"> ${nome}</span>
+                <i class="material-icons delete-category" title="Excluir">delete</i></div>`;
 
-          categoryList.appendChild(li);
+            categoryList.appendChild(li);
 
-          const deleteIcon = li.querySelector('.delete-category');
-          deleteIcon.addEventListener('click', () => {
-              if (confirm(`Deseja realmente excluir a categoria "${nome}"?`)) {
-                  const novaLista = categorias.filter(c => c !== nome);
-                  userData.categorias = novaLista;
-                  localStorage.setItem(currentUserId, JSON.stringify(userData));
+            const deleteIcon = li.querySelector('.delete-category');
+            deleteIcon.addEventListener('click', () => {
+                if (confirm(`Deseja realmente excluir a categoria "${nome}"?`)) {
+                    const novaLista = categorias.filter(c => c !== nome);
+                    userData.categorias = novaLista;
+                    localStorage.setItem(currentUserId, JSON.stringify(userData));
   
-                  const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-                  const index = usuarios.findIndex(user => user.email === currentUserId);
-                  if (index !== -1) {
-                      usuarios[index] = userData;
-                      localStorage.setItem('usuarios', JSON.stringify(usuarios));
-                  }
+                    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+                    const index = usuarios.findIndex(user => user.email === currentUserId);
+                    if (index !== -1) {
+                        usuarios[index] = userData;
+                        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+                    }
   
-                  renderCategorias();
-              }
-          });
+                    renderCategorias();
+                }
+            });
         });
   
         const liInput = document.createElement('li');
         liInput.className = 'add-category-item category-item';
         liInput.innerHTML = `
-          <i class="material-icons add-category-icon" id="add-icon">add_circle</i>
-          <input type="text" class="new-category-input" id="new-category-input" placeholder="Nova categoria">
+            <i class="material-icons add-category-icon" id="add-icon">add_circle</i>
+            <input type="text" class="new-category-input" id="new-category-input" placeholder="Nova categoria">
         `;  
         categoryList.appendChild(liInput);
 
@@ -242,15 +271,9 @@ document.addEventListener('DOMContentLoaded', () => {
             categorias.push(nome);
             userData.categorias = categorias;
             localStorage.setItem(currentUserId, JSON.stringify(userData));
-
-            console.log(categorias)
-            console.log(userData)
             
             const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-            console.log(usuarios)
-
             const index = usuarios.findIndex(user => user.email === currentUserId);
-            console.log(index)
             if (index !== -1) {
                 usuarios[index] = userData;
                 localStorage.setItem('usuarios', JSON.stringify(usuarios));
@@ -261,9 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
   
         addIcon.addEventListener('click', adicionarCategoria);
         newCategoryInput.addEventListener('keydown', e => {
-          if (e.key === 'Enter') {
-            adicionarCategoria();
-          }
+            if (e.key === 'Enter') {
+                adicionarCategoria();
+            }
         });
     }
 
@@ -272,7 +295,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!select) return;
 
         const categoriasIniciais = ['Trabalho', 'Casa', 'Saúde', 'Pessoal', 'Outros'];
-      
         const userData = JSON.parse(localStorage.getItem(currentUserId)) || { categorias: [] };
         const categorias = userData.categorias || [];
       
@@ -354,12 +376,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentMinutes = today.getMinutes();
         const isTodayInView = document.querySelector('.today-header');
 
-        // Remove linhas existentes
         document.querySelectorAll('.current-hour-line').forEach(line => line.remove());
 
         if (!isTodayInView) return;
 
-        // Encontra a coluna do dia atual
         const dayHeaders = document.querySelectorAll('.day-header');
         let todayColumnIndex = -1;
         dayHeaders.forEach((header, index) => {
@@ -370,9 +390,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (todayColumnIndex === -1) return;
 
-        // Encontra a célula da hora atual na coluna do dia atual
         const cells = document.querySelectorAll('.cell');
-        const cellIndex = currentHour * 7 + todayColumnIndex; // 7 células por linha (uma por dia)
+        const cellIndex = currentHour * 7 + todayColumnIndex;
         const targetCell = cells[cellIndex];
         if (!targetCell) return;
 
@@ -382,11 +401,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const minutesFraction = currentMinutes / 60;
         const lineOffset = minutesFraction * cellHeight;
 
-        // Cria a linha
         const line = document.createElement('div');
         line.classList.add('current-hour-line');
-
-        // Posiciona a linha
         line.style.top = `${cellRect.top - calendarRect.top + lineOffset}px`;
         line.style.left = `${cellRect.left - calendarRect.left}px`;
         line.style.width = `${cellRect.width}px`;
@@ -483,17 +499,12 @@ document.addEventListener('DOMContentLoaded', () => {
         lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
         elements.weekRangeDisplay.textContent = `${formatDate(firstDayOfWeek)} - ${formatDate(lastDayOfWeek)}`;
 
-        // Atualiza a linha da hora atual
         updateCurrentHourLine();
-
-        // Configura intervalo para atualizar a linha a cada minuto
         if (currentHourLineInterval) {
             clearInterval(currentHourLineInterval);
         }
         currentHourLineInterval = setInterval(updateCurrentHourLine, 60000);
-
-        // Adiciona listener para redimensionamento
-        window.removeEventListener('resize', updateCurrentHourLine); // Evita duplicatas
+        window.removeEventListener('resize', updateCurrentHourLine);
         window.addEventListener('resize', updateCurrentHourLine);
     }
 
@@ -613,7 +624,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const userId = user.email.toLowerCase();
             localStorage.removeItem(`tasks_${userId}`);
-            desativarNotificacoes(); // Desativa notificações ao redefinir agenda
+            desativarNotificacoes();
             alert('Agenda redefinida com sucesso!');
             location.reload();
         });
@@ -623,12 +634,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const btnAtivarNotificacoes = document.querySelector('#ativar-notificacoes');
 
     if (btnAtivarNotificacoes) {
-        // Define o ícone inicial
         toggleNotificationIcon();
         btnAtivarNotificacoes.addEventListener('click', () => {
             console.log('Botão de notificações clicado, estado atual:', notificationsEnabled);
-            notificationsEnabled = !notificationsEnabled; // Alterna o estado
-            localStorage.setItem('notificationsEnabled', notificationsEnabled); // Persiste o estado
+            notificationsEnabled = !notificationsEnabled;
+            localStorage.setItem('notificationsEnabled', notificationsEnabled);
             if (notificationsEnabled) {
                 pedirPermissaoNotificacoes().then(() => {
                     agendarNotificacoesParaHoje();
@@ -739,11 +749,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 t.priority === task.priority
             );
 
-            elements.taskTitle.value = task.title;
-            elements.startTime.value = task.startTime || '';
-            elements.endTime.value = task.endTime || '';
-            elements.taskCategory.value = task.category;
-            elements.taskPriority.value = task.priority;
+            elements.taskTitle.value = task.title || '';
+            elements.startTime.value = task.startTime ? task.startTime.slice(0, 16) : '';
+            elements.endTime.value = task.endTime ? task.endTime.slice(0, 16) : '';
+            elements.taskCategory.value = task.category || 'trabalho';
+            elements.taskPriority.value = task.priority || '2';
+            if (elements.taskRecurrence) {
+                elements.taskRecurrence.value = task.recurrence || 'nenhuma';
+            }
 
             elements.addTaskBtn.classList.add('hidden');
             elements.editTaskBtn.classList.remove('hidden');
@@ -766,6 +779,9 @@ document.addEventListener('DOMContentLoaded', () => {
             elements.endTime.value = formatDateToInput(end);
             elements.taskCategory.value = 'trabalho';
             elements.taskPriority.value = '2';
+            if (elements.taskRecurrence) {
+                elements.taskRecurrence.value = 'nenhuma';
+            }
 
             elements.addTaskBtn.classList.remove('hidden');
             elements.editTaskBtn.classList.add('hidden');
@@ -778,24 +794,89 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editingTaskIndex === null || !activeCell) return;
 
         const title = elements.taskTitle.value.trim();
-        const updatedTask = {
-            date: activeCell.getAttribute('data-date'),
-            title,
-            category: elements.taskCategory.value || 'trabalho',
-            priority: elements.taskPriority.value,
-            startTime: elements.startTime.value,
-            endTime: elements.endTime.value,
-        };
+        if (!title) {
+            alert('O título da tarefa é obrigatório.');
+            return;
+        }
 
-        tasks[editingTaskIndex] = updatedTask;
+        const startTime = elements.startTime.value;
+        const endTime = elements.endTime.value;
+        const startDate = new Date(startTime);
+        const endDate = new Date(endTime);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            alert('Data/hora de início ou término inválida.');
+            return;
+        }
+
+        if (endDate <= startDate) {
+            alert('A hora de término deve ser posterior à hora de início.');
+            return;
+        }
+
+        const oldTask = tasks[editingTaskIndex];
+        const oldRecurrence = oldTask.recurrence || 'nenhuma';
+        const newRecurrence = elements.taskRecurrence ? elements.taskRecurrence.value : 'nenhuma';
+
+        // Se a tarefa era sem recorrência e agora o usuário escolheu uma recorrência
+        if (oldRecurrence === 'nenhuma' && newRecurrence !== 'nenhuma') {
+            // Remove a tarefa original
+            tasks.splice(editingTaskIndex, 1);
+
+            // Cria tarefas recorrentes (igual ao saveTask)
+            const baseTask = {
+                title,
+                category: elements.taskCategory.value || 'trabalho',
+                priority: elements.taskPriority.value || '2',
+                recurrence: newRecurrence
+            };
+
+            const limitDate = new Date(startDate);
+            limitDate.setFullYear(limitDate.getFullYear() + 1);
+
+            const recurringDates = generateRecurringDates(startDate, newRecurrence, limitDate);
+
+            recurringDates.forEach(recurringDate => {
+                const taskStartTime = new Date(recurringDate);
+                taskStartTime.setHours(startDate.getHours(), startDate.getMinutes());
+                const taskEndTime = new Date(recurringDate);
+                taskEndTime.setHours(endDate.getHours(), endDate.getMinutes());
+
+                const task = {
+                    ...baseTask,
+                    date: `${recurringDate.getFullYear()}-${String(recurringDate.getMonth() + 1).padStart(2, '0')}-${String(recurringDate.getDate()).padStart(2, '0')}`,
+                    startTime: `${taskStartTime.getFullYear()}-${String(taskStartTime.getMonth() + 1).padStart(2, '0')}-${String(taskStartTime.getDate()).padStart(2, '0')}T${String(taskStartTime.getHours()).padStart(2, '0')}:${String(taskStartTime.getMinutes()).padStart(2, '0')}`,
+                    endTime: `${taskEndTime.getFullYear()}-${String(taskEndTime.getMonth() + 1).padStart(2, '0')}-${String(taskEndTime.getDate()).padStart(2, '0')}T${String(taskEndTime.getHours()).padStart(2, '0')}:${String(taskEndTime.getMinutes()).padStart(2, '0')}`
+                };
+
+                tasks.push(task);
+
+                if (notificationsEnabled) {
+                    pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(task));
+                }
+            });
+        } else {
+            // Comportamento padrão: apenas atualiza a tarefa
+            const updatedTask = {
+                date: `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}`,
+                title,
+                category: elements.taskCategory.value || 'trabalho',
+                priority: elements.taskPriority.value || '2',
+                startTime: `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}T${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`,
+                endTime: `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`,
+                recurrence: newRecurrence
+            };
+
+            tasks[editingTaskIndex] = updatedTask;
+
+            if (notificationsEnabled) {
+                pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(updatedTask));
+            }
+        }
+
         saveTasksToStorage(currentUserId, tasks);
         renderMainCalendar();
         elements.taskEditor.classList.add('hidden');
-
-        // Reagenda notificação após atualização, se habilitado
-        if (notificationsEnabled) {
-            pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(updatedTask));
-        }
     }
 
     function deleteTask() {
@@ -814,31 +895,69 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const title = elements.taskTitle.value.trim();
-        if (!title || !activeCell) return;
+        if (!title) {
+            alert('O título da tarefa é obrigatório.');
+            return;
+        }
 
-        const task = {
-            date: activeCell.getAttribute('data-date'),
+        const startTime = elements.startTime.value;
+        const endTime = elements.endTime.value;
+        const startDate = new Date(startTime);
+        const endDate = new Date(endTime);
+
+        if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+            alert('Data/hora de início ou término inválida.');
+            return;
+        }
+
+        if (endDate <= startDate) {
+            alert('A hora de término deve ser posterior à hora de início.');
+            return;
+        }
+
+        const recurrence = elements.taskRecurrence ? elements.taskRecurrence.value : 'nenhuma';
+        if (!['nenhuma', 'diaria', 'semanal', 'mensal'].includes(recurrence)) {
+            alert('Tipo de recorrência inválido.');
+            return;
+        }
+
+        const baseTask = {
             title,
             category: elements.taskCategory.value || 'trabalho',
-            priority: elements.taskPriority.value,
-            startTime: elements.startTime.value,
-            endTime: elements.endTime.value,
+            priority: elements.taskPriority.value || '2',
+            recurrence
         };
 
-        tasks.push(task);
+        const limitDate = new Date(startDate);
+        limitDate.setFullYear(limitDate.getFullYear() + 1);
+
+        const recurringDates = recurrence !== 'nenhuma' 
+            ? generateRecurringDates(startDate, recurrence, limitDate)
+            : [startDate];
+
+        recurringDates.forEach(recurringDate => {
+            const taskStartTime = new Date(recurringDate);
+            taskStartTime.setHours(startDate.getHours(), startDate.getMinutes());
+            const taskEndTime = new Date(recurringDate);
+            taskEndTime.setHours(endDate.getHours(), endDate.getMinutes());
+
+        const task = {
+            ...baseTask,
+            date: `${recurringDate.getFullYear()}-${String(recurringDate.getMonth() + 1).padStart(2, '0')}-${String(recurringDate.getDate()).padStart(2, '0')}`,
+            startTime: `${taskStartTime.getFullYear()}-${String(taskStartTime.getMonth() + 1).padStart(2, '0')}-${String(taskStartTime.getDate()).padStart(2, '0')}T${String(taskStartTime.getHours()).padStart(2, '0')}:${String(taskStartTime.getMinutes()).padStart(2, '0')}`,
+            endTime: `${taskEndTime.getFullYear()}-${String(taskEndTime.getMonth() + 1).padStart(2, '0')}-${String(taskEndTime.getDate()).padStart(2, '0')}T${String(taskEndTime.getHours()).padStart(2, '0')}:${String(taskEndTime.getMinutes()).padStart(2, '0')}`
+        };
+
+            tasks.push(task);            
+
+            if (notificationsEnabled) {
+                pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(task));
+            }
+        });
+
         saveTasksToStorage(currentUserId, tasks);
         renderMainCalendar();
-
-        const label = document.createElement('div');
-        label.classList.add('event-label');
-        label.textContent = `${title} (${task.category}, P${task.priority})`;
-        activeCell.appendChild(label);
         elements.taskEditor.classList.add('hidden');
-
-        // Agenda notificação para a nova tarefa, se habilitado
-        if (notificationsEnabled) {
-            pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(task));
-        }
     }
 
     // --- Eventos ---
@@ -865,7 +984,6 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.taskEditor.classList.add('hidden');
     });
 
-    elements.logoutBtn = document.getElementById('logout-btn');
     if (elements.logoutBtn) {
         elements.logoutBtn.addEventListener('click', logout);
     }
@@ -879,6 +997,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const goToNewTaskBtn = document.getElementById('nova-tarefa');
     if (goToNewTaskBtn) {
         goToNewTaskBtn.addEventListener('click', () => {
+            localStorage.removeItem('editTaskReference');
             window.location.href = '../newtask/index.html';
         });
     }
@@ -887,10 +1006,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (editingTaskIndex === null || !activeCell) return;
 
         const date = activeCell.getAttribute('data-date');
+        const task = tasks[editingTaskIndex];
 
         const editReference = {
             date,
-            index: editingTaskIndex
+            index: editingTaskIndex,
+            recurrence: task.recurrence || 'nenhuma'
         };
 
         localStorage.setItem('editTaskReference', JSON.stringify(editReference));      
@@ -928,7 +1049,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Aplica o tema salvo(dark/light) ao carregar a página
     const savedTheme = localStorage.getItem('theme');
     if (savedTheme === 'dark-theme') {
         document.body.classList.add('dark-theme');
