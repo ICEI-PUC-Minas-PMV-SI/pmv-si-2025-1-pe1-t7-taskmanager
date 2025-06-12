@@ -5,34 +5,32 @@ body {
     align-items: center;
     min-height: 100vh;
     background-color: #ffffff;
-    margin: 1px; 
+    margin: 0;
     border: 2px solid #7B83EB;
     transition: background-color 0.3s ease, color 0.3s ease;
-   
 }
 
-body.dark-mode {
-    background-color: #656667; 
-    color: #ffffff; 
-    border-color: #ffffff; 
+body.dark-theme {
+    background-color: #656667;
+    color: #ffffff;
+    border-color: #ffffff;
 }
-
 
 .container {
     background-color: #ffffff;
-    padding: 20px; 
+    padding: 20px;
     border-radius: 0;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
-    text-align: center; 
-    width: 90%; 
+    text-align: center;
+    width: 90%;
     max-width: 400px;
     transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.dark-mode .container {
-    background-color: #4B4947; 
+body.dark-theme .container {
+    background-color: #4B4947;
     color: #ffffff;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3); 
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
 }
 
 h1 {
@@ -42,13 +40,13 @@ h1 {
     transition: color 0.3s ease;
 }
 
-.dark-mode h1 {
+body.dark-theme h1 {
     color: #ffffff;
 }
 
 .input-group {
     margin-bottom: 15px;
-    text-align: center; 
+    text-align: center;
 }
 
 label {
@@ -58,10 +56,9 @@ label {
     transition: color 0.3s ease;
 }
 
-.dark-mode label {
-    color: #ffffff; 
+body.dark-theme label {
+    color: #ffffff;
 }
-
 
 input[type="password"] {
     width: calc(100% - 20px);
@@ -69,17 +66,19 @@ input[type="password"] {
     border: 1px solid #464EB8;
     border-radius: 0;
     box-sizing: border-box;
-    text-align: center; 
-    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;}
-
-     .dark-mode input[type="password"] {
-    border-color: #A78BFA; 
-    background-color: #4B4947; 
-    color: #ffffff; 
+    text-align: center;
+    transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
 }
+
+body.dark-theme input[type="password"] {
+    border-color: #A78BFA;
+    background-color: #4B4947;
+    color: #ffffff;
+}
+
 .button-container {
-    text-align: center; 
-    margin-top: 100px; 
+    text-align: center;
+    margin-top: 100px;
 }
 
 button {
@@ -90,23 +89,21 @@ button {
     border-radius: 0;
     cursor: pointer;
     font-size: 0.8em;
-    width: auto; 
-    display: inline-block; 
+    width: auto;
+    display: inline-block;
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
-.dark-mode button {
-    background-color: #656667; 
-    color: #ffffff; 
-    border-color: #D2A6FF; 
+body.dark-theme button {
+    background-color: #656667;
+    color: #ffffff;
+    border-color: #D2A6FF;
 }
-
 
 /* Media Query para telas menores (celulares) */
 @media (max-width: 600px) {
     .container {
         padding: 20px;
-    
     }
 
     h1 {
@@ -132,3 +129,4 @@ button {
     font-weight: bold;
     font-size: 14px;
 }
+
