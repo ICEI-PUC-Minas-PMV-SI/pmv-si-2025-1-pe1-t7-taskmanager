@@ -4,33 +4,46 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="Essa é uma pagina dedicada para alteração de senhas" />
-    <meta name="author"   content="Alisson Fernando do Amaral" />
+    <meta name="author" content="Alisson Fernando do Amaral" />
     <title>Alterar Senha</title>
     <link rel="stylesheet" href="style.css" />
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
 </head>
-<body>
+<body id="page-body" class="centralizado light-theme">
+
     <main class="container">
-        <section class="theme-toggle">
-            <button id="theme-toggle-button">Modo Escuro</button>
-        </section>
         <section><h1>Alterar Senha</h1></section>
+
         <section class="input-group">
             <input type="password" id="senha-atual" placeholder="Senha Atual" />
         </section>
+
         <section class="input-group">
             <input type="password" id="nova-senha" placeholder="Nova Senha" />
             <div id="indicador-forca" class="mensagem"></div>
         </section>
+
         <section class="input-group">
             <input type="password" id="confirmar-senha" placeholder="Confirmar Senha" />
         </section>
+
         <section class="button-container">
             <button type="submit">Alterar Senha</button>
         </section>
+
         <div id="mensagem-feedback" class="mensagem"></div>
     </main>
+
+    <script>
+        // Aplica tema salvo no localStorage
+        document.addEventListener("DOMContentLoaded", () => {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.body.classList.add(`${theme}-theme`);
+        });
+    </script>
     <script src="script.js" defer></script>
 </body>
 </html>
+
+
 
