@@ -1,16 +1,22 @@
+/* ============================== Base ============================== */
 body {
     font-family: 'Montserrat';
+    margin: 0;
+    padding: 0;
     background-color: #eee;
     color: #333;
+    transition: background-color 0.3s, color 0.3s;
 }
 
+/* ============================== Header ============================== */
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 12px 24px;
     background-color: #eee;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .left-section,
@@ -20,7 +26,10 @@ body {
     gap: 16px;
 }
 
-.left-section button {
+.left-section button,
+.right-section button,
+.calendar-controls button,
+.mini-calendar-header button {
     background: none;
     border: none;
     font-size: 14px;
@@ -28,21 +37,12 @@ body {
     cursor: pointer;
     padding: 8px 12px;
     border-radius: 6px;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.3s;
 }
 
-.right-section button {
-    background: none;
-    border: none;
-    font-size: 14px;
-    color: #333;
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: 6px;
-    transition: background-color 0.2s;
-}
-
-.left-section button:hover {
+.left-section button:hover,
+.right-section button:hover,
+.calendar-controls button:hover {
     background-color: #eaeaea;
 }
 
@@ -51,19 +51,27 @@ body {
     height: 24px;
     cursor: pointer;
     fill: #333;
-    transition: filter 0.3s;
+    transition: filter 0.3s, fill 0.3s;
 }
 
 .icon:hover {
     filter: brightness(0.6);
 }
 
+/* ============================== Main Content ============================== */
 .main-content {
     display: flex;
     padding: 24px;
     gap: 24px;
 }
 
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+}
+
+/* ============================== Sidebar ============================== */
 .sidebar {
     width: 220px;
     display: flex;
@@ -71,13 +79,21 @@ body {
     gap: 16px;
 }
 
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+    }
+}
+
 .menu-box {
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     padding: 16px;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
+/* Mini Calendário */
 .mini-calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
@@ -85,7 +101,7 @@ body {
     font-size: 15px;
     text-align: center;
     font-weight: 600;
-} 
+}
 
 .mini-calendar-header {
     display: flex;
@@ -97,29 +113,17 @@ body {
 }
 
 .mini-day-name {
-    text-align: center;
-    font-size: 12px; 
-    padding: 8px 0; 
+    font-size: 12px;
+    font-weight: bold;
+    padding: 8px 0;
 }
 
 .mini-day {
-    text-align: center;
     font-size: 12px;
     padding: 6px 0;
-    font-weight: 100;
-}
-
-.mini-day, .mini-day-name {
-    padding: 6px 0;
-}
-
-.mini-day-name {
-    font-weight: bold;
-}
-
-.mini-day {
     border-radius: 6px;
     cursor: pointer;
+    font-weight: 100;
     transition: background-color 0.2s;
 }
 
@@ -127,16 +131,24 @@ body {
     background-color: #e0f0ff;
 }
 
+.today {
+    border: 2px solid #505ac9;
+    border-radius: 3px;
+    padding: 4px;
+}
+
+/* Categorias */
 .categories h4 {
     font-size: 14px;
     margin-bottom: 8px;
     font-weight: 600;
     text-align: center;
+    transition: color 0.3s;
 }
 
 .categories ul {
     list-style: none;
-    padding-left: 0;
+    padding: 0;
 }
 
 .category-item {
@@ -152,13 +164,49 @@ body {
     background-color: #f0f0f0;
 }
 
+.add-category-item {
+    display: flex;
+    gap: 0.25em;
+}
+
+.new-category-input {
+    border: none;
+    border-bottom: 1px solid #555;
+    outline: none;
+    width: 75%;
+    background-color: transparent;
+}
+
+.add-category-icon {
+    font-size: 20px;
+}
+
+.created-categories {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.delete-category {
+    color: #e63946;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* ============================== Calendário ============================== */
 .calendar-container {
     flex: 1;
-    background-color: #fff;
+    width: 100%;
+    height: 100%;
+    margin: 0;
     padding: 16px;
+    background-color: #fff;
     border-radius: 12px;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     overflow-x: auto;
+    box-sizing: border-box;
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
 .calendar-controls {
@@ -170,151 +218,36 @@ body {
 
 .calendar-grid {
     display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    border: 1px solid #ddd;
+    grid-template-columns: [time] 60px repeat(7, [day] 1fr);
+    grid-auto-rows: minmax(40px, auto);
+    width: 100%;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .time-slot {
-    background: #f9f9f9;
-    padding: 12px;
-    border-bottom: 1px solid #ddd; 
-    font-size: 15px;
+    grid-column: time;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
+    font-size: 12px;
     text-align: center;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .day-header {
-    padding: 8px; 
-    background: #f0f0f0;
-    font-weight: 600;
-    border-bottom: 1px solid #ccc;
-    text-align: center;
-    display: flex; 
-    flex-direction: column; 
+    display: flex;
+    flex-direction: column;
     align-items: center;
-}
-
-.cell {
-    height: 60px;
-    border-left: 1px solid #eee;
-    border-bottom: 1px solid #eee; 
-    cursor: pointer;
-    transition: background-color 0.2s;
-    position: relative;    
-}
-
-.cell:hover {
-    background-color: #eaf6ff;
-}
-
-.arrow {
-    cursor: pointer;
-    font-size: 20px;
-    padding: 4px 8px;
-    background-color: none;
-    border-radius: 6px;
-    user-select: none;
-}
-
-.arrow:hover {
-    background-color: #ddd;
-}
-
-.week-range {
+    justify-content: center;
+    border: 1px solid #ddd;
+    background-color: #f0f0f0;
     font-size: 14px;
-}
-
-.event-label {
-    font-size: 12px;
-    padding: 4px 6px;
-    border-radius: 4px;
-    color: #fff;
-    background-color: #4CAF50;
-    display: inline-block;
-    margin: 4px;
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.calendar-controls button {
-    background: none;
-    border: none;
-    font-size: 14px;      
-    cursor: pointer;
-    padding: 8px 12px;
-    border-radius: none;
-}
-
-.today {
-    border: 2px solid #505AC9;
-    border-radius: 3px; 
-    padding: 4px; 
-}
-
-.mini-calendar-header button {
-    background: none;
-    border: none; 
-    cursor: pointer;
-    font-size: 14px;
-    padding: 3px 8px;
-}
-
-.today-marker {
-    position: absolute; 
-    top: 2px;          
-    left: 50%;         
-    transform: translateX(-50%); 
-    width: 6px;         
-    height: 6px;        
-    background-color: #505AC9; 
-    border-radius: 50%;     
-}
-
-.calendar-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.calendar-table th, .calendar-table td {
-    padding: 8px;
-    text-align: center;
-    border: 1px solid #f0f0f0;
-}
-
-.calendar-table th {
-    font-weight: bold;
-    border-bottom: 1px solid #ccc;
-}
-
-.calendar-table .time-slot {
-    font-weight: bold;
-    text-align: left;
-}
-
-.calendar-table .cell {
-    position: relative;
-}
-
-.today-marker {
-    position: absolute;
-    top: 2px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 6px;
-    height: 6px;
-    background-color: #505AC9;
-    border-radius: 50%;
-}
-
-.today-header {
-    border: 2px solid #505AC9;
-    border-radius: 3px;
-    padding: 6px; 
-}
-
-.today-marker {
-    display: none;
+    box-sizing: border-box;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
 .day-abbreviation {
@@ -322,53 +255,389 @@ body {
 }
 
 .day-number {
-    font-size: 26px; 
+    font-size: 26px;
     font-weight: normal;
 }
 
-/* marcando horario do dia em construção */
-.time-slot.current-hour {
+.today-header {
+    border: 2px solid #505ac9 !important;
+    border-radius: 3px;
+    padding: 6px;
+}
+
+.cell {
+    border: 1px solid #ddd;
+    min-height: 60px;
+    cursor: pointer;
     position: relative;
+    box-sizing: border-box;
+    transition: background-color 0.2s, border-color 0.3s;
 }
 
-.time-slot.current-hour::before {
-    content: '';
-    display: block;
-    width: 20px;
-    height: 20px;
-    background-color: #505AC9;
-    border-radius: 50%;
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    transform: translateY(0);
+.cell:hover {
+    background-color: #eaf6ff;
 }
 
-/* adicionar */
-event-label {
-    background-color: #4CAF50;
-    color: white;
-    padding: 2px 4px;
-    margin-top: 2px;
-    border-radius: 4px;
+.event-label {
+    background-color: #7b83eb;
+    color: #fff;
+    padding: 2px 5px;
+    margin: 2px;
+    border-radius: 3px;
     font-size: 12px;
+    cursor: pointer;
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: background-color 0.2s;
 }
 
-/* responsividade */
-@media (max-width: 768px) {
-    .main-content {
-        flex-direction: column;
-    }
-    .sidebar {
-        width: 100%;
-    }
+.event-label:hover {
+    background-color: #7b83eb;
 }
 
-/* =============================== */
+.current-hour-line {
+    position: absolute;
+    height: 2px;
+    background-color: #007bff;
+    z-index: 10;
+    transition: top 60s linear, background-color 0.3s;
+}
+
+.arrow {
+    cursor: pointer;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 6px;
+    user-select: none;
+    transition: background-color 0.2s;
+}
+
+.arrow:hover {
+    background-color: #ddd;
+}
+
+.week-range {
+    font-size: 32px;
+    transition: color 0.3s;
+}
+
+/* ============================== Menus ============================== */
+.profile-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown {
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    padding: 12px 0;
+    min-width: 180px;
+    z-index: 1000;
+    transition: opacity 0.3s ease, transform 0.3s ease, background-color 0.3s, border-color 0.3s;
+}
+
+.dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.dropdown ul li {
+    padding: 0;
+}
+
+.dropdown ul li button,
+.dropdown-btn {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 12px 20px;
+    text-align: left;
+    font-size: 14px;
+    font-family: 'Montserrat', sans-serif;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.dropdown ul li button:hover,
+.dropdown-btn:hover {
+    background-color: #f0f0f0;
+    color: #000;
+}
+
+.hidden {
+    display: none;
+}
+/* ============================== Modal ============================== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto;
+    padding: 20px;
+    border-radius: 12px;
+    width: 60%;
+    max-width: 600px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+.fechar {
+    float: right;
+    font-size: 28px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+/* ============================== Botões Especiais ============================== */
+#logout-btn {
+    padding: 0.5em 1em;
+    font-size: 0.9em;
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    width: 30%;
+    margin: 0 auto;
+    display: block; /* ADICIONADO para centralizar */
+}
+
+#logout-btn:hover {
+    background: #d00000;
+}
+
+/* ============================== Modo Claro ============================== */
+body.light-theme {
+    background-color: #eee;
+    color: #333;
+}
+
+body.light-theme .header,
+body.light-theme .calendar-container,
+body.light-theme .menu-box,
+body.light-theme .task-editor,
+body.light-theme .modal-content,
+body.light-theme .dropdown {
+    background-color: #fff;
+    color: #333;
+}
+
+body.light-theme .left-section button,
+body.light-theme .right-section button,
+body.light-theme .calendar-controls button,
+body.light-theme .mini-calendar-header button,
+body.light-theme .dropdown ul li button,
+body.light-theme .dropdown-btn {
+    color: #333;
+}
+
+body.light-theme .icon {
+    fill: #333;
+}
+
+body.light-theme .categories h4,
+body.light-theme .week-range,
+body.light-theme .fechar {
+    color: #333;
+}
+
+body.light-theme .task-editor h3,
+body.light-theme .task-editor label {
+    color: #555;
+}
+
+body.light-theme .task-editor input,
+body.light-theme .task-editor select,
+body.light-theme .task-editor textarea {
+    background: #f9f9f9;
+    color: #333;
+    border-color: #d0d0d0;
+}
+
+body.light-theme .calendar-grid,
+body.light-theme .time-slot,
+body.light-theme .day-header,
+body.light-theme .cell {
+    border-color: #ddd;
+}
+
+body.light-theme .time-slot,
+body.light-theme .day-header {
+    background-color: #f0f0f0;
+}
+a {
+    display: inline-block;
+    padding: 10px 20px;
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #007bff;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a:hover {
+    color: #ffffff;
+}
+
+.dropdown a {
+    display: block;
+    color: #333333;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-weight: normal;
+    background-color: transparent;
+    border-radius: 0;
+}
+.dropdown a:hover {
+    color: #1e1e1e;
+    background-color: #eeeeee;
+}
+
+/* ============================== Modo Escuro ============================== */
+body.dark-theme {
+    background-color: #2e2e2e;
+    color: #ffffff;
+}
+
+body.dark-theme .header,
+body.dark-theme .calendar-container,
+body.dark-theme .menu-box,
+body.dark-theme .task-editor,
+body.dark-theme .modal-content,
+body.dark-theme .dropdown {
+    background-color: #4B4947;
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+body.dark-theme .left-section button,
+body.dark-theme .right-section button,
+body.dark-theme .calendar-controls button,
+body.dark-theme .mini-calendar-header button,
+body.dark-theme .dropdown ul li button,
+body.dark-theme .dropdown-btn {
+    color: #ffffff;
+}
+
+body.dark-theme .left-section button:hover,
+body.dark-theme .right-section button:hover,
+body.dark-theme .calendar-controls button:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .icon {
+    fill: #ffffff;
+}
+
+body.dark-theme .categories h4,
+body.dark-theme .week-range,
+body.dark-theme .fechar {
+    color: #ffffff;
+}
+
+body.dark-theme .task-editor h3,
+body.dark-theme .task-editor label {
+    color: #ffffff;
+}
+
+body.dark-theme .task-editor input,
+body.dark-theme .task-editor select,
+body.dark-theme .task-editor textarea {
+    background: #4B4947;
+    color: #ffffff;
+    border-color: #ffffff;
+}
+
+body.dark-theme .task-editor input:focus,
+body.dark-theme .task-editor select:focus,
+body.dark-theme .task-editor textarea:focus {
+    background: #4B4947;
+    border-color: #ffffff;
+}
+
+body.dark-theme .calendar-grid,
+body.dark-theme .time-slot,
+body.dark-theme .day-header,
+body.dark-theme .cell {
+    border-color: #808080;
+}
+
+body.dark-theme .time-slot,
+body.dark-theme .day-header {
+    background-color: #4B4947;
+}
+
+body.dark-theme .event-label {
+    background-color: #464eb8;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+body.dark-theme .event-label:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .current-hour-line {
+    background-color: #00b7eb;
+}
+
+body.dark-theme .cell:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .mini-day:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .category-item:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .arrow:hover {
+    background-color: #5a62e0;
+}
+
+body.dark-theme .new-category-input {
+    color: white;
+}
+body.dark-theme .dropdown a {
+    color: #e0e0e0;
+    background-color: transparent;
+}
+
+body.dark-theme .dropdown a:hover {
+    color: #ffffff;
+    background-color: #f0f0f0;
+}
+/* ================================ */
 /* Estilo da caixa de tarefas */
 .task-editor {
     position: absolute;
-    background: #ffffff;
+    background: #fff;
     border: 1px solid #e0e0e0;
     padding: 1.25em;
     border-radius: 10px;
@@ -376,33 +645,28 @@ event-label {
     z-index: 1000;
     width: 260px;
     max-width: 90vw;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    transition: transform 0.2s ease, opacity 0.2s ease;
+    transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Estado oculto */
 .task-editor.hidden {
     display: none;
 }
 
-/* Título do editor */
 .task-editor h3 {
     margin: 0 0 0.75em;
     font-size: 1.1em;
     font-weight: 600;
-    color: #333;
+    transition: color 0.3s;
 }
 
-/* Labels dos campos */
 .task-editor label {
     display: block;
     margin-bottom: 0.5em;
     font-size: 0.85em;
     font-weight: 500;
-    color: #555;
+    transition: color 0.3s;
 }
 
-/* Campos de entrada (input, select, textarea) */
 .task-editor input,
 .task-editor select,
 .task-editor textarea {
@@ -416,22 +680,9 @@ event-label {
     background: #f9f9f9;
     color: #333;
     box-sizing: border-box;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    transition: background-color 0.3s, border-color 0.2s, color 0.3s, box-shadow 0.2s;
 }
 
-/* Altura uniforme para todos os campos */
-.task-editor input,
-.task-editor select {
-    height: 32px; /* Altura fixa para uniformidade */
-}
-
-/* Textarea um pouco mais alta, mas ainda compacta */
-.task-editor textarea {
-    height: 60px;
-    resize: none;
-}
-
-/* Efeitos de foco e hover */
 .task-editor input:focus,
 .task-editor select:focus,
 .task-editor textarea:focus {
@@ -447,45 +698,70 @@ event-label {
     border-color: #b0b0b0;
 }
 
-/* Container dos botões */
-.task-editor .buttons {
-    margin-top: 1.25em;
-    display: flex;
-    gap: 0.6em;
-    justify-content: flex-end;
+.task-editor input,
+.task-editor select {
+    height: 32px;
 }
 
-/* Estilo dos botões */
+.task-editor textarea {
+    height: 60px;
+    resize: none;
+}
+
+.task-editor .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+}
+
 .task-editor .buttons button {
+    flex: 1 1 auto;
     padding: 0.5em 1em;
     font-size: 0.85em;
     font-weight: 500;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
 }
 
-/* Botão de adicionar */
 .task-editor .buttons #add-task {
     background: #4a90e2;
-    color: #ffffff;
+    color: #fff;
 }
 
 .task-editor .buttons #add-task:hover {
     background: #357abd;
 }
 
-.task-editor .buttons #add-task:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
+.task-editor .buttons #save-task {
+    background: #505ac9;
+    color: #fff;
 }
 
-.task-editor .buttons #add-task:active {
-    transform: scale(0.98);
+.task-editor .buttons #save-task:hover {
+    background: #464eb8;
 }
 
-/* Botão de cancelar */
+.task-editor .buttons #edit-page-task {
+    background: #f1c40f;
+    color: #fff;
+}
+
+.task-editor .buttons #edit-page-task:hover {
+    background: #d4ac0d;
+}
+
+.task-editor .buttons #delete-task {
+    background: #e63946;
+    color: #fff;
+}
+
+.task-editor .buttons #delete-task:hover {
+    background: #d00000;
+}
+
 .task-editor .buttons #cancel-task {
     background: #f1f1f1;
     color: #555;
@@ -495,234 +771,40 @@ event-label {
     background: #e0e0e0;
 }
 
-.task-editor .buttons #cancel-task:focus {
+.task-editor .buttons button:focus {
     outline: none;
-    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.3);
 }
 
-.task-editor .buttons #cancel-task:active {
+.task-editor .buttons button:active {
     transform: scale(0.98);
 }
 
-/* Ajustes para acessibilidade */
-.task-editor input[required],
-.task-editor select[required],
-.task-editor textarea[required] {
-    border-left: 2px solid #4a90e2;
+.task-editor .buttons .hidden {
+    display: none;
 }
 
-/* Media query para telas pequenas */
 @media (max-width: 480px) {
     .task-editor {
         width: 85%;
         padding: 1em;
     }
-
-    .task-editor h3 {
-        font-size: 1em;
-    }
-
+    .task-editor h3,
     .task-editor label,
     .task-editor input,
     .task-editor select,
     .task-editor textarea {
         font-size: 0.8em;
     }
-
     .task-editor input,
     .task-editor select {
         height: 30px;
     }
-
     .task-editor textarea {
         height: 50px;
     }
-
     .task-editor .buttons button {
         padding: 0.4em 0.8em;
         font-size: 0.8em;
     }
-}
-
-/* ===========================botao sair============================== */
-#logout-btn {
-    padding: 0.5em 1em;
-    font-size: 0.9em;
-    background: #e63946;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.2s ease;
-    width: 30%;
-    margin-left: auto;
-    margin-right: auto;
-}
-ut-btn:hover {
-    background: #d00000;
-}
-
-/* =========================== Novos Estilos ============================== */
-/* Estilo para tarefas clicáveis */
-.event-label {
-    cursor: pointer; /* Indica que é clicável */
-}
-
-.event-label:hover {
-    background-color: #45a049; /* Escurece o verde no hover */
-}
-
-/* Estilo para os novos botões do task-editor */
-.task-editor .buttons #save-task {
-    background: #505AC9; 
-    color: #ffffff;
-}
-
-.task-editor .buttons #save-task:hover {
-    background: #464eb8; 
-}
-
-.task-editor .buttons #save-task:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
-}
-
-.task-editor .buttons #save-task:active {
-    transform: scale(0.98);
-}
-
-.task-editor .buttons #edit-page-task {
-    background: #f1c40f; /* Amarelo para Editar */
-    color: #ffffff;
-}
-
-.task-editor .buttons #edit-page-task:hover {
-    background: #d4ac0d; /* Amarelo mais escuro no hover */
-}
-
-.task-editor .buttons #edit-page-task:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(241, 196, 15, 0.3);
-}
-
-.task-editor .buttons #edit-page-task:active {
-    transform: scale(0.98);
-}
-
-.task-editor .buttons #delete-task {
-    background: #e63946; /* Vermelho, igual ao logout-btn */
-    color: #ffffff;
-}
-
-.task-editor .buttons #delete-task:hover {
-    background: #d00000; /* Vermelho mais escuro no hover */
-}
-
-.task-editor .buttons #delete-task:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(230, 57, 70, 0.3);
-}
-
-.task-editor .buttons #delete-task:active {
-    transform: scale(0.98);
-}
-
-/* Classe hidden para botões */
-.task-editor .buttons .hidden {
-    display: none;
-}
-#task-editor {
-  position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 1000;
-  width: 250px;
-  border-radius: 8px;
-}
-
-#task-editor .buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
-}
-
-#task-editor button {
-  flex: 1 1 auto;
-}
-
-/* ----------------------------- */
-.profile-menu {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  min-width: 120px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 1000;
-}
-
-.dropdown a {
-  display: block;
-  padding: 8px 12px;
-  text-decoration: none;
-  color: #333;
-}
-
-.dropdown a:hover {
-  background-color: #f0f0f0;
-}
-
-.hidden {
-  display: none;
-}
-.profile-menu {
-  position: relative;
-  display: inline-block;
-}
-
-.dropdown {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  width: 180px;
-  background-color: #ffffff;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 12px;
-  border-radius: 8px;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.dropdown-btn {
-  padding: 10px;
-  text-align: left;
-  font-size: 14px;
-  background-color: #f5f5f5;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-  text-decoration: none;
-  color: #333;
-}
-
-.dropdown-btn:hover {
-  background-color: #e0e0e0;
-}
-
-.hidden {
-  display: none;
 }
