@@ -1,6 +1,15 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
+    const botaoCancelar = document.querySelector('.btncanc');
+    const currentTheme = localStorage.getItem('theme');
+
+    if (currentTheme === 'dark-theme') {
+        body.classList.add('dark-theme');
+    } else {
+        body.classList.remove('dark-theme');
+    }
+
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();
@@ -93,11 +102,19 @@ function saveTasksToStorage(userId, tasks) {
     alert('Tarefa salva com sucesso!');
     window.location.href = '../front_page/index.html';
 });
+        //aplica tema salvo ao local storage
+document.addEventListener("DOMContentLoaded", () => {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.body.classList.add(`${theme}-theme`);
+        });
 
         // Função que salva todas as tarefas do usuário
     function saveTasksToStorage(userId, tasks) {
     localStorage.setItem(`tasks_${userId}`, JSON.stringify(tasks));
 }
-
+    });
+    botaoCancelar.addEventListener('click', () => {
+        window.location.href = '../front_page/index.html';
     });
 });
+

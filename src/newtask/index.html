@@ -6,58 +6,49 @@
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<script src="main.js"></script>
+<script src="main.js" defer></script>
 </head>
 <body>
-  <div class="topo"> <!--menu superior-->
-    <div class="imagem"> <!--ícones-->
-      <span class="material-icons">notifications</span>
-      <span class="material-icons" onclick="toggleTheme()">contrast</span>
-      <span class="material-icons">settings</span>
-      <span class="material-icons">account_circle</span>    
-      </span>
-  </div>
-  </div>
-  <div class="caixaprincipal"> <!--menu-->
+    <div class="caixaprincipal"> <!--menu-->
     <h1 class="titulo">Criar Nova Tarefa</h1>
     <form action="#" method="post">
          <div class="form-group">
         <label for="titulo">Título</label>
-        <input type="text" id="titulo" name="titulo" placeholder="Dê um título para sua tarefa." maxlength="26"required>
+        <input type="text" id="titulo" name="titulo" placeholder="Dê um título para sua tarefa." maxlength="26" >
       </div>
 
         <div class="form-group-row">
         <div class="form-group">
         <label for="data">Data</label>
-        <input type="date" id="data" name="data" required>
+        <input type="date" id="data" name="data" >
         <small>Insira a data da sua tarefa.</small>
         </div>
 
         <div class="form-group">
         <label for="horario">Horário</label>
         <div class="time-group-row">
-        <input type="time" id="horario" name="horario" required>
-        <input type="time" id="horario2" name="horario2"  required>
+        <input type="time" id="horario" name="horario" >
+        <input type="time" id="horario2" name="horario2"  >
         </div>
         <small>Insira o início e o término da sua tarefa.</small>
         </div>
-
         <div class="form-group">
         <label for="recorrencia">Recorrência</label>
         <select id="recorrencia" name="recorrencia"></select>
+        <br>
+        <small>Selecione quantas vezes essa tarefa irá se repetir.</small>
         </div>
-        </div>
-
+        </div>        
         <div class="form-group">
         <label for="categoria">Categoria</label>
         <div class="campocat">
-        <select name="categoria" id="categoria" form="categoria" required></select>       
+        <select name="categoria" id="categoria" form="categoria" ></select>       
       </div>    
     </div>
         <div class="form-group">
         <label for="prioridade">Prioridade</label>
         <div class="camposelec">
-        <select name="prioridade" id="prioridade" form="prioridade" required> 
+        <select name="prioridade" id="prioridade" form="prioridade" > 
         <option value="1">Maior Prioridade</option> 
         <option value="2">Comum</option>
         <option value="3">Menor Prioridade</option>
@@ -75,7 +66,7 @@
           <div class="seqbto">
           <button type="reset" class="excluir">Excluir</button>
           <button type="submit" class="btnconf">Confirmar</button>
-          <button type="reset" class="btncanc">Cancelar</button>
+          <button type="btncanc" class="btncanc">Cancelar</button>
       </div>
     </div>
     </form>

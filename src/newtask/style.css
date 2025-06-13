@@ -2,8 +2,13 @@
 
 body{ /*Estilo Fundo*/
   background-color: #bdc1c4;
-  font-family: 'montserrat'
+  font-family: 'montserrat';
 }
+
+body.dark-theme{
+  background-color: #ff0000;
+}
+
 .topo{ /*Estilo menu superior*/
   background-color: #eee;
   margin: 0 auto;
@@ -37,6 +42,10 @@ body{ /*Estilo Fundo*/
   text-align: center;
   color: #7B83EB;
 }
+  .titulo.dark-theme {/*titulo criar nova tarefa*/
+      color: #1eff00;
+
+  }
 .caixaprincipal{ /*Estilo Quadro principal */
   background-color: #eee;
   box-shadow: 0 0 10px #8a8a8a;
@@ -88,6 +97,15 @@ body{ /*Estilo Fundo*/
   background-color: #eee;
 }
 #prioridade, #categoria{ /* caixa selecao prioridade */
+  background-color: #eee;
+  border: 0px;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 15px;
+}
+#recorrencia{
+  margin-top: 20px;
+  margin-bottom: 10px;
   background-color: #eee;
   border: 0px;
   box-sizing: border-box;
