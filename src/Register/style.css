@@ -1,81 +1,117 @@
 body {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 1000;
-  background-color: #bdc1c4;
+  font-family: 'Montserrat';
+  background-color: #f2f4f7;
+  margin: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  min-height: 100vh;
+  padding: 20px;
 }
 
 .form-container {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  width: 300px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media (max-width: 480px) {
+  .form-container {
+    padding: 20px;
+  }
 }
 
 .form-container h2 {
   text-align: center;
-  margin-bottom: 20px;
-  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 30px;
   font-weight: 700;
+  color: #040607;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+  width: 100%;
+  max-width: 320px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
-  font-weight: bold;
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #060708;
+  font-size: 14px;
+  text-align: center;
 }
 
-.form-group input {
+@media (max-width: 480px) {
+  .form-group label {
+    text-align: left;
+  }
+}
+
+.form-group input,
+.form-group select {
   width: 100%;
-  padding: 8px;
-  box-sizing: border-box;
+  max-width: 320px;
+  padding: 10px 12px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 600;
+  background-color: #fff;
+  font-size: 14px;
+  font-family: 'Montserrat';
+  box-shadow: none;
+  transition: border 0.3s, box-shadow 0.3s;
 }
 
-.form-group input:focus {
-  border-color: #464eb8;
-  outline: none;
+.form-group input:focus,
+.form-group select:focus {
+  border-color: #2f2f30;
+  box-shadow: 0 0 0 3px rgba(84, 104, 255, 0.25);
+  outline: 2px solid #2f2f30;
 }
 
 .form-button {
   width: 100%;
-  padding: 10px;
-  background-color: #464eb8;
+  max-width: 320px;
+  padding: 12px;
+  background-color: #5468ff;
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: 16px;
-  cursor: pointer;
-  font-family: 'Montserrat', sans-serif;
   font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
 .form-button:hover {
-  background-color: #3a42a0;
+  background-color: #3f52cc;
+}
+
+.form-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .form-link {
   text-align: center;
-  margin-top: 15px;
-  font-family: 'Montserrat', sans-serif;
+  margin-top: 20px;
   font-size: 14px;
+  color: #060708;
 }
 
 .form-link a {
-  color: #464eb8;
-  text-decoration: none;
+  color: #5468ff;
   font-weight: 600;
+  text-decoration: none;
 }
 
 .form-link a:hover {

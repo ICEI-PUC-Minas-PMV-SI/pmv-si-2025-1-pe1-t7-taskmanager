@@ -37,6 +37,23 @@
         <input type="password" id="confirmar-senha" name="confirmar_senha" required>
       </div>
 
+      <div class="form-group">
+        <label for="pergunta-secreta">Escolha uma pergunta de recuperação da senha</label>
+        <select id="pergunta-secreta" name="pergunta_secreta" required>
+          <option value="" disabled selected>Selecione uma pergunta</option>
+          <option value="nome_do_meu_primeiro_pet">Qual era o nome do seu primeiro pet?</option>
+          <option value="cantor(a)_ou_banda_favorito (a)">Qual o seu cantor(a) ou banda favorito(a)?</option>
+          <option value="professor_favorito_da_escola">Qual era o nome do seu professor(a) favorito(a)?</option>
+          <option value="primeiro_livro_que_leu">Qual era o título do primeiro livro que recorda que leu?</option>
+          <option value="nome_do_melhor_amigo_de_infantil">Qual era o nome do seu melhor(a) amigo(a) de infância?</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="resposta-pergunta">Resposta da pergunta de recuperação</label>
+        <input type="text" id="resposta-pergunta" name="resposta_pergunta" required />
+      </div>
+
       <button type="submit" class="form-button">Cadastrar-se</button>
 
        <div class="form-link">
