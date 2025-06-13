@@ -4,7 +4,7 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #ffffff;
+    background-color: #fff;
     margin: 0;
     border: 2px solid #7B83EB;
     transition: background-color 0.3s ease, color 0.3s ease;
@@ -19,8 +19,8 @@ body.dark-theme {
 .container {
     background-color: #ffffff;
     padding: 20px;
-    border-radius: 0;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+    border-radius: 13px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
     text-align: center;
     width: 90%;
     max-width: 400px;
@@ -30,7 +30,7 @@ body.dark-theme {
 body.dark-theme .container {
     background-color: #4B4947;
     color: #ffffff;
-    box-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
@@ -64,7 +64,8 @@ input[type="password"] {
     width: calc(100% - 20px);
     padding: 10px;
     border: 1px solid #464EB8;
-    border-radius: 0;
+    box-shadow: 15px #4B4947;
+    border-radius: 7px;
     box-sizing: border-box;
     text-align: center;
     transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
@@ -79,6 +80,7 @@ body.dark-theme input[type="password"] {
 .button-container {
     text-align: center;
     margin-top: 100px;
+     box-shadow: 0 0 5px #00000000;
 }
 
 button {
@@ -86,7 +88,7 @@ button {
     color: #ffffff;
     padding: 10px 5px;
     border: 1px solid #7B83EB;
-    border-radius: 0;
+    border-radius: 7px;
     cursor: pointer;
     font-size: 0.8em;
     width: auto;
