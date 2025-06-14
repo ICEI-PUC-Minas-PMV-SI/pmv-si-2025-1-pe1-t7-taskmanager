@@ -54,7 +54,8 @@
  :--------------: | ------------
 **Procedimento**  | 1) Na página inicial da agenda no menu suspenso inferior a esquerda marcar quais categorias de exibição. <br>
 **Requisitos associados** | RF-005
-**Resultado esperado** | Ao filtrar por categoria somente mostrar as tarefas da mesma. 
+**Resultado esperado** | Ao filtrar por categoria somente mostrar as tarefas da mesma.
+**Dados de entrada** | null
 **Resultado obtido** | Sucesso
 
 **Caso de Teste** | **CT06 - Permitir configuração de perfil**
