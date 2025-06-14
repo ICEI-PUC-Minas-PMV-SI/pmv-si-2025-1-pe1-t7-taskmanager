@@ -34,14 +34,6 @@
 **Dados de entrada** | Inserção de dados válidos no formulário de criação de nova tarefa
 **Resultado obtido** | Sucesso
 
-**Caso de Teste** | **CT04 - Permitir ao usuário criar uma nova tarefa**
- :--------------: | ------------
-**Procedimento**  | 1) após login clicar no icone superior a esquerda simbolizando <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Confirmar" para salvar a tarefa <br> 
-**Requisitos associados** | RF-001
-**Resultado esperado** | Nova tarefa adicionada e representada na agenda principal na data e hora especificada pelo usuário.  
-**Dados de entrada** | Inserção de dados válidos no formulário de criação de nova tarefa
-**Resultado obtido** | Sucesso
-
 **Caso de Teste** | **CT05 - Permite o usuário alterar a senha**
  :--------------: | ------------
 **Procedimento**  | 1) Clicar no ícone de engrenagem na página inicial no menu superior à direita. <br> 2) Preencha todos os campos do formulário. <br> 3) Clique no botão "Alterar Senha" para salvar a nova senha. <br> 
@@ -50,7 +42,7 @@
 **Dados de entrada** | Inserção de dados válidos no formulário de alteração de senha
 **Resultado obtido** | Sucesso
 
-**Caso de Teste** | **CT05 - Permite o usuário filtrar as categorias**
+**Caso de Teste** | **CT06 - Permite o usuário filtrar as categorias**
  :--------------: | ------------
 **Procedimento**  | 1) Na página inicial da agenda no menu suspenso inferior a esquerda marcar quais categorias de exibição. <br>
 **Requisitos associados** | RF-005
@@ -58,7 +50,7 @@
 **Dados de entrada** | null
 **Resultado obtido** | Sucesso
 
-**Caso de Teste** | **CT06 - Permitir configuração de perfil**
+**Caso de Teste** | **CT07 - Permitir configuração de perfil**
  :--------------: | ------------
 **Procedimento**  | 1) Na página inicial da agenda no menu superior a direita clicar no ícone de perfil simbolizado por um avatar genérico. <br> 2) Preencha todos os campos do formulário. <br> 3) Carregue uma foto de perfil do seu dispositivo. <br> 4) Clique no botão "Confirmar" para salvar. <br>
 **Requisitos associados** | RF-007
@@ -69,17 +61,36 @@
 
 ## Registro dos Testes de Software
 
-Esta seção deve apresentar o relatório com as evidências dos testes de software realizados no sistema pela equipe, baseado no plano de testes pré-definido. Documente cada caso de teste apresentando um vídeo ou animação que comprove o funcionamento da funcionalidade. Veja os exemplos a seguir.
 
-|*Caso de Teste*                                 |*CT01 - Criar conta parte 1*                                         |
+|*Caso de Teste*                                 |*CT01 - Criar conta*                                            |
 |---|---|
-|Requisito Associado | RF-001 - A aplicação deve permitir que os usuários criem uma conta e gerenciem seu cadastro|
-|Link do vídeo do teste realizado: | https://1drv.ms/u/s!AhD2JqpOUvJChapRtRSQ9vPzbNLwGA?e=mxZs6t| 
+|Requisito Associado | RF-002 - A aplicação permite que o usuário realize seu cadastro	                         |
+|Link do vídeo do teste realizado: | https://www.loom.com/share/f41270501dd54518bd0f74646d026bad?sid=6806ad7b-54fe-4f3c-a8e4-6dbf0b68a72c| 
 
-|*Caso de Teste*                                 |*CT02 - Criar conta parte 2*                                        |
+|*Caso de Teste*                                 |*CT02 - Login na aplicação*                                        |
 |---|---|
-|Requisito Associado | RF-001 - A aplicação deve permitir que os usuários criem uma conta e gerenciem seu cadastro|
-|Link do vídeo do teste realizado: | https://1drv.ms/v/s!AhD2JqpOUvJChapQ8CPXL-TI_A7iVg?e=spD3Ar | 
+|Requisito Associado | RF-006 - Permite o usuário inserir suas informações de login para acessar o conteúdo da página web|
+|Link do vídeo do teste realizado: | https://www.loom.com/share/a1623b48c8de4097bcf84ad66815a223?sid=75c28c64-479e-4401-bd7a-f6d2000ba4dc | 
+
+|*Caso de Teste*                                 |*CT04 - Permitir ao usuário criar uma nova tarefa*                                      |
+|---|---|
+|Requisito Associado | RF-001 - Permitir ao usuário criar uma nova tarefa.	|
+|Link do vídeo do teste realizado: | https://www.loom.com/share/b75623933c0746a5a97d59d2fecf9716?sid=653edadb-2f0d-4abc-808f-e75cab5627d6, https://www.loom.com/share/58b49ec8b9d546c19b763bf51e5f907a?sid=1f056820-8bb7-43ca-a200-54b63e12e997 | 
+
+|*Caso de Teste*                                 |*CT05 -  Permite o usuário alterar a senha*                                        |
+|---|---|
+|Requisito Associado | RF-004 - Permite o usuário alterar a senha	|
+|Link do vídeo do teste realizado: | https://www.loom.com/share/f4353ae1999d4d29b66884902a176c5a?sid=16c99474-3152-4303-9b20-d7b57fe3091f | 
+
+|*Caso de Teste*                                 |*CT06 -  Permite o usuário filtrar as categorias*                                        |
+|---|---|
+|Requisito Associado | RF-004 - Permite o usuário filtrar as categorias |
+|Link do vídeo do teste realizado: | https://www.loom.com/share/621b53cf3b754177b0195d3f5b9ad8ed?sid=52dd4c18-c066-4227-af77-94f5d961cb9c | 
+
+|*Caso de Teste*                                 |*CT07 -  Permitir configuração de perfil*                                        |
+|---|---|
+|Requisito Associado | RF-004 - Permitir configuração de perfil |
+|Link do vídeo do teste realizado: | https://www.loom.com/share/dca280d703c84f25b9937fbab063a650?sid=a03b4441-631c-4704-824b-3a3f7c391eb9 | 
 
 
 ## Avaliação dos Testes de Software
