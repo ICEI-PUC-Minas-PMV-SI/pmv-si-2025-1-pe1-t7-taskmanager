@@ -5,10 +5,6 @@ body{ /*Estilo Fundo*/
   font-family: 'montserrat';
 }
 
-body.dark-theme{
-  background-color: #ff0000;
-}
-
 .topo{ /*Estilo menu superior*/
   background-color: #eee;
   margin: 0 auto;
@@ -152,6 +148,7 @@ body.dark-theme{
   font-size: 16px;
   box-shadow: 0 0 5px #bdc1c4;
 }
+
 .excluir:hover, .btncanc:hover, .btnconf:hover {
   background-color: #7B83EB;
 }
@@ -240,4 +237,59 @@ body.dark-theme{
 .excluir, .btnconf, .btncanc {  /*botoes estilo*/
   margin: 150px 8px 8px;
 }
+}
+
+/* ---------------- Dark Mode ---------------- */
+
+body.dark-theme .excluir, .btnconf, .btncanc {
+  background-color: #464EB8;
+  color: #fff;
+  box-shadow: 0 0 5px #2e2e2e;
+}
+
+body.dark-theme {
+  background-color: #2e2e2e;
+}
+
+body.dark-theme .caixaprincipal{
+  background-color: #4B4947;
+  box-shadow: 0 0 10px #2e2e2e;
+}
+
+body.dark-theme .form-group {
+  background-color: #4B4947;
+  box-shadow: 0 0 5px #2e2e2e;
+  color: #7B83EB;
+}
+
+body.dark-theme .form-group input {
+  box-shadow: 0 0 5px #2e2e2e;
+  background-color: #4B4947;
+  color: #FFF;
+}
+
+body.dark-theme #prioridade {
+  background-color: #4B4947;
+  color: #FFF;
+}
+
+body.dark-theme #categoria {
+  background-color: #4B4947;
+  color: #FFF;
+}
+
+body.dark-theme #recorrencia{
+  background-color: #4B4947;
+  color: #FFF;
+}
+body.dark-theme .camposelec {
+  box-shadow: 0 0 5px #2e2e2e;
+  background-color: #4B4947;
+  color: #FFF;
+}
+
+body.dark-theme .campocat{
+  box-shadow: 0 0 5px #2e2e2e;
+  background-color: #4B4947;
+  color: #FFF;
 }

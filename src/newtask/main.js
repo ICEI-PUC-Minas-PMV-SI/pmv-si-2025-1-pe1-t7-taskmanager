@@ -85,6 +85,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const usuarioLogado = getLoggedInUser();
 
+    const savedTheme = localStorage.getItem('theme') || 'light-theme';
+
+    document.body.classList.remove('light-theme', 'dark-theme');
+    document.body.classList.add(savedTheme);
+    localStorage.setItem('theme', savedTheme);
+
     if (!usuarioLogado) {
         alert('Você precisa estar logado para criar tarefas.');
         window.location.href = '../login/index.html';
