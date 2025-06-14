@@ -63,6 +63,7 @@
 **Procedimento**  | 1) Na página inicial da agenda no menu superior a direita clicar no ícone de perfil simbolizado por um avatar genérico. <br> 2) Preencha todos os campos do formulário. <br> 3) Carregue uma foto de perfil do seu dispositivo. <br> 4) Clique no botão "Confirmar" para salvar. <br>
 **Requisitos associados** | RF-007
 **Resultado esperado** | Ao preencher os dados inseridos no formulário salvar as alterações e se caso inserir a foto ela aparecer no lugar do icone de avatar genérico.
+**Dados de entrada** | Inserção de dados válidos no formulário e imagem de perfil.
 **Resultado obtido** | Sucesso
 
 
