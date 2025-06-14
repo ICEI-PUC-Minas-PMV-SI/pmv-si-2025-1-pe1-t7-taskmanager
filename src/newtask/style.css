@@ -4,16 +4,6 @@ body{ /*Estilo Fundo*/
   background-color: #bdc1c4;
   font-family: 'montserrat';
 }
-
-.topo{ /*Estilo menu superior*/
-  background-color: #eee;
-  margin: 0 auto;
-  padding: 0;
-  height: 50px;
-  box-shadow: 0 0 5px #bdc1c4;
-  width: 100%;
-  border-radius: 10px;  
-  }
   
   .material-icons {
     color: var(--primary-color);
@@ -38,16 +28,13 @@ body{ /*Estilo Fundo*/
   text-align: center;
   color: #7B83EB;
 }
-  .titulo.dark-theme {/*titulo criar nova tarefa*/
-      color: #1eff00;
-
-  }
+  
 .caixaprincipal{ /*Estilo Quadro principal */
   background-color: #eee;
   box-shadow: 0 0 10px #8a8a8a;
   display: block;
   width: 55%;
-  height: 800px;
+  min-height: 800px;
   padding: 3px;
   margin: 20px;
   justify-self: center;
@@ -157,7 +144,7 @@ body{ /*Estilo Fundo*/
     background-color: #dfdfdf;
 
 }
-@media screen and (max-width:1300px){  /*trem responsivo grande*/
+@media screen and (max-width:1300px){  /*trem responsivo grande*/ 
   .caixaprincipal{
     width: 75%;
   }
@@ -181,7 +168,7 @@ body{ /*Estilo Fundo*/
   margin: 8px 8px 8px;
 }
 .excluir, .btnconf, .btncanc {  /*botoes estilo*/
-  margin: 100px 8px 8px;
+  margin: 80px 8px 8px;
 }
 }
 @media screen and (max-width:850px){  /*trem responsivo*/
@@ -211,31 +198,35 @@ body{ /*Estilo Fundo*/
   margin: 80px 8px 8px;
 }
 }
-@media screen and (max-width:600px){  /*trem responsivo*/
+@media screen and (max-width:450px){  /*responsividade celular*/
   .caixaprincipal{
     width: 95%;
+    min-height: 55rem;
   }
-  .campo-row {
+  .form-group-row {
     max-width: 95%;
-    display: flex;
+    display:inline-block;
+    justify-content: right;
     gap: 1px;
     margin: 8px 8px;
 
 }
-.campo{
-  max-width: 90%;
+.form-group{
+  max-width: 91%;
   margin-bottom: 10px;
   margin: 10px 8px 8px;
   padding: 10px;
   border: none;
   border-radius: 6px;
 }
-.campodesc{
-  max-width: 88%;
-  margin: 8px 8px 8px;
-}
+
 .excluir, .btnconf, .btncanc {  /*botoes estilo*/
-  margin: 150px 8px 8px;
+  margin: 0 auto;
+  justify-content: center;
+}
+.seqbto{
+    gap: 9px;
+    margin: 8px 8px 0px;
 }
 }
 
@@ -292,4 +283,7 @@ body.dark-theme .campocat{
   box-shadow: 0 0 5px #2e2e2e;
   background-color: #4B4947;
   color: #FFF;
+}
+body.dark-theme .titulo{
+  color:#7B83EB
 }
