@@ -17,37 +17,37 @@
         <input type="text" id="titulo" name="titulo" placeholder="Dê um título para sua tarefa." maxlength="26" >
       </div>
 
-        <div class="form-group-row">
+        <div class="form-group-row"> <!--data/hora/recorrencia-->
         <div class="form-group">
         <label for="data">Data</label>
         <input type="date" id="data" name="data" >
         <small>Insira a data da sua tarefa.</small>
         </div>
 
-        <div class="form-group">
-        <label for="horario">Horário</label>
-        <div class="time-group-row">
+        <div class="form-group"> <!--campo-->
+        <label for="horario">Horário</label> 
+        <div class="time-group-row">     <!--campo horario-->
         <input type="time" id="horario" name="horario" >
         <input type="time" id="horario2" name="horario2"  >
         </div>
         <small>Insira o início e o término da sua tarefa.</small>
         </div>
-        <div class="form-group">
+        <div class="form-group">  <!--campo-->
         <label for="recorrencia">Recorrência</label>
         <select id="recorrencia" name="recorrencia"></select>
         <br>
         <small>Selecione quantas vezes essa tarefa irá se repetir.</small>
         </div>
         </div>        
-        <div class="form-group">
+        <div class="form-group">  <!--campo-->
         <label for="categoria">Categoria</label>
         <div class="campocat">
         <select name="categoria" id="categoria" form="categoria" ></select>       
       </div>    
     </div>
-        <div class="form-group">
+        <div class="form-group">  <!--campo-->
         <label for="prioridade">Prioridade</label>
-        <div class="camposelec">
+        <div class="camposelec"> <!--campo categoria-->
         <select name="prioridade" id="prioridade" form="prioridade" > 
         <option value="1">Alta Prioridade</option> 
         <option value="2">Média Prioridade</option>
@@ -56,13 +56,13 @@
       </div>    
       </div>
 
-        <div class="form-group">
+        <div class="form-group">  <!--campo-->
         <div class="form-group-desc">
         <label for="descricao">Descrição</label>
         <input type="text" id="descricao" name="descricao" placeholder="Escreva um pouco sobre a sua tarefa." maxlength="182">
       </div>
     </div>
-        <div class="botoes">
+        <div class="botoes">   <!--botoes-->
           <div class="seqbto">
           <button type="reset" class="excluir">Excluir</button>
           <button type="submit" class="btnconf">Confirmar</button>

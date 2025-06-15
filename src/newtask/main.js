@@ -15,7 +15,7 @@ function slugify(str) {
       .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
       .replace(/\s+/g, '-');
 }
-
+// Função itens usuário logado
 function renderCategorias(usuarioLogado) {
     const select = document.getElementById('categoria');
     if (!select) return;
@@ -32,7 +32,7 @@ function renderCategorias(usuarioLogado) {
         select.appendChild(option);
     });
 }
-
+// Função render Recorrencia
 function renderRecorrencia() {
     const select = document.getElementById('recorrencia');
     if (!select) return;
@@ -52,16 +52,16 @@ function renderRecorrencia() {
         select.appendChild(option);
     });
 }
-
+// Função puxar tarefas do storage
 function getTasksFromStorage(userId) {
     const tasksJson = localStorage.getItem(`tasks_${userId}`);
     return tasksJson ? JSON.parse(tasksJson) : [];
 }
-
+//Salvar tarefas no storage
 function saveTasksToStorage(userId, tasks) {
     localStorage.setItem(`tasks_${userId}`, JSON.stringify(tasks));
 }
-
+//Função recorrencia
 function generateRecurringDates(startDate, recurrence, limitDate) {
     const dates = [];
     let currentDate = new Date(startDate);
@@ -84,13 +84,12 @@ function generateRecurringDates(startDate, recurrence, limitDate) {
 document.addEventListener('DOMContentLoaded', function () {
     const form = document.querySelector('form');
     const usuarioLogado = getLoggedInUser();
-
+//Função modo noite
     const savedTheme = localStorage.getItem('theme') || 'light-theme';
-
     document.body.classList.remove('light-theme', 'dark-theme');
     document.body.classList.add(savedTheme);
     localStorage.setItem('theme', savedTheme);
-
+//Requisição estar logado
     if (!usuarioLogado) {
         alert('Você precisa estar logado para criar tarefas.');
         window.location.href = '../login/index.html';
@@ -201,6 +200,7 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('Tarefa(s) salva(s) com sucesso!');
         window.location.href = '../front_page/index.html';
     });
+    //botão de cancelar
     const botaoCancelar = document.querySelector('.btncanc');
         botaoCancelar.addEventListener('click', () => {
         window.location.href = '../front_page/index.html';
