@@ -131,13 +131,13 @@ document.addEventListener('DOMContentLoaded', function () {
         const priority = document.getElementById('prioridade').value;
         const recurrence = document.getElementById('recorrencia').value.trim();
 
-        // Validações básicas
+         //Validações básicas
         if (!title || !date || !startTime || !endTime) {
             alert('Preencha todos os campos obrigatórios.');
             return;
         }
 
-        const startDateTime = `${date}T${startTime}`;
+                const startDateTime = `${date}T${startTime}`;
         const endDateTime = `${date}T${endTime}`;
 
         if (new Date(endDateTime) <= new Date(startDateTime)) {
@@ -199,6 +199,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         saveTasksToStorage(userId, tasks);
         alert('Tarefa(s) salva(s) com sucesso!');
+        window.location.href = '../front_page/index.html';
+    });
+    const botaoCancelar = document.querySelector('.btncanc');
+        botaoCancelar.addEventListener('click', () => {
         window.location.href = '../front_page/index.html';
     });
 });
