@@ -676,7 +676,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (Notification.permission === "granted") {
             new Notification(titulo, {
                 body: corpo,
-                icon: "/favicon.ico"
+                icon: "../../docs/img/logo.png"
             });
         }
     }
