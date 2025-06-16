@@ -635,15 +635,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (btnAtivarNotificacoes) {
         toggleNotificationIcon();
-        btnAtivarNotificacoes.addEventListener('click', () => {
-            console.log('Botão de notificações clicado, estado atual:', notificationsEnabled);
+        btnAtivarNotificacoes.addEventListener('click', async () => {
             notificationsEnabled = !notificationsEnabled;
             localStorage.setItem('notificationsEnabled', notificationsEnabled);
+
             if (notificationsEnabled) {
-                pedirPermissaoNotificacoes().then(() => {
+                await pedirPermissaoNotificacoes();
+                if (Notification.permission === "granted") {
                     agendarNotificacoesParaHoje();
                     alert('Notificações ativadas e agendadas, se aplicável.');
-                });
+                } else {
+                    notificationsEnabled = false;
+                    localStorage.setItem('notificationsEnabled', false);
+                    alert('Permissão de notificação negada.');
+                }
             } else {
                 desativarNotificacoes();
                 alert('Notificações desativadas.');
@@ -681,6 +686,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const agora = new Date();
         const horario = new Date(tarefa.startTime);
         const delay = horario.getTime() - agora.getTime();
+
+        console.log('Agendando notificação para:', tarefa.title, 'startTime:', tarefa.startTime, 'delay(ms):', delay);
 
         if (delay > 0) {
             const timeoutId = setTimeout(() => {
@@ -790,6 +797,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function formatDateTimeLocal(date) {
+        const pad = n => String(n).padStart(2, '0');
+        return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+    }
+
     function updateTask() {
         if (editingTaskIndex === null || !activeCell) return;
 
@@ -845,15 +857,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const task = {
                     ...baseTask,
                     date: `${recurringDate.getFullYear()}-${String(recurringDate.getMonth() + 1).padStart(2, '0')}-${String(recurringDate.getDate()).padStart(2, '0')}`,
-                    startTime: `${taskStartTime.getFullYear()}-${String(taskStartTime.getMonth() + 1).padStart(2, '0')}-${String(taskStartTime.getDate()).padStart(2, '0')}T${String(taskStartTime.getHours()).padStart(2, '0')}:${String(taskStartTime.getMinutes()).padStart(2, '0')}`,
-                    endTime: `${taskEndTime.getFullYear()}-${String(taskEndTime.getMonth() + 1).padStart(2, '0')}-${String(taskEndTime.getDate()).padStart(2, '0')}T${String(taskEndTime.getHours()).padStart(2, '0')}:${String(taskEndTime.getMinutes()).padStart(2, '0')}`
+                    startTime: formatDateTimeLocal(taskStartTime),
+                    endTime: formatDateTimeLocal(taskEndTime)
                 };
 
                 tasks.push(task);
 
-                if (notificationsEnabled) {
-                    pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(task));
-                }
+                if (notificationsEnabled && Notification.permission === "granted") {
+                    agendarNotificacaoTarefa(task);
+                }       
             });
         } else {
             // Comportamento padrão: apenas atualiza a tarefa
@@ -862,8 +874,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 title,
                 category: elements.taskCategory.value || 'trabalho',
                 priority: elements.taskPriority.value || '2',
-                startTime: `${startDate.getFullYear()}-${String(startDate.getMonth() + 1).padStart(2, '0')}-${String(startDate.getDate()).padStart(2, '0')}T${String(startDate.getHours()).padStart(2, '0')}:${String(startDate.getMinutes()).padStart(2, '0')}`,
-                endTime: `${endDate.getFullYear()}-${String(endDate.getMonth() + 1).padStart(2, '0')}-${String(endDate.getDate()).padStart(2, '0')}T${String(endDate.getHours()).padStart(2, '0')}:${String(endDate.getMinutes()).padStart(2, '0')}`,
+                startTime: formatDateTimeLocal(startDate),
+                endTime: formatDateTimeLocal(endDate),
                 recurrence: newRecurrence
             };
 
@@ -950,9 +962,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
             tasks.push(task);            
 
-            if (notificationsEnabled) {
-                pedirPermissaoNotificacoes().then(() => agendarNotificacaoTarefa(task));
-            }
+        if (notificationsEnabled && Notification.permission === "granted") {
+            agendarNotificacaoTarefa(task);
+        }
         });
 
         saveTasksToStorage(currentUserId, tasks);
