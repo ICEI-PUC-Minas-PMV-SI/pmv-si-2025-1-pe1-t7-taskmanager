@@ -4,59 +4,59 @@
 
 **Caso de Teste** | **CT01 - Criar conta**
  :--------------: | ------------
-**Procedimento**  | 1) Acesse a aplicação <br> 2) Clique no campo "Cadastre-se" <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Cadastre-se".
+**Procedimento**  | 1) Acesse a aplicação. <br> 2) Clique no campo "Cadastre-se". <br> 2) Preencha todos os campos do formulário. <br> 3) Clique no botão "Cadastre-se."
 **Requisitos associados** | RF-002
-**Resultado esperado** | Prosseguir para a tela de login
-**Dados de entrada** | Inserção de dados válidos no formulário de cadastro
-**Resultado obtido** | Sucesso
+**Resultado esperado** | Prosseguir para a tela de login.
+**Dados de entrada** | Inserção de dados válidos no formulário de cadastro.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT02 - Login na aplicação**
  :--------------: | ------------
-**Procedimento**  | 1) Preencha dados cadastrados usuário e senha <br> 2) Clique no botão "Entrar" <br> 
+**Procedimento**  | 1) Preencha dados cadastrados usuário e senha. <br> 2) Clique no botão "Entrar". <br> 
 **Requisitos associados** | RF-006
-**Resultado esperado** | Usuário logado com sucesso - validção das suas informações de login para acessar o conteúdo da página web
-**Dados de entrada** | Inserção de dados válidos no formulário de login
-**Resultado obtido** | Sucesso
+**Resultado esperado** | Usuário logado com sucesso - validação das suas informações de login para acessar o conteúdo da página web.
+**Dados de entrada** | Inserção de dados válidos no formulário de login.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT03 - Página inicial com a agenda**
  :--------------: | ------------
-**Procedimento**  | 1) após login verificar se agenda e mini calendario está com data correta <br>
+**Procedimento**  | 1) Após login verificar se agenda e mini calendário está com a data correta. <br>
 **Requisitos associados** | RF-003
-**Resultado esperado** | Agenda carregar hora de 00:00 até 23:00 e dias da semana corretamente
-**Dados de entrada** | null
-**Resultado obtido** | Sucesso
+**Resultado esperado** | Agenda carregar hora de 00:00 até 23:00 e dias da semana corretamente.
+**Dados de entrada** | Null.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT04 - Permitir ao usuário criar uma nova tarefa**
  :--------------: | ------------
-**Procedimento**  | 1) após login clicar no icone superior a esquerda simbolizando <br> 2) Preencha todos os campos do formulário <br> 3) Clique no botão "Confirmar" para salvar a tarefa <br> 
+**Procedimento**  | 1) Após o login, clicar no ícone superior a esquerda sinalizado por um símbolo de adição. <br> 2) Preencha todos os campos do formulário. <br> 3) Clique no botão "Confirmar" para salvar a tarefa. <br> 
 **Requisitos associados** | RF-001
 **Resultado esperado** | Nova tarefa adicionada e representada na agenda principal na data e hora especificada pelo usuário.  
-**Dados de entrada** | Inserção de dados válidos no formulário de criação de nova tarefa
-**Resultado obtido** | Sucesso
+**Dados de entrada** | Inserção de dados válidos no formulário de criação de nova tarefa.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT05 - Permite o usuário alterar a senha**
  :--------------: | ------------
 **Procedimento**  | 1) Clicar no ícone de engrenagem na página inicial no menu superior à direita. <br> 2) Preencha todos os campos do formulário. <br> 3) Clique no botão "Alterar Senha" para salvar a nova senha. <br> 
 **Requisitos associados** | RF-004
-**Resultado esperado** | Senha alterada no localStorage  
-**Dados de entrada** | Inserção de dados válidos no formulário de alteração de senha
-**Resultado obtido** | Sucesso
+**Resultado esperado** | Senha alterada no localStorage.  
+**Dados de entrada** | Inserção de dados válidos no formulário de alteração de senha.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT06 - Permite o usuário filtrar as categorias**
  :--------------: | ------------
-**Procedimento**  | 1) Na página inicial da agenda no menu suspenso inferior a esquerda marcar quais categorias de exibição. <br>
+**Procedimento**  | 1) Na página inicial da agenda no menu suspenso inferior a esquerda marcar quais as categorias de exibição. <br>
 **Requisitos associados** | RF-005
 **Resultado esperado** | Ao filtrar por categoria somente mostrar as tarefas da mesma.
-**Dados de entrada** | null
-**Resultado obtido** | Sucesso
+**Dados de entrada** | Null.
+**Resultado obtido** | Sucesso.
 
 **Caso de Teste** | **CT07 - Permitir configuração de perfil**
  :--------------: | ------------
-**Procedimento**  | 1) Na página inicial da agenda no menu superior a direita clicar no ícone de perfil simbolizado por um avatar genérico. <br> 2) Preencha todos os campos do formulário. <br> 3) Carregue uma foto de perfil do seu dispositivo. <br> 4) Clique no botão "Confirmar" para salvar. <br>
+**Procedimento**  | 1) Na página inicial da agenda no menu superior à direita clicar no ícone de perfil simbolizado por um avatar genérico. <br> 2) Preencha todos os campos do formulário. <br> 3) Carregue uma foto de perfil do seu dispositivo. <br> 4) Clique no botão "Confirmar" para salvar. <br>
 **Requisitos associados** | RF-007
-**Resultado esperado** | Ao preencher os dados inseridos no formulário salvar as alterações e se caso inserir a foto ela aparecer no lugar do icone de avatar genérico.
+**Resultado esperado** | Ao preencher os dados inseridos no formulário salvar as alterações e se caso inserir a foto ela irá aparecer no lugar do ícone de avatar genérico.
 **Dados de entrada** | Inserção de dados válidos no formulário e imagem de perfil.
-**Resultado obtido** | Sucesso
+**Resultado obtido** | Sucesso.
 
 
 ## Registro dos Testes de Software
@@ -64,38 +64,38 @@
 
 |*Caso de Teste*                                 |*CT01 - Criar conta*                                            |
 |---|---|
-|Requisito Associado | RF-002 - A aplicação permite que o usuário realize seu cadastro	                         |
+|Requisito Associado | RF-002 - A aplicação permite que o usuário realize seu cadastro.	                         |
 |Link do vídeo do teste realizado: | https://www.loom.com/share/f41270501dd54518bd0f74646d026bad?sid=6806ad7b-54fe-4f3c-a8e4-6dbf0b68a72c| 
 
 |*Caso de Teste*                                 |*CT02 - Login na aplicação*                                        |
 |---|---|
-|Requisito Associado | RF-006 - Permite o usuário inserir suas informações de login para acessar o conteúdo da página web|
+|Requisito Associado | RF-006 - Permite o usuário inserir suas informações de login para acessar o conteúdo da página web.|
 |Link do vídeo do teste realizado: | https://www.loom.com/share/a1623b48c8de4097bcf84ad66815a223?sid=75c28c64-479e-4401-bd7a-f6d2000ba4dc | 
 
-|*Caso de Teste*                                 |*CT04 - Permitir ao usuário criar uma nova tarefa*                                      |
+|*Caso de Teste*                                 |*CT03 - Permitir o usuário criar uma nova tarefa*                                      |
 |---|---|
-|Requisito Associado | RF-001 - Permitir ao usuário criar uma nova tarefa.	|
+|Requisito Associado | RF-001 - Permite o usuário criar uma nova tarefa.	|
 |Link do vídeo do teste realizado: | https://www.loom.com/share/b75623933c0746a5a97d59d2fecf9716?sid=653edadb-2f0d-4abc-808f-e75cab5627d6, https://www.loom.com/share/58b49ec8b9d546c19b763bf51e5f907a?sid=1f056820-8bb7-43ca-a200-54b63e12e997 | 
 
-|*Caso de Teste*                                 |*CT05 -  Permite o usuário alterar a senha*                                        |
+|*Caso de Teste*                                 |*CT04 -  Permite o usuário alterar a senha*                                        |
 |---|---|
-|Requisito Associado | RF-004 - Permite o usuário alterar a senha	|
+|Requisito Associado | RF-004 - Permite o usuário alterar a senha.	|
 |Link do vídeo do teste realizado: | https://www.loom.com/share/f4353ae1999d4d29b66884902a176c5a?sid=16c99474-3152-4303-9b20-d7b57fe3091f | 
 
-|*Caso de Teste*                                 |*CT06 -  Permite o usuário filtrar as categorias*                                        |
+|*Caso de Teste*                                 |*CT05 -  Permite o usuário filtrar as categorias*                                        |
 |---|---|
-|Requisito Associado | RF-004 - Permite o usuário filtrar as categorias |
+|Requisito Associado | RF-004 - Permite o usuário filtrar as categorias. |
 |Link do vídeo do teste realizado: | https://www.loom.com/share/621b53cf3b754177b0195d3f5b9ad8ed?sid=52dd4c18-c066-4227-af77-94f5d961cb9c | 
 
-|*Caso de Teste*                                 |*CT07 -  Permitir configuração de perfil*                                        |
+|*Caso de Teste*                                 |*CT06 -  Permitir configuração de perfil*                                        |
 |---|---|
-|Requisito Associado | RF-004 - Permitir configuração de perfil |
+|Requisito Associado | RF-004 - Permitir configuração de perfil. |
 |Link do vídeo do teste realizado: | https://www.loom.com/share/dca280d703c84f25b9937fbab063a650?sid=a03b4441-631c-4704-824b-3a3f7c391eb9 | 
 
 
 ## Avaliação dos Testes de Software
 
-# ✅ Análise dos Resultados de Teste – Agenda Digital
+# ✅ Análise dos Resultados de Teste – Task Manager
 
 ## 🟢 Pontos Fortes
 Criação de Tarefas
@@ -134,9 +134,9 @@ Aplicar testes automatizados em funções críticas.
 
 ## ❗ Falhas x Melhorias
 Falha Detectada	Solução Proposta
-Edição falha ao carregar dados	Validar e carregar corretamente no editor
-Cancelar não retorna corretamente	Implementar redirecionamento seguro
-Falta botão de retorno	Inserir botão fixo de "Início" na UI
+Edição falha ao carregar dados	Validar e carregar corretamente no editor.
+Cancelar não retorna corretamente	implementar redirecionamento seguro.
+Falta botão de retorno	inserir botão fixo de "Início" na UI.
 
 ## 📌 Conclusão
 A aplicação já oferecia funcionalidades robustas e úteis, mas pequenas falhas de fluxo impactam a experiência. As melhorias foram priorizadas, focando em usabilidade, navegação intuitiva e confiabilidade.
@@ -189,7 +189,7 @@ Objetivo: Testar a clareza e funcionalidade do painel de resumo de tarefas do di
 Funcionalidades Avaliadas: Interface do resumo diário, clareza das informações exibidas, utilidade percebida.
 
 
-## Cenários de Teste de Usabilidade – Agenda Digital
+## Cenários de Teste de Usabilidade – Task Manager
 
 | Nº do Cenário | Descrição do Cenário |
 |---------------|----------------------|
