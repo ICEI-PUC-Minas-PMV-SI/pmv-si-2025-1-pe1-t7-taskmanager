@@ -748,6 +748,17 @@ document.addEventListener('DOMContentLoaded', () => {
         elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
         elements.taskEditor.classList.remove('hidden');
 
+        const editorTitle = document.getElementById('task-editor-title');
+
+        if (task) {
+            // ...código de edição...
+            if (editorTitle) editorTitle.textContent = "Editar Tarefa";
+            // ...restante do código...
+        } else {
+            // ...código de criação...
+            if (editorTitle) editorTitle.textContent = "Criar Tarefa";
+            // ...restante do código...
+        }
         if (task) {
             editingTaskIndex = tasks.findIndex(t =>
                 t.date === task.date &&
