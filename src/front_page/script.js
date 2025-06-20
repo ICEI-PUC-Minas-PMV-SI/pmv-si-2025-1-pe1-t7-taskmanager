@@ -548,32 +548,46 @@ document.addEventListener('DOMContentLoaded', () => {
             const userId = user.email.toLowerCase();
             const tasks = JSON.parse(localStorage.getItem(`tasks_${userId}`)) || [];
 
-            const hoje = new Date().toISOString().split('T')[0];
+            const hoje = new Date();
+            const pad = n => String(n).padStart(2, '0');
+            const dataHoje = `${hoje.getFullYear()}-${pad(hoje.getMonth() + 1)}-${pad(hoje.getDate())}`;
+
+            // Filtra tarefas do dia pelo startTime
+            const agora = new Date();
             const tarefasHoje = tasks.filter(t => {
-                if (!t.date) return false;
-                const dataTarefa = new Date(t.date);
-                const hojeData = new Date();
-                return (
-                    dataTarefa.getFullYear() === hojeData.getFullYear() &&
-                    dataTarefa.getMonth() === hojeData.getMonth() &&
-                    dataTarefa.getDate() === hojeData.getDate()
-                );
+                if (!t.startTime) return false;
+                if (!t.endTime) return false;
+                return t.startTime.startsWith(dataHoje) && new Date(t.endTime) > agora;
             });
 
-            lista.innerHTML = '';
+            // Separa por prioridade
+            const prioridades = {
+                '1': [],
+                '2': [],
+                '3': []
+            };
+            tarefasHoje.forEach(t => {
+                const prioridade = t.priority || '3';
+                prioridades[prioridade].push(t);
+            });
 
-            if (tarefasHoje.length === 0) {
-                lista.innerHTML = '<li>Nenhuma tarefa para hoje.</li>';
-            } else {
-                tarefasHoje.forEach(t => {
-                    const li = document.createElement('li');
-                    const inicio = t.startTime?.substring(11, 16) || '??:??';
-                    const fim = t.endTime?.substring(11, 16) || '??:??';
-                    li.textContent = `${t.title} (${inicio} - ${fim})`;
-                    lista.appendChild(li);
-                });
-            }
+            // Monta o HTML separado por prioridade
+            let html = '';
+            const nomesPrioridade = { '1': 'Alta', '2': 'Média', '3': 'Baixa' };
+            [1, 2, 3].forEach(p => {
+                html += `<h3>Prioridade ${nomesPrioridade[p]}</h3>`;
+                if (prioridades[p].length === 0) {
+                    html += `<li>Nenhuma tarefa.</li>`;
+                } else {
+                    prioridades[p].forEach(t => {
+                        const inicio = t.startTime?.substring(11, 16) || '??:??';
+                        const fim = t.endTime?.substring(11, 16) || '??:??';
+                        html += `<li>${t.title} (${inicio} - ${fim})</li>`;
+                    });
+                }
+            });
 
+            lista.innerHTML = html;
             modal.style.display = 'block';
         });
 
@@ -741,72 +755,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Editor de Tarefas ---
-    function openTaskEditor(cell, task = null) {
-        activeCell = cell;
-        const rect = cell.getBoundingClientRect();
-        elements.taskEditor.style.top = `${rect.bottom + window.scrollY + 5}px`;
-        elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
-        elements.taskEditor.classList.remove('hidden');
+function openTaskEditor(cell, task = null) {
+    activeCell = cell;
+    const rect = cell.getBoundingClientRect();
+    elements.taskEditor.style.top = `${rect.bottom + window.scrollY + 5}px`;
+    elements.taskEditor.style.left = `${rect.left + window.scrollX}px`;
+    elements.taskEditor.classList.remove('hidden');
 
-        const editorTitle = document.getElementById('task-editor-title');
+    const editorTitle = document.getElementById('task-editor-title');
 
-        if (task) {
-            // ...código de edição...
-            if (editorTitle) editorTitle.textContent = "Editar Tarefa";
-            // ...restante do código...
-        } else {
-            // ...código de criação...
-            if (editorTitle) editorTitle.textContent = "Criar Tarefa";
-            // ...restante do código...
+    // NOVO: Referências aos campos separados
+    const dateInput = document.getElementById('date');
+    const startTimeInput = document.getElementById('start-time');
+    const endTimeInput = document.getElementById('end-time');
+
+    if (task) {
+        if (editorTitle) editorTitle.textContent = "Editar Tarefa";
+
+        editingTaskIndex = tasks.findIndex(t =>
+            t.date === task.date &&
+            t.title === task.title &&
+            t.category === task.category &&
+            t.priority === task.priority
+        );
+
+        elements.taskTitle.value = task.title || '';
+        elements.taskCategory.value = task.category || 'trabalho';
+        elements.taskPriority.value = task.priority || '2';
+        if (elements.taskRecurrence) {
+            elements.taskRecurrence.value = task.recurrence || 'nenhuma';
         }
-        if (task) {
-            editingTaskIndex = tasks.findIndex(t =>
-                t.date === task.date &&
-                t.title === task.title &&
-                t.category === task.category &&
-                t.priority === task.priority
-            );
 
-            elements.taskTitle.value = task.title || '';
-            elements.startTime.value = task.startTime ? task.startTime.slice(0, 16) : '';
-            elements.endTime.value = task.endTime ? task.endTime.slice(0, 16) : '';
-            elements.taskCategory.value = task.category || 'trabalho';
-            elements.taskPriority.value = task.priority || '2';
-            if (elements.taskRecurrence) {
-                elements.taskRecurrence.value = task.recurrence || 'nenhuma';
-            }
+        // Preencher campos separados de data e hora
+        if (task.startTime && task.endTime && dateInput && startTimeInput && endTimeInput) {
+            // task.startTime e task.endTime no formato 'YYYY-MM-DDTHH:mm'
+            const [date, horaInicio] = task.startTime.split('T');
+            const [, horaFim] = task.endTime.split('T');
+            dateInput.value = date;
+            startTimeInput.value = horaInicio;
+            endTimeInput.value = horaFim;
+        }
 
-            elements.addTaskBtn.classList.add('hidden');
-            elements.editTaskBtn.classList.remove('hidden');
-            elements.deleteTaskBtn.classList.remove('hidden');
-            elements.editPageTaskBtn.classList.remove('hidden');
-        } else {
-            editingTaskIndex = null;
-            elements.taskTitle.value = '';
+        elements.addTaskBtn.classList.add('hidden');
+        elements.editTaskBtn.classList.remove('hidden');
+        elements.deleteTaskBtn.classList.remove('hidden');
+        elements.editPageTaskBtn.classList.remove('hidden');
+    } else {
+        if (editorTitle) editorTitle.textContent = "Criar Tarefa";
+        editingTaskIndex = null;
+        elements.taskTitle.value = '';
+        elements.taskCategory.value = 'trabalho';
+        elements.taskPriority.value = '2';
+        if (elements.taskRecurrence) {
+            elements.taskRecurrence.value = 'nenhuma';
+        }
+
+        // Preencher campos separados de data e hora com valores padrão
+        if (dateInput && startTimeInput && endTimeInput) {
             const cellDateStr = cell.getAttribute('data-date');
             const clickedDate = new Date(cellDateStr);
             const start = new Date(clickedDate);
             const end = new Date(start.getTime() + 30 * 60000);
 
-            const formatDateToInput = date => {
-                const pad = num => String(num).padStart(2, '0');
-                return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
-            };
-
-            elements.startTime.value = formatDateToInput(start);
-            elements.endTime.value = formatDateToInput(end);
-            elements.taskCategory.value = 'trabalho';
-            elements.taskPriority.value = '2';
-            if (elements.taskRecurrence) {
-                elements.taskRecurrence.value = 'nenhuma';
-            }
-
-            elements.addTaskBtn.classList.remove('hidden');
-            elements.editTaskBtn.classList.add('hidden');
-            elements.deleteTaskBtn.classList.add('hidden');
-            elements.editPageTaskBtn.classList.add('hidden');
+            const pad = num => String(num).padStart(2, '0');
+            dateInput.value = `${start.getFullYear()}-${pad(start.getMonth() + 1)}-${pad(start.getDate())}`;
+            startTimeInput.value = `${pad(start.getHours())}:${pad(start.getMinutes())}`;
+            endTimeInput.value = `${pad(end.getHours())}:${pad(end.getMinutes())}`;
         }
+
+        elements.addTaskBtn.classList.remove('hidden');
+        elements.editTaskBtn.classList.add('hidden');
+        elements.deleteTaskBtn.classList.add('hidden');
+        elements.editPageTaskBtn.classList.add('hidden');
     }
+}
 
     function formatDateTimeLocal(date) {
         const pad = n => String(n).padStart(2, '0');
@@ -822,8 +844,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const startTime = elements.startTime.value;
-        const endTime = elements.endTime.value;
+        // NOVO: Pegue os valores dos campos separados
+        const date = document.getElementById('date').value;
+        const horaInicio = document.getElementById('start-time').value;
+        const horaFim = document.getElementById('end-time').value;
+
+        // Monte os valores completos no formato YYYY-MM-DDTHH:mm
+        const startTime = `${date}T${horaInicio}`;
+        const endTime = `${date}T${horaFim}`;
+
         const startDate = new Date(startTime);
         const endDate = new Date(endTime);
 
@@ -923,8 +952,15 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        const startTime = elements.startTime.value;
-        const endTime = elements.endTime.value;
+        // NOVO: Pegue os valores dos campos separados
+        const date = document.getElementById('date').value;
+        const horaInicio = document.getElementById('start-time').value;
+        const horaFim = document.getElementById('end-time').value;
+
+        // Monte os valores completos no formato YYYY-MM-DDTHH:mm
+        const startTime = `${date}T${horaInicio}`;
+        const endTime = `${date}T${horaFim}`;
+
         const startDate = new Date(startTime);
         const endDate = new Date(endTime);
 
