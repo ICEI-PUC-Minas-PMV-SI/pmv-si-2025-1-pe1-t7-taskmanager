@@ -1,965 +1,1387 @@
-// Arquivo principal para gerenciar as funcionalidades da aplicação
-// Organizado em módulos para melhor manutenção
+/// script.js - Arquivo JavaScript consolidado para a tela de notificações
 
-// Configuração da API
-const API_URL = 'http://localhost:3000';
+// storage.js - Módulo de armazenamento global para o TaskManager
+// Este módulo pode ser usado em qualquer página do projeto
 
-// Módulo para gerenciar requisições à API
-const apiService = {
-  // Método genérico para fazer requisições GET
-  async get(endpoint) {
-    try {
-      const response = await fetch(`${API_URL}/${endpoint}`);
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao buscar dados:', error);
-      throw error;
-    }
-  },
+const TaskManagerStorage = {
+    // Prefixo para evitar conflitos no localStorage
+    PREFIX: 'taskmanager_',
 
-  // Método genérico para fazer requisições POST
-  async post(endpoint, data) {
-    try {
-      const response = await fetch(`${API_URL}/${endpoint}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao enviar dados:', error);
-      throw error;
-    }
-  },
-
-  // Método genérico para fazer requisições PUT
-  async put(endpoint, data) {
-    try {
-      const response = await fetch(`${API_URL}/${endpoint}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      });
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao atualizar dados:', error);
-      throw error;
-    }
-  },
-
-  // Método genérico para fazer requisições DELETE
-  async delete(endpoint) {
-    try {
-      const response = await fetch(`${API_URL}/${endpoint}`, {
-        method: 'DELETE'
-      });
-      if (!response.ok) {
-        throw new Error(`Erro na requisição: ${response.status}`);
-      }
-      return await response.json();
-    } catch (error) {
-      console.error('Erro ao excluir dados:', error);
-      throw error;
-    }
-  }
-};
-
-// Módulo para gerenciar notificações
-const notificationService = {
-  // Buscar todas as notificações do usuário
-  async getNotifications(userId) {
-    return await apiService.get(`notifications?userId=${userId}`);
-  },
-
-  // Marcar notificação como lida
-  async markAsRead(notificationId) {
-    const notification = await apiService.get(`notifications/${notificationId}`);
-    notification.read = true;
-    return await apiService.put(`notifications/${notificationId}`, notification);
-  },
-
-  // Atualizar preferências de notificação
-  async updatePreferences(categoryId, enabled) {
-    const category = await apiService.get(`categories/${categoryId}`);
-    category.enabled = enabled;
-    return await apiService.put(`categories/${categoryId}`, category);
-  },
-
-  // Atualizar preferências de prioridade
-  async updatePriorityPreferences(priorityId, enabled) {
-    const priority = await apiService.get(`priorities/${priorityId}`);
-    priority.enabled = enabled;
-    return await apiService.put(`priorities/${priorityId}`, priority);
-  }
-};
-
-// Módulo para gerenciar configurações do usuário
-const settingsService = {
-  // Buscar configurações do usuário
-  async getSettings(userId) {
-    const settings = await apiService.get(`settings?userId=${userId}`);
-    return settings[0]; // Assumindo que há apenas um registro de configurações por usuário
-  },
-
-  // Atualizar configurações do usuário
-  async updateSettings(settings) {
-    return await apiService.put(`settings/${settings.id}`, settings);
-  },
-
-  // Alterar senha do usuário
-  async changePassword(userId, newPassword) {
-    const user = await apiService.get(`users/${userId}`);
-    user.password = newPassword;
-    return await apiService.put(`users/${userId}`, user);
-  },
-
-  // Alterar idioma do usuário
-  async changeLanguage(userId, language) {
-    const settings = await this.getSettings(userId);
-    settings.language = language;
-    return await this.updateSettings(settings);
-  },
-
-  // Redefinir agenda (limpar todas as tarefas)
-  async resetSchedule(userId) {
-    const tasks = await apiService.get(`tasks?userId=${userId}`);
-    for (const task of tasks) {
-      await apiService.delete(`tasks/${task.id}`);
-    }
-    return { success: true, message: 'Agenda redefinida com sucesso' };
-  },
-
-  // Alternar modo escuro
-  async toggleDarkMode(userId) {
-    const settings = await this.getSettings(userId);
-    settings.darkMode = !settings.darkMode;
-    return await this.updateSettings(settings);
-  }
-};
-
-// Módulo para gerenciar perfil do usuário
-const profileService = {
-  // Buscar perfil do usuário
-  async getProfile(userId) {
-    return await apiService.get(`users/${userId}`);
-  },
-
-  // Atualizar perfil do usuário
-  async updateProfile(user) {
-    return await apiService.put(`users/${user.id}`, user);
-  },
-
-  // Fazer upload de avatar (simulado)
-  async uploadAvatar(userId, avatarFile) {
-    // Em um ambiente real, isso enviaria o arquivo para um servidor
-    // Aqui apenas simulamos atualizando o nome do arquivo
-    const user = await this.getProfile(userId);
-    user.avatar = avatarFile.name;
-    return await this.updateProfile(user);
-  }
-};
-
-// Módulo para gerenciar tarefas
-const taskService = {
-  // Buscar todas as tarefas
-  async getTasks() {
-    return await apiService.get('tasks');
-  },
-
-  // Buscar tarefa por ID
-  async getTask(taskId) {
-    return await apiService.get(`tasks/${taskId}`);
-  },
-
-  // Criar nova tarefa
-  async createTask(task) {
-    task.createdAt = new Date().toISOString();
-    task.completed = false;
-    return await apiService.post('tasks', task);
-  },
-
-  // Atualizar tarefa existente
-  async updateTask(task) {
-    return await apiService.put(`tasks/${task.id}`, task);
-  },
-
-  // Excluir tarefa
-  async deleteTask(taskId) {
-    return await apiService.delete(`tasks/${taskId}`);
-  },
-
-  // Marcar tarefa como concluída
-  async completeTask(taskId) {
-    const task = await this.getTask(taskId);
-    task.completed = true;
-    return await this.updateTask(task);
-  }
-};
-
-// Inicialização da aplicação
-document.addEventListener('DOMContentLoaded', async () => {
-  // Carregar configurações do usuário
-  const userId = 1; // Usuário padrão para demonstração
-  try {
-    // Carregar configurações
-    const settings = await settingsService.getSettings(userId);
-    
-    // Aplicar modo escuro se estiver ativado
-    if (settings.darkMode) {
-      document.body.classList.add('dark-mode');
-    }
-    
-    // Carregar categorias e prioridades para a tela de notificações
-    await loadNotificationPreferences();
-    
-    // Configurar listeners para os botões
-    setupEventListeners(userId);
-    
-  } catch (error) {
-    console.error('Erro ao inicializar aplicação:', error);
-  }
-});
-
-// Carregar preferências de notificação
-async function loadNotificationPreferences() {
-  try {
-    // Buscar categorias
-    const categories = await apiService.get('categories');
-    const categoriesContainer = document.querySelector('.notification-rows-container');
-    
-    if (categoriesContainer) {
-      // Limpar conteúdo existente
-      categoriesContainer.innerHTML = '';
-      
-      // Buscar prioridades
-      const priorities = await apiService.get('priorities');
-      
-      // Criar linhas para cada categoria e prioridade correspondente
-      categories.forEach((category, index) => {
-        const priority = index < priorities.length ? priorities[index] : null;
-        
-        const row = document.createElement('div');
-        row.className = 'notification-row';
-        
-        // Adicionar item de categoria
-        const categoryItem = document.createElement('div');
-        categoryItem.className = 'notification-item';
-        categoryItem.innerHTML = `
-          <label for="cat${category.id}">${category.name}</label>
-          <input type="checkbox" id="cat${category.id}" name="cat${category.id}" ${category.enabled ? 'checked' : ''}>
-        `;
-        
-        // Adicionar listener para o checkbox da categoria
-        const categoryCheckbox = categoryItem.querySelector(`#cat${category.id}`);
-        categoryCheckbox.addEventListener('change', async (e) => {
-          try {
-            await notificationService.updatePreferences(category.id, e.target.checked);
-          } catch (error) {
-            console.error('Erro ao atualizar preferência de categoria:', error);
-            // Reverter estado do checkbox em caso de erro
-            e.target.checked = !e.target.checked;
-          }
-        });
-        
-        row.appendChild(categoryItem);
-        
-        // Adicionar item de prioridade se existir
-        if (priority) {
-          const priorityItem = document.createElement('div');
-          priorityItem.className = 'notification-item';
-          priorityItem.innerHTML = `
-            <label for="prio${priority.id}">${priority.name}</label>
-            <input type="checkbox" id="prio${priority.id}" name="prio${priority.id}" ${priority.enabled ? 'checked' : ''}>
-          `;
-          
-          // Adicionar listener para o checkbox da prioridade
-          const priorityCheckbox = priorityItem.querySelector(`#prio${priority.id}`);
-          priorityCheckbox.addEventListener('change', async (e) => {
-            try {
-              await notificationService.updatePriorityPreferences(priority.id, e.target.checked);
-            } catch (error) {
-              console.error('Erro ao atualizar preferência de prioridade:', error);
-              // Reverter estado do checkbox em caso de erro
-              e.target.checked = !e.target.checked;
-            }
-          });
-          
-          row.appendChild(priorityItem);
-        } else {
-          // Adicionar espaço vazio para manter o layout
-          const emptyItem = document.createElement('div');
-          emptyItem.className = 'notification-item';
-          row.appendChild(emptyItem);
+    /**
+     * Salva um valor no localStorage
+     * @param {string} key - Chave para armazenar o valor
+     * @param {any} value - Valor a ser armazenado (será convertido para JSON)
+     * @returns {boolean} - true se salvou com sucesso, false caso contrário
+     */
+    set(key, value) {
+        try {
+            localStorage.setItem(this.PREFIX + key, JSON.stringify(value));
+            return true;
+        } catch (error) {
+            console.error('Erro ao salvar no localStorage:', error);
+            return false;
         }
-        
-        categoriesContainer.appendChild(row);
-      });
+    },
+
+    /**
+     * Recupera um valor do localStorage
+     * @param {string} key - Chave do valor a ser recuperado
+     * @param {any} defaultValue - Valor padrão se a chave não existir
+     * @returns {any} - Valor recuperado ou valor padrão
+     */
+    get(key, defaultValue = null) {
+        try {
+            const item = localStorage.getItem(this.PREFIX + key);
+            return item ? JSON.parse(item) : defaultValue;
+        } catch (error) {
+            console.error('Erro ao ler do localStorage:', error);
+            return defaultValue;
+        }
+    },
+
+    /**
+     * Remove um valor do localStorage
+     * @param {string} key - Chave do valor a ser removido
+     * @returns {boolean} - true se removeu com sucesso, false caso contrário
+     */
+    remove(key) {
+        try {
+            localStorage.removeItem(this.PREFIX + key);
+            return true;
+        } catch (error) {
+            console.error('Erro ao remover do localStorage:', error);
+            return false;
+        }
+    },
+
+    /**
+     * Limpa todos os dados do TaskManager do localStorage
+     * @returns {boolean} - true se limpou com sucesso, false caso contrário
+     */
+    clear() {
+        try {
+            Object.keys(localStorage).forEach(key => {
+                if (key.startsWith(this.PREFIX)) {
+                    localStorage.removeItem(key);
+                }
+            });
+            return true;
+        } catch (error) {
+            console.error('Erro ao limpar localStorage:', error);
+            return false;
+        }
+    },
+
+    /**
+     * Obtém todas as chaves do TaskManager no localStorage
+     * @returns {string[]} - Array com todas as chaves (sem o prefixo)
+     */
+    getAllKeys() {
+        try {
+            return Object.keys(localStorage)
+                .filter(key => key.startsWith(this.PREFIX))
+                .map(key => key.replace(this.PREFIX, ''));
+        } catch (error) {
+            console.error('Erro ao obter chaves do localStorage:', error);
+            return [];
+        }
+    },
+
+    /**
+     * Verifica se uma chave existe no localStorage
+     * @param {string} key - Chave a ser verificada
+     * @returns {boolean} - true se a chave existe, false caso contrário
+     */
+    exists(key) {
+        return localStorage.getItem(this.PREFIX + key) !== null;
     }
-  } catch (error) {
-    console.error('Erro ao carregar preferências de notificação:', error);
-  }
+};
+
+// Funções específicas para gerenciar preferências de notificação
+const NotificationPreferences = {
+    /**
+     * Salva as preferências de notificação
+     * @param {Object} preferences - Objeto com as preferências
+     */
+    save(preferences) {
+        return TaskManagerStorage.set('notificationPreferences', preferences);
+    },
+
+    /**
+     * Carrega as preferências de notificação
+     * @returns {Object} - Objeto com as preferências ou valores padrão
+     */
+    load() {
+        return TaskManagerStorage.get('notificationPreferences', {
+            // Categorias padrão
+            cat1: true,  // Trabalho
+            cat2: true,  // Casa
+            cat3: false, // Saúde
+            cat4: true,  // Pessoal
+            cat5: false, // Outro
+            // Prioridades padrão
+            prio1: false, // Prioridade Mínima
+            prio2: true,  // Prioridade Média
+            prio3: false  // Prioridade Máxima
+        });
+    },
+
+    /**
+     * Atualiza uma preferência específica
+     * @param {string} key - Chave da preferência (ex: 'cat1', 'prio2')
+     * @param {boolean} value - Novo valor da preferência
+     */
+    update(key, value) {
+        const preferences = this.load();
+        preferences[key] = value;
+        return this.save(preferences);
+    },
+
+    /**
+     * Obtém o valor de uma preferência específica
+     * @param {string} key - Chave da preferência
+     * @returns {boolean} - Valor da preferência
+     */
+    get(key) {
+        const preferences = this.load();
+        return preferences[key] || false;
+    },
+
+    /**
+     * Reseta as preferências para os valores padrão
+     */
+    reset() {
+        return TaskManagerStorage.remove('notificationPreferences');
+    }
+};
+
+// Funções específicas para gerenciar configurações de tema
+const ThemeSettings = {
+    /**
+     * Salva a preferência de modo escuro
+     * @param {boolean} isDarkMode - true para modo escuro, false para modo claro
+     */
+    setDarkMode(isDarkMode) {
+        return TaskManagerStorage.set('darkMode', isDarkMode);
+    },
+
+    /**
+     * Carrega a preferência de modo escuro
+     * @returns {boolean} - true se modo escuro está ativo, false caso contrário
+     */
+    isDarkMode() {
+        return TaskManagerStorage.get('darkMode', false);
+    },
+
+    /**
+     * Alterna entre modo claro e escuro
+     * @returns {boolean} - Novo estado do modo escuro
+     */
+    toggleDarkMode() {
+        const newState = !this.isDarkMode();
+        this.setDarkMode(newState);
+        return newState;
+    }
+};
+
+// Funções específicas para gerenciar dados do perfil
+const ProfileData = {
+    /**
+     * Salva os dados do perfil
+     * @param {Object} profileData - Dados do perfil
+     */
+    save(profileData) {
+        return TaskManagerStorage.set('profileData', profileData);
+    },
+
+    /**
+     * Carrega os dados do perfil
+     * @returns {Object} - Dados do perfil ou valores padrão
+     */
+    load() {
+        return TaskManagerStorage.get('profileData', {
+            name: '',
+            email: '',
+            phone: '',
+            bio: '',
+            avatar: null
+        });
+    },
+
+    /**
+     * Atualiza um campo específico do perfil
+     * @param {string} field - Campo a ser atualizado
+     * @param {any} value - Novo valor do campo
+     */
+    updateField(field, value) {
+        const profile = this.load();
+        profile[field] = value;
+        return this.save(profile);
+    },
+
+    /**
+     * Salva o avatar do usuário
+     * @param {string} avatarData - Dados do avatar (base64)
+     */
+    setAvatar(avatarData) {
+        return this.updateField('avatar', avatarData);
+    },
+
+    /**
+     * Obtém o avatar do usuário
+     * @returns {string|null} - Dados do avatar ou null
+     */
+    getAvatar() {
+        const profile = this.load();
+        return profile.avatar;
+    }
+};
+
+// Funções específicas para gerenciar configurações de idioma
+const LanguageSettings = {
+    /**
+     * Salva a preferência de idioma
+     * @param {string} language - Código do idioma (ex: 'pt-BR', 'en-US')
+     */
+    set(language) {
+        return TaskManagerStorage.set('language', language);
+    },
+
+    /**
+     * Carrega a preferência de idioma
+     * @returns {string} - Código do idioma ou padrão
+     */
+    get() {
+        return TaskManagerStorage.get('language', 'pt-BR');
+    },
+
+    /**
+     * Obtém o nome do idioma baseado no código
+     * @param {string} code - Código do idioma
+     * @returns {string} - Nome do idioma
+     */
+    getName(code = null) {
+        const languageCode = code || this.get();
+        const languages = {
+            'pt-BR': 'Português (Brasil)',
+            'en-US': 'English (US)',
+            'es': 'Español'
+        };
+        return languages[languageCode] || languageCode;
+    }
+};
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.TaskManagerStorage = TaskManagerStorage;
+    window.NotificationPreferences = NotificationPreferences;
+    window.ThemeSettings = ThemeSettings;
+    window.ProfileData = ProfileData;
+    window.LanguageSettings = LanguageSettings;
 }
 
-// Configurar listeners para os elementos da interface
-function setupEventListeners(userId) {
-  // Toggle do modo escuro
-  const darkModeToggle = document.getElementById('darkModeToggle');
-  if (darkModeToggle) {
-    darkModeToggle.addEventListener('click', async () => {
-      try {
-        await settingsService.toggleDarkMode(userId);
-        document.body.classList.toggle('dark-mode');
-      } catch (error) {
-        console.error('Erro ao alternar modo escuro:', error);
-      }
-    });
-  }
-  
-  // Botões de confirmar e cancelar
-  const confirmButton = document.getElementById('confirm');
-  if (confirmButton) {
-    confirmButton.addEventListener('click', () => {
-      alert('Preferências salvas com sucesso!');
-    });
-  }
-  
-  const cancelButton = document.getElementById('cancel');
-  if (cancelButton) {
-    cancelButton.addEventListener('click', () => {
-      // Recarregar preferências originais
-      loadNotificationPreferences();
-    });
-  }
-}
-
-function mostrarNotificacao(mensagem, tipo = 'info') {
-  const notificacao = document.createElement('div');
-  notificacao.className = `notificacao ${tipo}`;
-  notificacao.innerHTML = `
-    <span class="notificacao-mensagem">${mensagem}</span>
-    <button class="notificacao-fechar">×</button>
-  `;
-  document.body.appendChild(notificacao);
-  
-  // Animar entrada
-  setTimeout(() => {
-    notificacao.classList.add('visivel');
-  }, 10);
-  
-  // Auto-fechar após 5 segundos
-  setTimeout(() => {
-    notificacao.classList.remove('visivel');
-    setTimeout(() => notificacao.remove(), 300);
-  }, 5000);
-  
-  // Botão fechar
-  notificacao.querySelector('.notificacao-fechar').addEventListener('click', () => {
-    notificacao.classList.remove('visivel');
-    setTimeout(() => notificacao.remove(), 300);
-  });
-}
-
-// Exemplo de uso quando a página carrega
-document.addEventListener('DOMContentLoaded', () => {
-  mostrarNotificacao('Bem-vindo ao Organizador de Tarefas!', 'sucesso');
-  
-  // Simular notificações pendentes
-  setTimeout(() => {
-    mostrarNotificacao('Você tem 3 tarefas pendentes para hoje', 'alerta');
-  }, 2000);
-});
-
-// Exportar serviços para uso em outros arquivos
-window.apiService = apiService;
-window.notificationService = notificationService;
-window.settingsService = settingsService;
-window.profileService = profileService;
-window.taskService = taskService;
-
-/ Script para implementar as funcionalidades dos ícones
-document.addEventListener('DOMContentLoaded', function() {
-    // Referências aos elementos da interface usando os atributos alt (mais confiável)
-    const sinoIcon = document.querySelector('img[alt="Sino de Notificação"]');
-    const darkModeIcon = document.querySelector('img[alt="Modo Escuro"]');
-    const configIcon = document.querySelector('img[alt="Configurações"]');
-    const userIcon = document.querySelector('img[alt="Usuário"]');
-    
-    const confirmButton = document.getElementById('confirm');
-    const cancelButton = document.getElementById('cancel');
-    
-    // Cores para o modo escuro conforme especificado
-    const darkModeColors = {
-        background: '#4b4947',
-        text: '#ffffff',
-        container: '#656667',
-        border: '#bdc1c4',
-        elements: '#bdc1c4'
+// Exportar para uso em módulos (se suportado)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        TaskManagerStorage,
+        NotificationPreferences,
+        ThemeSettings,
+        ProfileData,
+        LanguageSettings
     };
-    
-    // Cores para o modo claro
-    const lightModeColors = {
-        background: '#f4f4f4',
-        text: '#333333',
-        container: '#ffffff',
-        border: '#e0e0e0',
-        elements: '#505ac9' // Mantendo a cor original dos checkboxes
-    };
-    
-    // Função para aplicar o modo escuro
-    function applyDarkMode(isDark) {
-        if (isDark) {
-            document.body.style.backgroundColor = darkModeColors.background;
-            document.body.style.color = darkModeColors.text;
-            
-            // Aplicar estilos ao container principal
-            const container = document.querySelector('.container');
-            if (container) {
-                container.style.backgroundColor = darkModeColors.container;
-                container.style.borderColor = darkModeColors.border;
+}
+
+// header.js - Componente de cabeçalho reutilizável para o TaskManager
+
+class TaskManagerHeader {
+    constructor(options = {}) {
+        this.options = {
+            title: 'TaskManager',
+            showNotificationIcon: true,
+            showDarkModeToggle: true,
+            showSettingsIcon: true,
+            showUserIcon: true,
+            container: null,
+            ...options
+        };
+        
+        this.isInitialized = false;
+        this.eventListeners = [];
+    }
+
+    /**
+     * Inicializa o componente de cabeçalho
+     * @param {string|HTMLElement} container - Seletor ou elemento onde o cabeçalho será inserido
+     */
+    init(container = null) {
+        if (this.isInitialized) {
+            console.warn('Header já foi inicializado');
+            return;
+        }
+
+        // Determinar o container
+        const targetContainer = container || this.options.container;
+        let headerContainer;
+
+        if (typeof targetContainer === 'string') {
+            headerContainer = document.querySelector(targetContainer);
+        } else if (targetContainer instanceof HTMLElement) {
+            headerContainer = targetContainer;
+        } else {
+            // Se não especificado, procurar por um elemento com classe 'header-container'
+            headerContainer = document.querySelector('.header-container');
+            if (!headerContainer) {
+                console.error('Container para o cabeçalho não encontrado');
+                return;
             }
+        }
+
+        // Gerar HTML do cabeçalho
+        headerContainer.innerHTML = this.generateHTML();
+
+        // Configurar event listeners
+        this.setupEventListeners();
+
+        // Aplicar tema atual
+        this.applyCurrentTheme();
+
+        this.isInitialized = true;
+        console.log('TaskManager Header inicializado com sucesso');
+    }
+
+    /**
+     * Gera o HTML do cabeçalho
+     * @returns {string} - HTML do cabeçalho
+     */
+    generateHTML() {
+        const icons = [];
+
+        if (this.options.showNotificationIcon) {
+            icons.push(`
+                <span class="material-icons header-icon" id="notificationIcon" title="Notificações" data-action="notification">
+                    notifications
+                </span>
+            `);
+        }
+
+        if (this.options.showDarkModeToggle) {
+            icons.push(`
+                <span class="material-icons header-icon" id="darkModeToggle" title="Alternar modo escuro" data-action="darkmode">
+                    contrast
+                </span>
+            `);
+        }
+
+        if (this.options.showSettingsIcon) {
+            icons.push(`
+                <span class="material-icons header-icon" id="settingsIcon" title="Configurações" data-action="settings">
+                    settings
+                </span>
+            `);
+        }
+
+        if (this.options.showUserIcon) {
+            icons.push(`
+                <span class="material-icons header-icon" id="userIcon" title="Perfil do usuário" data-action="profile">
+                    account_circle
+                </span>
+            `);
+        }
+
+        return `
+            <header class="taskmanager-header">
+                <h1 class="header-title">${this.options.title}</h1>
+                <div class="header-icons">
+                    ${icons.join('')}
+                </div>
+            </header>
+        `;
+    }
+
+    /**
+     * Configura os event listeners do cabeçalho
+     */
+    setupEventListeners() {
+        // Event listener para ícones
+        const icons = document.querySelectorAll('.header-icon');
+        icons.forEach(icon => {
+            const clickHandler = (e) => this.handleIconClick(e);
+            icon.addEventListener('click', clickHandler);
             
-            // Aplicar estilos aos checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.style.accentColor = darkModeColors.elements;
+            // Armazenar referência para poder remover depois
+            this.eventListeners.push({
+                element: icon,
+                event: 'click',
+                handler: clickHandler
             });
+        });
+    }
+
+    /**
+     * Manipula cliques nos ícones do cabeçalho
+     * @param {Event} event - Evento de clique
+     */
+    handleIconClick(event) {
+        const action = event.target.getAttribute('data-action');
+        
+        switch (action) {
+            case 'notification':
+                this.handleNotificationClick();
+                break;
+            case 'darkmode':
+                this.handleDarkModeToggle();
+                break;
+            case 'settings':
+                this.handleSettingsClick();
+                break;
+            case 'profile':
+                this.handleProfileClick();
+                break;
+            default:
+                console.warn('Ação não reconhecida:', action);
+        }
+    }
+
+    /**
+     * Manipula clique no ícone de notificações
+     */
+    handleNotificationClick() {
+        // Destacar o título
+        const title = document.querySelector('.header-title');
+        if (title) {
+            title.style.color = 'var(--primary-color, #505AC9)';
+            title.style.transform = 'scale(1.05)';
             
-            // Aplicar estilos aos botões
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.style.backgroundColor = darkModeColors.container;
-                button.style.color = darkModeColors.text;
-                button.style.borderColor = darkModeColors.border;
-            });
+            setTimeout(() => {
+                title.style.color = '';
+                title.style.transform = '';
+            }, 1000);
+        }
+
+        // Emitir evento customizado
+        this.emitEvent('notification-clicked');
+        
+        // Mostrar toast se disponível
+        if (window.TaskManagerToast) {
+            window.TaskManagerToast.success('Você está na tela de notificações!');
+        }
+    }
+
+    /**
+     * Manipula toggle do modo escuro
+     */
+    handleDarkModeToggle() {
+        if (window.ThemeSettings) {
+            const newState = window.ThemeSettings.toggleDarkMode();
+            this.applyTheme(newState);
             
-            // Aplicar estilos aos textos
-            const labels = document.querySelectorAll('label');
-            labels.forEach(label => {
-                label.style.color = darkModeColors.text;
-            });
+            // Emitir evento customizado
+            this.emitEvent('theme-changed', { isDarkMode: newState });
             
-            const heading = document.querySelector('h1');
-            if (heading) {
-                heading.style.color = darkModeColors.text;
+            // Mostrar toast se disponível
+            if (window.TaskManagerToast) {
+                window.TaskManagerToast.success(`Modo ${newState ? 'escuro' : 'claro'} ativado`);
             }
-            
-            // Aplicar estilos às bordas
-            const header = document.querySelector('header');
-            if (header) {
-                header.style.borderBottomColor = darkModeColors.border;
-            }
-            
-            const footer = document.querySelector('footer');
-            if (footer) {
-                footer.style.borderTopColor = darkModeColors.border;
-            }
-            
-            // Adicionar classe para referência em CSS
+        } else {
+            console.warn('ThemeSettings não está disponível');
+        }
+    }
+
+    /**
+     * Manipula clique no ícone de configurações
+     */
+    handleSettingsClick() {
+        // Emitir evento customizado para que a página possa abrir o modal
+        this.emitEvent('settings-clicked');
+        
+        // Se houver um modal manager global, tentar abrir o modal
+        if (window.TaskManagerModal) {
+            window.TaskManagerModal.open('settingsModal');
+        } else {
+            console.log('Modal de configurações solicitado');
+        }
+    }
+
+    /**
+     * Manipula clique no ícone de perfil
+     */
+    handleProfileClick() {
+        // Emitir evento customizado para que a página possa abrir o modal
+        this.emitEvent('profile-clicked');
+        
+        // Se houver um modal manager global, tentar abrir o modal
+        if (window.TaskManagerModal) {
+            window.TaskManagerModal.open('profileModal');
+        } else {
+            console.log('Modal de perfil solicitado');
+        }
+    }
+
+    /**
+     * Aplica o tema atual baseado nas configurações salvas
+     */
+    applyCurrentTheme() {
+        if (window.ThemeSettings) {
+            const isDarkMode = window.ThemeSettings.isDarkMode();
+            this.applyTheme(isDarkMode);
+        }
+    }
+
+    /**
+     * Aplica um tema específico
+     * @param {boolean} isDarkMode - true para modo escuro, false para modo claro
+     */
+    applyTheme(isDarkMode) {
+        if (isDarkMode) {
             document.body.classList.add('dark-mode');
         } else {
-            document.body.style.backgroundColor = lightModeColors.background;
-            document.body.style.color = lightModeColors.text;
-            
-            // Restaurar estilos ao container principal
-            const container = document.querySelector('.container');
-            if (container) {
-                container.style.backgroundColor = lightModeColors.container;
-                container.style.borderColor = lightModeColors.border;
-            }
-            
-            // Restaurar estilos aos checkboxes
-            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(checkbox => {
-                checkbox.style.accentColor = lightModeColors.elements;
-            });
-            
-            // Restaurar estilos aos botões
-            const buttons = document.querySelectorAll('button');
-            buttons.forEach(button => {
-                button.style.backgroundColor = '';
-                button.style.color = '';
-                button.style.borderColor = '';
-            });
-            
-            // Restaurar estilos aos textos
-            const labels = document.querySelectorAll('label');
-            labels.forEach(label => {
-                label.style.color = '#555555';
-            });
-            
-            const heading = document.querySelector('h1');
-            if (heading) {
-                heading.style.color = '#333333';
-            }
-            
-            // Restaurar estilos às bordas
-            const header = document.querySelector('header');
-            if (header) {
-                header.style.borderBottomColor = '#eeeeee';
-            }
-            
-            const footer = document.querySelector('footer');
-            if (footer) {
-                footer.style.borderTopColor = '#eeeeee';
-            }
-            
-            // Remover classe
             document.body.classList.remove('dark-mode');
         }
     }
-    
-    // Função para criar e mostrar um modal
-    function showModal(title, content) {
-        // Remover modal existente se houver
-        const existingModal = document.querySelector('.modal-overlay');
-        if (existingModal) {
-            existingModal.remove();
-        }
-        
-        // Criar elementos do modal
-        const modalOverlay = document.createElement('div');
-        modalOverlay.className = 'modal-overlay';
-        modalOverlay.style.position = 'fixed';
-        modalOverlay.style.top = '0';
-        modalOverlay.style.left = '0';
-        modalOverlay.style.width = '100%';
-        modalOverlay.style.height = '100%';
-        modalOverlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        modalOverlay.style.display = 'flex';
-        modalOverlay.style.justifyContent = 'center';
-        modalOverlay.style.alignItems = 'center';
-        modalOverlay.style.zIndex = '1000';
-        
-        const modalContainer = document.createElement('div');
-        modalContainer.className = 'modal-container';
-        modalContainer.style.backgroundColor = document.body.classList.contains('dark-mode') ? darkModeColors.container : lightModeColors.container;
-        modalContainer.style.borderRadius = '8px';
-        modalContainer.style.padding = '20px';
-        modalContainer.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
-        modalContainer.style.maxWidth = '500px';
-        modalContainer.style.width = '90%';
-        
-        const modalHeader = document.createElement('div');
-        modalHeader.className = 'modal-header';
-        modalHeader.style.display = 'flex';
-        modalHeader.style.justifyContent = 'space-between';
-        modalHeader.style.alignItems = 'center';
-        modalHeader.style.marginBottom = '15px';
-        
-        const modalTitle = document.createElement('h2');
-        modalTitle.textContent = title;
-        modalTitle.style.margin = '0';
-        modalTitle.style.color = document.body.classList.contains('dark-mode') ? darkModeColors.text : lightModeColors.text;
-        modalTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const closeButton = document.createElement('button');
-        closeButton.textContent = '×';
-        closeButton.style.background = 'none';
-        closeButton.style.border = 'none';
-        closeButton.style.fontSize = '24px';
-        closeButton.style.cursor = 'pointer';
-        closeButton.style.color = document.body.classList.contains('dark-mode') ? darkModeColors.text : lightModeColors.text;
-        closeButton.onclick = function() {
-            modalOverlay.remove();
-        };
-        
-        const modalContent = document.createElement('div');
-        modalContent.className = 'modal-content';
-        modalContent.style.color = document.body.classList.contains('dark-mode') ? darkModeColors.text : lightModeColors.text;
-        modalContent.style.fontFamily = '"Montserrat", sans-serif';
-        
-        // Adicionar conteúdo ao modal
-        if (typeof content === 'string') {
-            modalContent.innerHTML = content;
-        } else {
-            modalContent.appendChild(content);
-        }
-        
-        // Montar o modal
-        modalHeader.appendChild(modalTitle);
-        modalHeader.appendChild(closeButton);
-        modalContainer.appendChild(modalHeader);
-        modalContainer.appendChild(modalContent);
-        modalOverlay.appendChild(modalContainer);
-        
-        // Adicionar ao documento
-        document.body.appendChild(modalOverlay);
-        
-        // Fechar modal ao clicar fora
-        modalOverlay.addEventListener('click', function(e) {
-            if (e.target === modalOverlay) {
-                modalOverlay.remove();
-            }
+
+    /**
+     * Emite um evento customizado
+     * @param {string} eventName - Nome do evento
+     * @param {Object} detail - Dados do evento
+     */
+    emitEvent(eventName, detail = {}) {
+        const event = new CustomEvent(`taskmanager-header-${eventName}`, {
+            detail,
+            bubbles: true
         });
+        document.dispatchEvent(event);
     }
-    
-    // Função para criar o conteúdo do modal de configurações
-    function createConfigContent() {
-        const configContent = document.createElement('div');
-        
-        // Alteração de senha
-        const passwordSection = document.createElement('div');
-        passwordSection.className = 'config-section';
-        passwordSection.style.marginBottom = '20px';
-        
-        const passwordTitle = document.createElement('h3');
-        passwordTitle.textContent = 'Alteração de senha';
-        passwordTitle.style.marginBottom = '10px';
-        passwordTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const passwordForm = document.createElement('div');
-        passwordForm.innerHTML = `
-            <div style="margin-bottom: 10px;">
-                <label for="current-password" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Senha atual:</label>
-                <input type="password" id="current-password" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label for="new-password" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Nova senha:</label>
-                <input type="password" id="new-password" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label for="confirm-password" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Confirmar senha:</label>
-                <input type="password" id="confirm-password" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-            <button id="change-password-btn" style="padding: 8px 16px; background-color: #505ac9; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: 'Montserrat', sans-serif;">Alterar Senha</button>
-        `;
-        
-        passwordSection.appendChild(passwordTitle);
-        passwordSection.appendChild(passwordForm);
-        
-        // Seleção de idioma
-        const languageSection = document.createElement('div');
-        languageSection.className = 'config-section';
-        languageSection.style.marginBottom = '20px';
-        
-        const languageTitle = document.createElement('h3');
-        languageTitle.textContent = 'Seleção de idioma';
-        languageTitle.style.marginBottom = '10px';
-        languageTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const languageSelect = document.createElement('select');
-        languageSelect.id = 'language-select';
-        languageSelect.style.width = '100%';
-        languageSelect.style.padding = '8px';
-        languageSelect.style.borderRadius = '4px';
-        languageSelect.style.border = '1px solid #ccc';
-        languageSelect.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const languages = [
-            { code: 'pt-BR', name: 'Português (Brasil)' },
-            { code: 'en-US', name: 'English (US)' },
-            { code: 'es', name: 'Español' }
-        ];
-        
-        languages.forEach(lang => {
-            const option = document.createElement('option');
-            option.value = lang.code;
-            option.textContent = lang.name;
-            if (lang.code === 'pt-BR') {
-                option.selected = true;
+
+    /**
+     * Atualiza o título do cabeçalho
+     * @param {string} newTitle - Novo título
+     */
+    updateTitle(newTitle) {
+        this.options.title = newTitle;
+        const titleElement = document.querySelector('.header-title');
+        if (titleElement) {
+            titleElement.textContent = newTitle;
+        }
+    }
+
+    /**
+     * Mostra ou oculta um ícone específico
+     * @param {string} iconType - Tipo do ícone ('notification', 'darkmode', 'settings', 'profile')
+     * @param {boolean} show - true para mostrar, false para ocultar
+     */
+    toggleIcon(iconType, show) {
+        const iconMap = {
+            'notification': 'notificationIcon',
+            'darkmode': 'darkModeToggle',
+            'settings': 'settingsIcon',
+            'profile': 'userIcon'
+        };
+
+        const iconId = iconMap[iconType];
+        if (iconId) {
+            const icon = document.getElementById(iconId);
+            if (icon) {
+                icon.style.display = show ? 'inline-block' : 'none';
             }
-            languageSelect.appendChild(option);
+        }
+    }
+
+    /**
+     * Destrói o componente e remove event listeners
+     */
+    destroy() {
+        // Remover event listeners
+        this.eventListeners.forEach(({ element, event, handler }) => {
+            element.removeEventListener(event, handler);
         });
-        
-        languageSection.appendChild(languageTitle);
-        languageSection.appendChild(languageSelect);
-        
-        // Redefinição da agenda
-        const resetSection = document.createElement('div');
-        resetSection.className = 'config-section';
-        resetSection.style.marginBottom = '20px';
-        
-        const resetTitle = document.createElement('h3');
-        resetTitle.textContent = 'Redefinição da agenda';
-        resetTitle.style.marginBottom = '10px';
-        resetTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const resetButton = document.createElement('button');
-        resetButton.textContent = 'Redefinir Agenda';
-        resetButton.style.padding = '8px 16px';
-        resetButton.style.backgroundColor = '#e74c3c';
-        resetButton.style.color = 'white';
-        resetButton.style.border = 'none';
-        resetButton.style.borderRadius = '4px';
-        resetButton.style.cursor = 'pointer';
-        resetButton.style.fontFamily = '"Montserrat", sans-serif';
-        
-        resetButton.onclick = function() {
-            if (confirm('Tem certeza que deseja redefinir sua agenda? Esta ação não pode ser desfeita.')) {
-                alert('Agenda redefinida com sucesso!');
-            }
-        };
-        
-        resetSection.appendChild(resetTitle);
-        resetSection.appendChild(resetButton);
-        
-        // Gerenciamento das preferências de notificação
-        const notifSection = document.createElement('div');
-        notifSection.className = 'config-section';
-        
-        const notifTitle = document.createElement('h3');
-        notifTitle.textContent = 'Gerenciamento das preferências de notificação';
-        notifTitle.style.marginBottom = '10px';
-        notifTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const notifButton = document.createElement('button');
-        notifButton.textContent = 'Configurar Notificações';
-        notifButton.style.padding = '8px 16px';
-        notifButton.style.backgroundColor = '#505ac9';
-        notifButton.style.color = 'white';
-        notifButton.style.border = 'none';
-        notifButton.style.borderRadius = '4px';
-        notifButton.style.cursor = 'pointer';
-        notifButton.style.fontFamily = '"Montserrat", sans-serif';
-        
-        notifButton.onclick = function() {
-            // Fechar o modal atual
-            document.querySelector('.modal-overlay').remove();
-            
-            // Simular clique no ícone de sino
-            if (sinoIcon) {
-                sinoIcon.click();
-            }
-        };
-        
-        notifSection.appendChild(notifTitle);
-        notifSection.appendChild(notifButton);
-        
-        // Adicionar todas as seções ao conteúdo
-        configContent.appendChild(passwordSection);
-        configContent.appendChild(languageSection);
-        configContent.appendChild(resetSection);
-        configContent.appendChild(notifSection);
-        
-        return configContent;
+        this.eventListeners = [];
+
+        // Limpar HTML
+        const headerElement = document.querySelector('.taskmanager-header');
+        if (headerElement) {
+            headerElement.remove();
+        }
+
+        this.isInitialized = false;
+        console.log('TaskManager Header destruído');
     }
-    
-    // Função para criar o conteúdo do modal de perfil
-    function createProfileContent() {
-        const profileContent = document.createElement('div');
-        
-        // Dados do usuário
-        const userDataSection = document.createElement('div');
-        userDataSection.className = 'profile-section';
-        userDataSection.style.marginBottom = '20px';
-        
-        const userDataTitle = document.createElement('h3');
-        userDataTitle.textContent = 'Dados Cadastrais';
-        userDataTitle.style.marginBottom = '10px';
-        userDataTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const userDataForm = document.createElement('div');
-        userDataForm.innerHTML = `
-            <div style="margin-bottom: 10px;">
-                <label for="user-name" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Nome:</label>
-                <input type="text" id="user-name" value="Usuário Padrão" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label for="user-email" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Email:</label>
-                <input type="email" id="user-email" value="usuario@exemplo.com" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-            <div style="margin-bottom: 10px;">
-                <label for="user-phone" style="display: block; margin-bottom: 5px; font-family: 'Montserrat', sans-serif;">Telefone:</label>
-                <input type="tel" id="user-phone" value="(11) 98765-4321" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; font-family: 'Montserrat', sans-serif;">
-            </div>
-        `;
-        
-        userDataSection.appendChild(userDataTitle);
-        userDataSection.appendChild(userDataForm);
-        
-        // Upload de avatar
-        const avatarSection = document.createElement('div');
-        avatarSection.className = 'profile-section';
-        
-        const avatarTitle = document.createElement('h3');
-        avatarTitle.textContent = 'Avatar do Perfil';
-        avatarTitle.style.marginBottom = '10px';
-        avatarTitle.style.fontFamily = '"Montserrat", sans-serif';
-        
-        const avatarContainer = document.createElement('div');
-        avatarContainer.style.display = 'flex';
-        avatarContainer.style.alignItems = 'center';
-        avatarContainer.style.marginBottom = '15px';
-        
-        const avatarPreview = document.createElement('div');
-        avatarPreview.style.width = '80px';
-        avatarPreview.style.height = '80px';
-        avatarPreview.style.borderRadius = '50%';
-        avatarPreview.style.backgroundColor = '#e0e0e0';
-        avatarPreview.style.marginRight = '15px';
-        avatarPreview.style.display = 'flex';
-        avatarPreview.style.justifyContent = 'center';
-        avatarPreview.style.alignItems = 'center';
-        avatarPreview.style.fontSize = '36px';
-        avatarPreview.style.color = '#999';
-        avatarPreview.textContent = 'U';
-        
-        const avatarUpload = document.createElement('div');
-        avatarUpload.innerHTML = `
-            <input type="file" id="avatar-upload" accept="image/*" style="display: none;">
-            <label for="avatar-upload" style="padding: 8px 16px; background-color: #505ac9; color: white; border-radius: 4px; cursor: pointer; display: inline-block; font-family: 'Montserrat', sans-serif;">Escolher Imagem</label>
-        `;
-        
-        avatarContainer.appendChild(avatarPreview);
-        avatarContainer.appendChild(avatarUpload);
-        
-        // Botão salvar
-        const saveButton = document.createElement('button');
-        saveButton.textContent = 'Salvar Alterações';
-        saveButton.style.padding = '10px 20px';
-        saveButton.style.backgroundColor = '#505ac9';
-        saveButton.style.color = 'white';
-        saveButton.style.border = 'none';
-        saveButton.style.borderRadius = '4px';
-        saveButton.style.cursor = 'pointer';
-        saveButton.style.marginTop = '15px';
-        saveButton.style.fontFamily = '"Montserrat", sans-serif';
-        
-        saveButton.onclick = function() {
-            alert('Perfil atualizado com sucesso!');
+}
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.TaskManagerHeader = TaskManagerHeader;
+}
+
+// Exportar para uso em módulos (se suportado)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = TaskManagerHeader;
+}
+
+// toast.js - Sistema de notificações toast reutilizável para o TaskManager
+
+class TaskManagerToast {
+    constructor(options = {}) {
+        this.options = {
+            container: null,
+            duration: 5000,
+            position: 'top-right',
+            maxToasts: 5,
+            animationDuration: 300,
+            ...options
         };
         
-        // Adicionar evento para preview da imagem
-        avatarSection.appendChild(avatarTitle);
-        avatarSection.appendChild(avatarContainer);
-        avatarSection.appendChild(saveButton);
+        this.container = null;
+        this.toasts = [];
+        this.isInitialized = false;
+    }
+
+    /**
+     * Inicializa o sistema de toast
+     */
+    init() {
+        if (this.isInitialized) {
+            return;
+        }
+
+        this.createContainer();
+        this.isInitialized = true;
+        console.log('TaskManager Toast inicializado');
+    }
+
+    /**
+     * Cria o container para os toasts
+     */
+    createContainer() {
+        // Verificar se já existe um container
+        this.container = document.getElementById('taskmanager-toast-container');
         
-        // Adicionar todas as seções ao conteúdo
-        profileContent.appendChild(userDataSection);
-        profileContent.appendChild(avatarSection);
+        if (!this.container) {
+            this.container = document.createElement('div');
+            this.container.id = 'taskmanager-toast-container';
+            this.container.className = `toast-container toast-${this.options.position}`;
+            document.body.appendChild(this.container);
+        }
+    }
+
+    /**
+     * Mostra um toast
+     * @param {string} message - Mensagem a ser exibida
+     * @param {string} type - Tipo do toast ('success', 'error', 'warning', 'info')
+     * @param {number} duration - Duração em milissegundos (opcional)
+     * @returns {HTMLElement} - Elemento do toast criado
+     */
+    show(message, type = 'info', duration = null) {
+        if (!this.isInitialized) {
+            this.init();
+        }
+
+        const toastDuration = duration !== null ? duration : this.options.duration;
+        const toastId = this.generateId();
         
-        // Adicionar funcionalidade de preview da imagem
+        // Criar elemento do toast
+        const toast = this.createToastElement(toastId, message, type);
+        
+        // Adicionar ao container
+        this.container.appendChild(toast);
+        
+        // Adicionar à lista de toasts
+        this.toasts.push({
+            id: toastId,
+            element: toast,
+            type: type,
+            message: message,
+            createdAt: Date.now()
+        });
+
+        // Limitar número de toasts
+        this.limitToasts();
+
+        // Animar entrada
         setTimeout(() => {
-            const fileInput = document.getElementById('avatar-upload');
-            if (fileInput) {
-                fileInput.addEventListener('change', function(e) {
-                    const file = e.target.files[0];
-                    if (file) {
-                        const reader = new FileReader();
-                        reader.onload = function(event) {
-                            avatarPreview.textContent = '';
-                            avatarPreview.style.backgroundImage = `url(${event.target.result})`;
-                            avatarPreview.style.backgroundSize = 'cover';
-                            avatarPreview.style.backgroundPosition = 'center';
-                        };
-                        reader.readAsDataURL(file);
-                    }
-                });
-            }
-        }, 100);
-        
-        return profileContent;
-    }
-    
-    // Verificar se há preferência de modo escuro salva
-    const isDarkMode = localStorage.getItem('darkMode') === 'enabled';
-    if (isDarkMode) {
-        applyDarkMode(true);
-    }
-    
-    // Funcionalidade do ícone de Sino (Notificações)
-    if (sinoIcon) {
-        sinoIcon.addEventListener('click', function() {
-            // Como estamos já na tela de notificações, apenas focamos na área
-            const notificationTitle = document.querySelector('h1');
-            if (notificationTitle) {
-                notificationTitle.scrollIntoView({ behavior: 'smooth' });
-                
-                // Adicionar animação de destaque
-                notificationTitle.style.transition = 'color 0.3s';
-                notificationTitle.style.color = '#505ac9';
-                
-                setTimeout(() => {
-                    notificationTitle.style.color = document.body.classList.contains('dark-mode') ? darkModeColors.text : '#333333';
-                }, 1000);
-            }
-        });
-    }
-    
-    // Funcionalidade do ícone de Modo Escuro
-    if (darkModeIcon) {
-        darkModeIcon.addEventListener('click', function() {
-            const isDark = document.body.classList.contains('dark-mode');
-            applyDarkMode(!isDark);
-            
-            // Salvar preferência
-            localStorage.setItem('darkMode', !isDark ? 'enabled' : 'disabled');
-        });
-    }
-    
-    // Funcionalidade do ícone de Configurações
-    if (configIcon) {
-        configIcon.addEventListener('click', function() {
-            showModal('Configurações', createConfigContent());
-        });
-    }
-    
-    // Funcionalidade do ícone de Perfil
-    if (userIcon) {
-        userIcon.addEventListener('click', function() {
-            showModal('Perfil do Usuário', createProfileContent());
-        });
-    }
-    
-    // Funcionalidade dos checkboxes
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    
-    // Salvar estado inicial dos checkboxes
-    let initialState = {};
-    checkboxes.forEach(function(checkbox) {
-        initialState[checkbox.id || checkbox.name] = checkbox.checked;
-    });
-    
-    // Carregar preferências salvas anteriormente
-    checkboxes.forEach(function(checkbox) {
-        const id = checkbox.id || checkbox.name;
-        const savedState = localStorage.getItem(`checkbox_${id}`);
-        if (savedState !== null) {
-            checkbox.checked = savedState === 'true';
-            initialState[id] = checkbox.checked;
+            toast.classList.add('show');
+        }, 10);
+
+        // Auto-remoção
+        if (toastDuration > 0) {
+            setTimeout(() => {
+                this.remove(toastId);
+            }, toastDuration);
         }
-    });
-    
-    // Funcionalidade do botão Confirmar
-    if (confirmButton) {
-        confirmButton.addEventListener('click', function() {
-            // Salvar o estado atual dos checkboxes
-            checkboxes.forEach(function(checkbox) {
-                const id = checkbox.id || checkbox.name;
-                localStorage.setItem(`checkbox_${id}`, checkbox.checked);
-                initialState[id] = checkbox.checked;
-            });
+
+        // Emitir evento
+        this.emitEvent('toast-shown', { id: toastId, message, type });
+
+        return toast;
+    }
+
+    /**
+     * Cria o elemento HTML do toast
+     * @param {string} id - ID único do toast
+     * @param {string} message - Mensagem
+     * @param {string} type - Tipo do toast
+     * @returns {HTMLElement} - Elemento do toast
+     */
+    createToastElement(id, message, type) {
+        const toast = document.createElement('div');
+        toast.className = `toast toast-${type}`;
+        toast.setAttribute('data-toast-id', id);
+        
+        // Ícone baseado no tipo
+        const icon = this.getIconForType(type);
+        
+        toast.innerHTML = `
+            <div class="toast-content">
+                <span class="toast-icon">${icon}</span>
+                <span class="toast-message">${this.escapeHtml(message)}</span>
+            </div>
+            <button class="toast-close" aria-label="Fechar notificação" data-action="close">
+                <span class="material-icons">close</span>
+            </button>
+        `;
+
+        // Event listener para fechar
+        const closeBtn = toast.querySelector('.toast-close');
+        closeBtn.addEventListener('click', () => {
+            this.remove(id);
+        });
+
+        // Event listener para clique no toast (opcional)
+        toast.addEventListener('click', (e) => {
+            if (!e.target.closest('.toast-close')) {
+                this.emitEvent('toast-clicked', { id, message, type });
+            }
+        });
+
+        return toast;
+    }
+
+    /**
+     * Obtém o ícone para um tipo de toast
+     * @param {string} type - Tipo do toast
+     * @returns {string} - HTML do ícone
+     */
+    getIconForType(type) {
+        const icons = {
+            success: '<span class="material-icons">check_circle</span>',
+            error: '<span class="material-icons">error</span>',
+            warning: '<span class="material-icons">warning</span>',
+            info: '<span class="material-icons">info</span>'
+        };
+        
+        return icons[type] || icons.info;
+    }
+
+    /**
+     * Remove um toast
+     * @param {string} toastId - ID do toast a ser removido
+     */
+    remove(toastId) {
+        const toastIndex = this.toasts.findIndex(t => t.id === toastId);
+        if (toastIndex === -1) return;
+
+        const toast = this.toasts[toastIndex];
+        
+        // Animar saída
+        toast.element.classList.remove('show');
+        toast.element.classList.add('hide');
+
+        // Remover após animação
+        setTimeout(() => {
+            if (toast.element.parentNode) {
+                toast.element.parentNode.removeChild(toast.element);
+            }
+            this.toasts.splice(toastIndex, 1);
             
-            alert('Preferências salvas com sucesso!');
+            // Emitir evento
+            this.emitEvent('toast-removed', { id: toastId });
+        }, this.options.animationDuration);
+    }
+
+    /**
+     * Limita o número de toasts visíveis
+     */
+    limitToasts() {
+        while (this.toasts.length > this.options.maxToasts) {
+            const oldestToast = this.toasts[0];
+            this.remove(oldestToast.id);
+        }
+    }
+
+    /**
+     * Métodos de conveniência para diferentes tipos de toast
+     */
+    success(message, duration = null) {
+        return this.show(message, 'success', duration);
+    }
+
+    error(message, duration = null) {
+        return this.show(message, 'error', duration);
+    },
+
+    warning(message, duration = null) {
+        return this.show(message, 'warning', duration);
+    }
+
+    info(message, duration = null) {
+        return this.show(message, 'info', duration);
+    }
+
+    /**
+     * Remove todos os toasts
+     */
+    clear() {
+        const toastIds = this.toasts.map(t => t.id);
+        toastIds.forEach(id => this.remove(id));
+    }
+
+    /**
+     * Obtém todos os toasts ativos
+     * @returns {Array} - Array com informações dos toasts ativos
+     */
+    getActiveToasts() {
+        return this.toasts.map(t => ({
+            id: t.id,
+            type: t.type,
+            message: t.message,
+            createdAt: t.createdAt
+        }));
+    }
+
+    /**
+     * Atualiza as opções do sistema de toast
+     * @param {Object} newOptions - Novas opções
+     */
+    updateOptions(newOptions) {
+        this.options = { ...this.options, ...newOptions };
+        
+        // Atualizar posição do container se necessário
+        if (newOptions.position && this.container) {
+            this.container.className = `toast-container toast-${this.options.position}`;
+        }
+    }
+
+    /**
+     * Gera um ID único para o toast
+     * @returns {string} - ID único
+     */
+    generateId() {
+        return `toast-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+    }
+
+    /**
+     * Escapa HTML para prevenir XSS
+     * @param {string} text - Texto a ser escapado
+     * @returns {string} - Texto escapado
+     */
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    /**
+     * Emite um evento customizado
+     * @param {string} eventName - Nome do evento
+     * @param {Object} detail - Dados do evento
+     */
+    emitEvent(eventName, detail = {}) {
+        const event = new CustomEvent(`taskmanager-toast-${eventName}`, {
+            detail,
+            bubbles: true
+        });
+        document.dispatchEvent(event);
+    }
+
+    /**
+     * Destrói o sistema de toast
+     */
+    destroy() {
+        this.clear();
+        
+        if (this.container && this.container.parentNode) {
+            this.container.parentNode.removeChild(this.container);
+        }
+        
+        this.container = null;
+        this.toasts = [];
+        this.isInitialized = false;
+        
+        console.log('TaskManager Toast destruído');
+    }
+}
+
+// Criar instância global
+const globalToast = new TaskManagerToast();
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.TaskManagerToast = globalToast;
+    window.TaskManagerToastClass = TaskManagerToast;
+}
+
+// Exportar para uso em módulos (se suportado)
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { TaskManagerToast: TaskManagerToast, globalToast };
+}
+
+// Auto-inicializar quando o DOM estiver pronto
+if (typeof document !== 'undefined') {
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', () => {
+            globalToast.init();
+        });
+    } else {
+        globalToast.init();
+    }
+}
+
+// notifications.js - Script modular da tela de notificações usando componentes reutilizáveis
+
+class NotificationPage {
+    constructor() {
+        this.header = null;
+        this.preferences = {};
+        this.originalPreferences = {};
+        this.isInitialized = false;
+        this.eventListeners = [];
+    }
+
+    /**
+     * Inicializa a página de notificações
+     */
+    init() {
+        if (this.isInitialized) {
+            console.warn('Página de notificações já foi inicializada');
+            return;
+        }
+
+        // Aguardar carregamento do DOM
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => this.start());
+        } else {
+            this.start();
+        }
+    }
+
+    /**
+     * Inicia a aplicação após o DOM estar pronto
+     */
+    start() {
+        try {
+            // Verificar se os componentes estão disponíveis
+            this.checkDependencies();
+
+            // Inicializar componentes
+            this.initializeHeader();
+            this.loadNotificationPreferences();
+            this.setupEventListeners();
+            this.setupHeaderEventListeners();
+
+            // Aplicar tema atual
+            this.applyCurrentTheme();
+
+            // Mostrar mensagem de boas-vindas
+            setTimeout(() => {
+                window.TaskManagerToast.success('Bem-vindo às configurações de notificação!');
+            }, 500);
+
+            this.isInitialized = true;
+            console.log('Página de notificações inicializada com sucesso');
+
+        } catch (error) {
+            console.error('Erro ao inicializar página de notificações:', error);
+            if (window.TaskManagerToast) {
+                window.TaskManagerToast.error('Erro ao carregar a página. Recarregue a página.');
+            }
+        }
+    }
+
+    /**
+     * Verifica se as dependências estão disponíveis
+     */
+    checkDependencies() {
+        const dependencies = [
+            'TaskManagerStorage',
+            'NotificationPreferences',
+            'ThemeSettings',
+            'TaskManagerToast',
+            'TaskManagerHeader'
+        ];
+
+        const missing = dependencies.filter(dep => !window[dep]);
+        
+        if (missing.length > 0) {
+            throw new Error(`Dependências não encontradas: ${missing.join(', ')}`);
+        }
+    }
+
+    /**
+     * Inicializa o componente de cabeçalho
+     */
+    initializeHeader() {
+        this.header = new window.TaskManagerHeader({
+            title: 'Notificações',
+            showNotificationIcon: true,
+            showDarkModeToggle: true,
+            showSettingsIcon: true,
+            showUserIcon: true
+        });
+
+        this.header.init('.header-container');
+    }
+
+    /**
+     * Carrega as preferências de notificação
+     */
+    loadNotificationPreferences() {
+        // Carregar preferências salvas
+        this.preferences = window.NotificationPreferences.load();
+        
+        // Salvar estado original para cancelamento
+        this.originalPreferences = { ...this.preferences };
+
+        // Aplicar ao DOM
+        this.applyPreferencesToDOM();
+
+        console.log('Preferências de notificação carregadas:', this.preferences);
+    }
+
+    /**
+     * Aplica as preferências aos checkboxes no DOM
+     */
+    applyPreferencesToDOM() {
+        Object.keys(this.preferences).forEach(key => {
+            const checkbox = document.getElementById(key);
+            if (checkbox) {
+                checkbox.checked = this.preferences[key];
+            }
         });
     }
-    
-    // Funcionalidade do botão Cancelar
-    if (cancelButton) {
-        cancelButton.addEventListener('click', function() {
-            // Restaurar o estado inicial dos checkboxes
-            checkboxes.forEach(function(checkbox) {
-                const id = checkbox.id || checkbox.name;
-                checkbox.checked = initialState[id];
-            });
+
+    /**
+     * Configura os event listeners da página
+     */
+    setupEventListeners() {
+        // Monitorar mudanças nos checkboxes
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        checkboxes.forEach(checkbox => {
+            const changeHandler = (e) => this.handleCheckboxChange(e);
+            checkbox.addEventListener('change', changeHandler);
             
-            alert('Alterações descartadas.');
+            this.eventListeners.push({
+                element: checkbox,
+                event: 'change',
+                handler: changeHandler
+            });
+        });
+
+        // Botão confirmar
+        const confirmBtn = document.getElementById('confirm');
+        if (confirmBtn) {
+            const clickHandler = () => this.savePreferences();
+            confirmBtn.addEventListener('click', clickHandler);
+            
+            this.eventListeners.push({
+                element: confirmBtn,
+                event: 'click',
+                handler: clickHandler
+            });
+        }
+
+        // Botão cancelar
+        const cancelBtn = document.getElementById('cancel');
+        if (cancelBtn) {
+            const clickHandler = () => this.cancelChanges();
+            cancelBtn.addEventListener('click', clickHandler);
+            
+            this.eventListeners.push({
+                element: cancelBtn,
+                event: 'click',
+                handler: clickHandler
+            });
+        }
+    }
+
+    /**
+     * Configura os event listeners do cabeçalho
+     */
+    setupHeaderEventListeners() {
+        // Event listeners para eventos customizados do cabeçalho
+        document.addEventListener('taskmanager-header-notification-clicked', () => {
+            this.handleNotificationIconClick();
+        });
+
+        document.addEventListener('taskmanager-header-theme-changed', (e) => {
+            this.handleThemeChange(e.detail.isDarkMode);
+        });
+
+        document.addEventListener('taskmanager-header-settings-clicked', () => {
+            this.handleSettingsClick();
+        });
+
+        document.addEventListener('taskmanager-header-profile-clicked', () => {
+            this.handleProfileClick();
         });
     }
-    
-    // Log para confirmar que o script foi carregado
-    console.log('Script de funcionalidades dos ícones carregado com sucesso!');
-});
+
+    /**
+     * Manipula mudanças nos checkboxes
+     * @param {Event} event - Evento de mudança
+     */
+    handleCheckboxChange(event) {
+        const { id, checked } = event.target;
+        
+        // Atualizar preferências locais
+        this.preferences[id] = checked;
+        
+        // Adicionar indicador visual de mudança
+        const notificationItem = event.target.closest('.notification-item');
+        if (notificationItem) {
+            notificationItem.classList.add('changed');
+            setTimeout(() => {
+                notificationItem.classList.remove('changed');
+            }, 500);
+        }
+
+        // Verificar se há mudanças não salvas
+        this.updateButtonStates();
+
+        console.log(`Preferência ${id} alterada para:`, checked);
+    }
+
+    /**
+     * Salva as preferências de notificação
+     */
+    savePreferences() {
+        const confirmBtn = document.getElementById('confirm');
+        
+        try {
+            // Mostrar estado de loading
+            if (confirmBtn) {
+                confirmBtn.classList.add('loading');
+                confirmBtn.disabled = true;
+            }
+
+            // Simular delay da API
+            setTimeout(() => {
+                // Salvar no localStorage
+                const success = window.NotificationPreferences.save(this.preferences);
+                
+                if (success) {
+                    // Atualizar estado original
+                    this.originalPreferences = { ...this.preferences };
+                    
+                    // Mostrar feedback de sucesso
+                    window.TaskManagerToast.success('Preferências de notificação salvas com sucesso!');
+                    
+                    // Emitir evento para outras páginas
+                    this.emitPreferencesChanged();
+                } else {
+                    throw new Error('Falha ao salvar preferências');
+                }
+
+                // Remover estado de loading
+                if (confirmBtn) {
+                    confirmBtn.classList.remove('loading');
+                    confirmBtn.disabled = false;
+                }
+
+                // Atualizar estados dos botões
+                this.updateButtonStates();
+
+            }, 1000); // Simular delay de 1 segundo
+
+        } catch (error) {
+            console.error('Erro ao salvar preferências:', error);
+            window.TaskManagerToast.error('Erro ao salvar preferências. Tente novamente.');
+            
+            // Remover estado de loading
+            if (confirmBtn) {
+                confirmBtn.classList.remove('loading');
+                confirmBtn.disabled = false;
+            }
+        }
+    }
+
+    /**
+     * Cancela as alterações e restaura preferências originais
+     */
+    cancelChanges() {
+        // Restaurar preferências originais
+        this.preferences = { ...this.originalPreferences };
+        
+        // Aplicar ao DOM
+        this.applyPreferencesToDOM();
+        
+        // Mostrar feedback
+        window.TaskManagerToast.warning('Alterações canceladas. Preferências restauradas.');
+        
+        // Atualizar estados dos botões
+        this.updateButtonStates();
+
+        console.log('Alterações canceladas, preferências restauradas');
+    }
+
+    /**
+     * Atualiza os estados dos botões baseado nas mudanças
+     */
+    updateButtonStates() {
+        const hasChanges = this.hasUnsavedChanges();
+        const confirmBtn = document.getElementById('confirm');
+        const cancelBtn = document.getElementById('cancel');
+
+        if (confirmBtn) {
+            confirmBtn.disabled = !hasChanges;
+        }
+
+        if (cancelBtn) {
+            cancelBtn.disabled = !hasChanges;
+        }
+    }
+
+    /**
+     * Verifica se há mudanças não salvas
+     * @returns {boolean} - true se há mudanças não salvas
+     */
+    hasUnsavedChanges() {
+        return JSON.stringify(this.preferences) !== JSON.stringify(this.originalPreferences);
+    }
+
+    /**
+     * Aplica o tema atual
+     */
+    applyCurrentTheme() {
+        const isDarkMode = window.ThemeSettings.isDarkMode();
+        if (isDarkMode) {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+    }
+
+    /**
+     * Manipula clique no ícone de notificações
+     */
+    handleNotificationIconClick() {
+        // Destacar o título
+        const title = document.querySelector('.header-title');
+        if (title) {
+            title.style.color = 'var(--primary-color)';
+            title.style.transform = 'scale(1.05)';
+            
+            setTimeout(() => {
+                title.style.color = '';
+                title.style.transform = '';
+            }, 1000);
+        }
+
+        window.TaskManagerToast.info('Você está na tela de configurações de notificação!');
+    }
+
+    /**
+     * Manipula mudança de tema
+     * @param {boolean} isDarkMode - true se modo escuro está ativo
+     */
+    handleThemeChange(isDarkMode) {
+        // O tema já foi aplicado pelo componente de cabeçalho
+        console.log('Tema alterado para:', isDarkMode ? 'escuro' : 'claro');
+    }
+
+    /**
+     * Manipula clique no ícone de configurações
+     */
+    handleSettingsClick() {
+        window.TaskManagerToast.info('Modal de configurações seria aberto aqui');
+        console.log('Configurações clicadas - implementar modal');
+    }
+
+    /**
+     * Manipula clique no ícone de perfil
+     */
+    handleProfileClick() {
+        window.TaskManagerToast.info('Modal de perfil seria aberto aqui');
+        console.log('Perfil clicado - implementar modal');
+    }
+
+    /**
+     * Emite evento quando as preferências são alteradas
+     */
+    emitPreferencesChanged() {
+        const event = new CustomEvent('taskmanager-notification-preferences-changed', {
+            detail: {
+                preferences: { ...this.preferences },
+                timestamp: Date.now()
+            },
+            bubbles: true
+        });
+        document.dispatchEvent(event);
+    }
+
+    /**
+     * Obtém as preferências atuais
+     * @returns {Object} - Objeto com as preferências
+     */
+    getPreferences() {
+        return { ...this.preferences };
+    }
+
+    /**
+     * Atualiza uma preferência específica
+     * @param {string} key - Chave da preferência
+     * @param {boolean} value - Novo valor
+     */
+    updatePreference(key, value) {
+        this.preferences[key] = value;
+        
+        // Atualizar checkbox correspondente
+        const checkbox = document.getElementById(key);
+        if (checkbox) {
+            checkbox.checked = value;
+        }
+
+        // Atualizar estados dos botões
+        this.updateButtonStates();
+    }
+
+    /**
+     * Reseta todas as preferências para os valores padrão
+     */
+    resetToDefaults() {
+        if (confirm('Tem certeza que deseja restaurar as configurações padrão?')) {
+            window.NotificationPreferences.reset();
+            this.loadNotificationPreferences();
+            window.TaskManagerToast.success('Preferências restauradas para os valores padrão');
+        }
+    }
+
+    /**
+     * Destrói a página e limpa recursos
+     */
+    destroy() {
+        // Remover event listeners
+        this.eventListeners.forEach(({ element, event, handler }) => {
+            element.removeEventListener(event, handler);
+        });
+        this.eventListeners = [];
+
+        // Destruir componentes
+        if (this.header) {
+            this.header.destroy();
+            this.header = null;
+        }
+
+        this.isInitialized = false;
+        console.log('Página de notificações destruída');
+    }
+}
+
+// Criar instância global da página
+const notificationPage = new NotificationPage();
+
+// Exportar para uso global
+if (typeof window !== 'undefined') {
+    window.NotificationPage = notificationPage;
+}
+
+// Inicializar automaticamente
+notificationPage.init();
